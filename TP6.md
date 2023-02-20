@@ -68,10 +68,10 @@ Un document JSON est une façon légère de représenter des données. Voici un 
 ```
 
 Une **valeur JSON** est soit:
-2. un *entier*, par exemple `2023`;
-3. une *chaîne de caractère*, par exemple `"C++"`;
-4. une *liste* de valeurs JSON, notée entre `[`...`]` et séparées par des virgules, par exemple `["Céline","Clément","Christophe", "Victor", "Youssef"]`; 
-5. un *dictionnaire*, noté entre `{`...`}`, qui associe des clefs (chaîne de caractère avant le `:`) à des valeurs JSON (après le `:`), par exemple `{"name":"Exam", "aboutChapters":"all"}` associe la clef `"name"` à la valeur `"TP noté 1"`, la clef `"aboutChapters"` à la valeur `[0,1,2,5]` 
+- un *entier*, par exemple `2023`;
+- une *chaîne de caractère*, par exemple `"C++"`;
+- une *liste* de valeurs JSON, notée entre `[`...`]` et séparées par des virgules, par exemple `["Céline","Clément","Christophe", "Victor", "Youssef"]`; 
+- un *dictionnaire*, noté entre `{`...`}`, qui associe des clefs (chaîne de caractère avant le `:`) à des valeurs JSON (après le `:`), par exemple `{"name":"Exam", "aboutChapters":"all"}` associe la clef `"name"` à la valeur `"TP noté 1"`, la clef `"aboutChapters"` à la valeur `[0,1,2,5]` 
 
 Notez qu'on ne suppose aucune cohérence particulière de typage. Par exemple les valeurs JSON dans une liste peuvent être de types différents, par exemple 
 ```json
@@ -100,9 +100,9 @@ Représentation en mémoire
 Un document JSON sera représenté en mémoire comme un arbre dont les noeuds sont polymorphes:
 - La classe `Node` sera la classe principale pour représenter un noeud dont on ne connaît pas le type exact.  Elle sera abstraite.
 - Les classes `IntLeaf` et `StringLeaf` représentent les deux types de feuilles de l'arbre, suivant le type de la donnée portée.  Elles hériterons d'une classe abstraite `Leaf` qui héritera elle-même de `Node`.
-- Les classes `ArrayNode`, `ObjectNode` représenterons les deux types de noeuds internes.
-- Le type `NodePtr` sera utilisée pour pointer vers les enfants d'un noeud interne.  Il sera utilisé en interne pour stocker les enfants des `ArrayNode` et `ObjectNode`.  A vous de choisir le bon type.
-- Le type `NodeKind` est fourni, c'est une `enum` listant les différents types de noeuds.   A l'éxecution, il sera utilisé par les `Node`'s pour indiquer leur type réel.
+- Les classes `ArrayNode`, `ObjectNode` représenteront les deux types de noeuds internes.
+- Le type `NodePtr` sera utilisé pour pointer vers les enfants d'un noeud interne.  Il sera utilisé en interne pour stocker les enfants des `ArrayNode` et `ObjectNode`.  A vous de choisir le bon type.
+- Le type `NodeKind` est fourni, c'est une `enum` listant les différents types de noeuds. A l'éxecution, il sera utilisé par les `Node`'s pour indiquer leur type réel.
 
 Pour les tests supérieurs à 20, un parseur JSON sera utilisé.  Il est fourni (classe `JsonParser`),  et vous n'avez pas à le modifier.
 
@@ -114,8 +114,8 @@ Quelques remarques préliminaires.
 - Ce TP était à l'origine prévu pour deux séances.  C'est donc déjà bien si vous arrivez à faire passer tous les tests jusqu'à 33.  Nous conseillons néanmoins de finir le TP chez vous.
 - Les tests inférieurs à 30 doivent être faits dans l'ordre, ensuite vous pouvez faire les 3X et 4X indépendamment.
 - Le fichier `sandbox.cpp` est à votre disposition.  Ce qu'il contient sera compilé/éxecuté en selectionnant `sandbox` dans les listes.
-- Essayer de factoriser au maximum le code en écrivant, quand c'est possible, le corps des fonctions dans `Node` ou `Leaf`.
-- Essayer de vous demander à chaque fois si une fonction doit être virtuelle ou pas.
+- Essayez de factoriser au maximum le code en écrivant, quand c'est possible, le corps des fonctions dans `Node` ou `Leaf`.
+- Essayez de vous demander à chaque fois si une fonction doit être virtuelle ou pas.
 
 
 Voici une courte description des tests:
@@ -131,7 +131,7 @@ Voici une courte description des tests:
   * `IntLeaf` et `StringLeaf` devront chacun avoir un constructeur qui prend un argument du type approprié (par exemple `IntLeaf::IntLeaf(int)`), il s'agit de la donnée portée par la feuille.
   * Chacun devra avoir une fonction-membre `data()` pour accéder à la donnée portée, elle ne sera pas virtuelle.
 
-  Dorénavant, nous n'indiquerons pas si les fonction-membre doivent être virtuelle ou non.  Réfléchissez-y, et demander à votre chargé de TP en cas de doute.
+  Dorénavant, nous n'indiquerons pas si les fonctions-membres doivent être virtuelles ou non.  Réfléchissez-y, et demandez à votre chargé de TP en cas de doute.
 
 - Les tests 04 et 05 demandent de créer les classes `ArrayNode` et `ObjectNode`.
   * Ils devront implémenter la fonction-membre `print()`.
@@ -142,18 +142,18 @@ Voici une courte description des tests:
   * pour chaque type de Noeud, une fonction-membre statique `make_ptr(..)` (par exemple `StringLeaf::make_ptr(std::string)`) qui permet de créer un pointeur vers un nouveau noeud.
 *(En temps normal, il faudrait rendre tous les constructeurs `protected` et obliger les utilisateur à utiliser `make_ptr` pour construire des `Node`;nous ne le ferons pas ici pour que les tests continuent de passer.)*
 
-- Les tests 11 et 12 demande de créer les fonction-membres de `ArrayNode` et `ObjectNode` pour pouvoir leurs ajouter de nouveaux enfants. 
+- Les tests 11 et 12 demandent de créer les fonctions-membres de `ArrayNode` et `ObjectNode` pour pouvoir leurs ajouter de nouveaux enfants. 
 
-- Le test 13 vérifie que la classe `ObjectNode` implémente bien un dictionnaire, c'est-à-dire qu'il n'aura pas plusieurs enfants associé à la même clef.
+- Le test 13 vérifie que la classe `ObjectNode` implémente bien un dictionnaire, c'est-à-dire qu'il n'aura pas plusieurs enfants associés à la même clef.
 
-- Le test 20 demande de rajouter les deux fonction-membres suivantes:
+- Le test 20 demande de rajouter les deux fonctions-membres suivantes:
   * `height() ` qui renvoie la hauteur de l'arbre JSON représenté dans `this`.
   * `node_count()` qui renvoie le nombre de noeuds dans l'arbre JSON représenté dans `this`.
   Ces fonction-membres serviront par la suite à vérifier que les arbres JSON construits sont (ou plutôt ont l'air) corrects.
 
 - Les tests 21 à 24 consistent à parser les documents JSON du répertoire json et vérifier que votre représentation en mémoire est correcte.
 
-- Les tests 30 à 33 demandent d'écrire des fonction-membres (par exemple `as_StringLeaf`) pour caster un `Node` dans une de ses classes filles (par exemple en `StringLeaf`).  Pour éviter la duplication de code, il vaut mieux dans ce cas que `Node::as_Stringleaf()` ne soit pas virtuelle pure !
+- Les tests 30 à 33 demandent d'écrire des fonctions-membres (par exemple `as_StringLeaf`) pour caster un `Node` dans une de ses classes filles (par exemple en `StringLeaf`).  Pour éviter la duplication de code, il vaut mieux dans ce cas que `Node::as_Stringleaf()` ne soit pas virtuelle pure !
 
 - Le test 34 demande d'écrire une des trois fonctions-membres (voir test 37) pour pouvoir naviguer dans un arbre JSON.  Il s'agit d'ajouter une fonction-membre à `ArrayNode` pour pouvoir accéder à ses enfants.
 
@@ -161,12 +161,12 @@ Voici une courte description des tests:
 
 - Le test 36 demande d'écrire la deuxième fonction-membre pour pouvoir naviguer dans un arbre JSON.  Il s'agit d'ajouter les fonctions-membres nécessaires pour pouvoir effectuer une boucle *for each* sur un `ArrayNode`.
 
-- Le test 37 vérifie que la navigation se passe bien.  Il s'agit de parcourir le `pokedex.json` et de construire des dictionnaires qui associe à le nom d'un pokemon avec son numéro dans le pokedex.
+- Le test 37 vérifie que la navigation se passe bien.  Il s'agit de parcourir le `pokedex.json` et de construire des dictionnaires qui associent le nom d'un pokemon avec son numéro dans le pokedex.
 
 - Le test 38 vérifie qu'on peut naviguer dans un arbre JSON lorsqu'il est const.  Ce test demande de "dupliquer" la plupart des fonctions-membres écrites pour les tests 3X, sans quoi le test 35 ne passera pas correctement.
 
 - Le test 40 demande d'écrire un opérateur pour tester l'égalité de Node.
 
-- Le test 41 demandent d'écrire une fonction permettant de copier un arbre JSON.
+- Le test 41 demande d'écrire une fonction permettant de copier un arbre JSON.
 
 
