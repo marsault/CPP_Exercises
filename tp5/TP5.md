@@ -68,12 +68,9 @@ str + "aaaa"
 
 str += "aaaa"           
 // => l-value
-
-"aaaa"                  
-// => l-value (string-pool)
 ```
 
-2. Supposons que vous ayiez l'instruction : `Class inst { expr }`.  
+2. Supposons que vous ayiez l'instruction : `auto inst = Class { expr };`.  
 Quelles sont les deux conditions pour que le constructeur de copie soit appelé ?  
 Même question pour le constructeur de déplacement ?
 
@@ -155,10 +152,3 @@ Le pointeur-nu contenu dans l'instance passé en paramètre sera "volé" par l'i
 Implémentez le destructeur de la classe afin de corriger les fuites de mémoire présentes dans votre programme.  
 Utilisez `valgrind` pour vérifier que votre programme ne présente aucun problème de mémoire.
 
-### F. (Bonus) Copy and Swap 
-
-Il est possible de ne définir qu'un seul opérateur d'assignation pour gérer à la fois la copie et le déplacement, en utilisant un pattern appelé "Copy and Swap".
-
-Cherchez de quoi il s'agit sur Internet, commentez vos opérateurs d'assignation par copie et par déplacement, et implémentez un opérateur d'assignation permettant de gérer ces deux opérations à la fois.
-
-D'après les logs du programme, quelle genre d'opération s'avère moins efficace qu'avec l'implémentation précédente ? 
