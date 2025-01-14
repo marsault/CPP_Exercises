@@ -130,15 +130,21 @@ Pensez à prendre des notes pour les donner à vos camarades absents.
 2. Expliquez la différence entre phase de build (compilation) et phase de link (édition des liens).  
 En quoi consiste la précompilation et à quel moment est-elle effectuée ?
 
-> Pendant la phase de build, le compilateur crée le code machine pour chaque fonction. Quand une fonction est déclarée, il note simplement qu'elle existera dans un module.\
+> Pendant la phase de build, le compilateur crée le code machine pour chaque fonction. Quand une fonction est déclarée, il note simplement qu'elle existera dans ce module ou dans un autre pendant la future phase de link.\
 > Pendant la phase de link, le linker rempli les trous en indiquant l'adresse exacte des codes machines des fonctions produit pendant la phase de build.\ 
 > La phase de précompilation consiste à produire le code source de chaque module. Il s'agit principalement de résoudre les instructions comme `#include<...>` en copiant le contenu de fichiers les uns dans les autres.
 
-3. Que signifient les messages suivants ?  
+3. Que signifient les messages suivants ? 
 a. error: 'qqchose' was not declared in this scope  
 b. error: 'qqchose' is not a member of 'std'  
 Ces erreurs se produisent-elles pendant la phase de build ou de link ?  
 Que fait exactement l'instruction préprocesseur `#include` et pourquoi permet-elle généralement de résoudre ce type de problème ?
+
+> a. Aucune fonction, variable ou type ne s'appelle 'qqchose' .\
+> b. On a utilisé `std::qqchose` alors qu'aucune variable/fonction/type.\
+> Ces erreurs se produisent pendant la phase de build.\
+> L'instruction `#include` permet de copier un header dans le fichier où l'instruction se trouve.\
+> Le message de la question a peut indiquer qu'on a oublié d'inclure un fichier de header de notre propre code, et le message de la question b qu'on a oublié d'include un fichier de header de la bibliothèque standard.
 
 4. Compilez le programme de l'exercice en ne linkant que le fichier-objet associé à `main.cpp` (c'est-à-dire en oubliant `utils.cpp`).  
 Quelle est l'erreur qui s'affiche ?    
