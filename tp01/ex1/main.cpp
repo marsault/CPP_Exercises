@@ -1,13 +1,14 @@
 #include <iomanip>
 #include <iostream>
+#include <string>
 
 int main()
 {
     std::cout << "Entre ton nom: ";
 
-    char name[20] = "";
-    std::cin >> std::setw(20) >> name;
-    std::cout << "Bonjour Palluche La Falluche !" << std::endl;
+    auto name = std::string{};
+    std::cin >> name;
+    std::cout << "Bonjour " << name << "!" << std::endl;
 
     return 0;
 }

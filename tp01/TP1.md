@@ -130,6 +130,10 @@ Pensez à prendre des notes pour les donner à vos camarades absents.
 2. Expliquez la différence entre phase de build (compilation) et phase de link (édition des liens).  
 En quoi consiste la précompilation et à quel moment est-elle effectuée ?
 
+> Pendant la phase de build, le compilateur crée le code machine pour chaque fonction. Quand une fonction est déclarée, il note simplement qu'elle existera dans un module.\
+> Pendant la phase de link, le linker rempli les trous en indiquant l'adresse exacte des codes machines des fonctions produit pendant la phase de build.\ 
+> La phase de précompilation consiste à produire le code source de chaque module. Il s'agit principalement de résoudre les instructions comme `#include<...>` en copiant le contenu de fichiers les uns dans les autres.
+
 3. Que signifient les messages suivants ?  
 a. error: 'qqchose' was not declared in this scope  
 b. error: 'qqchose' is not a member of 'std'  
@@ -141,14 +145,23 @@ Quelle est l'erreur qui s'affiche ?
 En quoi est-elle différente des erreurs de la question précédente ?  
 Expliquez ce qu'elle signifie exactement.
 
+> C'est une erreur de link !  utils.hpp a promis qu'il existerait une fonction print_hello(), mais elle n'est pas trouvée lors du link.
+
 5. Décommentez maintenant les instructions commentées des fichiers [main.cpp](ex3/main.cpp) et [utils.hpp](ex3/utils.hpp).  
 Compilez maintenant le programme complet (avec les modules main et utils).  
 Quelle est l'erreur qui s'affiche ? S'agit-il d'une erreur de build ou de link ?  
 Pourquoi se produit-elle ?  
 Que faudrait-il faire pour la résoudre ?
 
+> C'est une erreur de link.  La fonction `print_bye` est définie dans les deux modules donc le linker ne sait pas à laquelle linker.
+> Il faut soit utiliser le mot clef `inline`, soit déplacer la définition de la fonction dans utils.cpp.
+
 6. Ajoutez le mot-clef `inline` devant la définition de la fonction `print_bye` dans [utils.hpp](ex3/utils.hpp). Que constatez-vous quand vous réessayez de compiler le programme ?  
 Selon-vous, quel est l'effet du mot-clef `inline` sur le linker ?
+
+> Le mot clef `inline` indique au compilateur que nous lui recommandons d'*inliner* la fonction `print_bye`. Inliner une fonction veut dire dupliquer le code de la fonction à l'endroit à chaque fois que la fonction est appelée, au lieu de créer un morceau de programme pour cette fonction que l'on visitera à chaque appel.  En théorie, ça économise du temps (l'appel de fonction) et ça augmente la taille du binaire (car on duplique du code machine).\
+> Pour pouvoir faire ça, le compilateur doit avoir le corps de la fonction accessible à chaque fois qu'elle pourrait être appellée. C'est pourquoi on doit mettre le code d'une fonction `inline` dans le header.\
+> Le compilateur n'est pas obligé de suivre la recommandation du mot-clef `inline`, et il est en fait bien plus compétent que nous pour décider quelle fonction doit être inlinée ou non.  En réalité, le mot-clef inline nous permet surtout de définir les (petites) fonctions directement dans le header.
 
 ## Pour terminer
 
