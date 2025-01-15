@@ -1,6 +1,7 @@
 #include "Card.hpp" // Card
 #include "Player.hpp" // Player
 #include <iostream> // cout
+#include <thread> // this_thread
 
 int main() {
     // test basique
@@ -52,7 +53,10 @@ int main() {
     // simulation d'une partie
     std::cout << "Début de la partie" << std::endl << "------------------" << std::endl;
 
-    while(Player::play(p1, p2)) ;
+    while(Player::play(p1, p2)) {
+        std::this_thread::sleep_for(std::chrono::seconds(1)); // bonus
+        std::cout << std::endl;
+    }
 
     std::cout 
         << "La partie est finie, voici les scores: "
