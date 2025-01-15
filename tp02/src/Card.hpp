@@ -1,3 +1,4 @@
+#pragma once  // devient nécessaire à partir de la question 5 de Player
 #include <string>   // string
 
 class Card

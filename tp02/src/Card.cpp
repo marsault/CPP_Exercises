@@ -23,7 +23,7 @@ void Card::print() const {
     std::cout 
         // << _value           // version basique
         << VALEURS[_value]  // version bonus        
-        << " de " << _color << std::endl;
+        << " de " << _color;
 }
 
 bool Card::operator== (const Card autre) const {

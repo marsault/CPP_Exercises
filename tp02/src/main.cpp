@@ -1,4 +1,5 @@
 #include "Card.hpp" // Card
+#include "Player.hpp" // Player
 #include <iostream> // cout
 
 int main() {
@@ -24,6 +25,7 @@ int main() {
     for(unsigned i: {11, 12, 13, 14}) {
         const Card c { i, "Carreau" };
         c.print();
+        std::cout << std::endl;
     }
 
     // test bonus opérateur << 
@@ -31,5 +33,30 @@ int main() {
     std::cout << "c1: " << c1 << std::endl;
     std::cout << "c2: " << c2 << std::endl;
     std::cout << "c3: " << c3 << std::endl;
+
+    std::cout << "----- Partie Player -----" << std::endl;
+
+    // test deal_all_cards
+    Player p1 { "Gerald" };
+    Player p2 { "Julien" };
+    Player::deal_all_cards(p1, p2);
+
+    for (auto i = 0; i < 16; ++i)
+    {
+        p1[i].print();
+        std::cout << std::endl;
+        p2[i].print();
+        std::cout << std::endl;
+    }
     
+    // simulation d'une partie
+    std::cout << "Début de la partie" << std::endl << "------------------" << std::endl;
+
+    while(Player::play(p1, p2)) ;
+
+    std::cout 
+        << "La partie est finie, voici les scores: "
+        << "joueur 1: " << p1.get_score() << " points, "
+        << "joueur 2: " << p2.get_score() << " points. "
+        << std::endl;
 }
