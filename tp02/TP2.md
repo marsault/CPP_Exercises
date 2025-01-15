@@ -47,7 +47,7 @@ c1.print();
 7. Vous allez maintenant définir un opérateur d'égalité pour la classe `Card` en tant que **fonction-membre**. Celui-ci aura pour objectif de vérifier si deux cartes ont la même valeur (on ne considère pas la couleur).  
 Ajoutez les instructions suivantes dans le `main` pour vérifier que votre code est juste :
 ```cpp
-Card c2 { 8, "Carreau" };
+Card c2 { 8, "Pique" };
 std::cout << (c2 == c1) << std::endl; // -> 1
 Card c3 { 10, "Carreau" };
 std::cout << (c2 == c3) << std::endl; // -> 0 
