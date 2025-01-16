@@ -9,7 +9,7 @@ const std::vector<std::string> VALEURS = {
 };
 
 
-Card::Card(unsigned v, std::string c)
+Card::Card(const unsigned& v, const std::string& c)
 {
     _value = v;
     _color = c;
@@ -26,11 +26,11 @@ void Card::print() const {
         << " de " << _color;
 }
 
-bool Card::operator== (const Card autre) const {
+bool Card::operator== (const Card& autre) const {
     return _value == autre._value and _color == autre._color;
 } 
 
-bool Card::operator< (const Card autre) const {
+bool Card::operator< (const Card& autre) const {
     return _value < autre._value;
 } 
 

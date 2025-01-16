@@ -11,11 +11,11 @@ class Player {
         inline static unsigned turn_number = 0;
 
     public:
-        Player(std::string);
+        Player(const std::string&);
         ~Player();
 
         static void deal_all_cards(Player&, Player&);
-        Card operator[] (unsigned);
+        Card operator[] (const unsigned&);
         static bool play(Player&, Player&);
         unsigned get_score() const;
 };

@@ -4,7 +4,7 @@
 #include <algorithm>    // shuffle
 #include <iostream>     // cout, endl
 
-Player::Player(std::string nom) : _score(0)
+Player::Player(const std::string& nom) : _score(0)
 {
     _name = nom;
 }
@@ -33,7 +33,7 @@ void Player::deal_all_cards(Player& premier, Player& second) {
     }
 }
 
-Card Player::operator[] (unsigned i) {
+Card Player::operator[] (const unsigned& i) {
     return _cards[i];
 }
 
