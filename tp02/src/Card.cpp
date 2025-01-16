@@ -3,12 +3,6 @@
 #include <iostream> // cout
 #include <vector>   // vector
 
-// Card bonus (question 10)
-const std::vector<std::string> VALEURS = {
-    "0", "As", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Dame", "Roi", "As"
-};
-
-
 Card::Card(const unsigned& v, const std::string& c)
 {
     _value = v;
@@ -20,10 +14,17 @@ Card::~Card()
 }
 
 void Card::print() const {
-    std::cout 
-        // << _value           // version basique
-        << VALEURS[_value]  // version bonus        
-        << " de " << _color;
+    // version basique
+    // std::cout << _value << VALEURS[_value] << " de " << _color;
+    // version bonus
+    switch(_value) {
+        case 11: std::cout << "Valet"; break;
+        case 12: std::cout << "Dame";  break;
+        case 13: std::cout << "Roi";   break;
+        case 14: std::cout << "As";    break;
+        default: std::cout << _value;   
+    };
+    std::cout << " de " << _color;
 }
 
 bool Card::operator== (const Card& autre) const {
@@ -36,6 +37,13 @@ bool Card::operator< (const Card& autre) const {
 
 // Bonus 11
 std::ostream& operator<<(std::ostream& sortie, const Card& carte) {
-    sortie << VALEURS[carte._value] << " de " << carte._color;
+    switch(carte._value) {
+        case 11: sortie << "Valet"; break;
+        case 12: sortie << "Dame";  break;
+        case 13: sortie << "Roi";   break;
+        case 14: sortie << "As";    break;
+        default: sortie << carte._value;   
+    };
+    sortie << " de " << carte._color;
     return sortie;
 }
