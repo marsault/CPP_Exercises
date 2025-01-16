@@ -38,22 +38,50 @@ Card Player::operator[] (const unsigned& i) {
 }
 
 bool Player::play(Player& premier, Player& second) {
-    std::vector<Card> cartes { premier._cards.back(), second._cards.back() };
     premier._cards.pop_back();
     second._cards.pop_back();
 
     // afficher les deux cartes jouées au tour courant
-    std::cout << "Joueur 1 (" << premier._name << "): " << cartes[0] << std::endl;
-    std::cout << "Joueur 2 (" << second._name << "): " << cartes[1] << std::endl;
+    std::cout << "Joueur 1 (" << premier._name << "): " << premier._cards.back() << std::endl;
+    std::cout << "Joueur 2 (" << second._name << "): " << second._cards.back() << std::endl;
 
     // mettre à jour les scores
-    if(cartes[0] < cartes[1]) {
+    if(premier._cards.back() < second._cards.back()) {
         std::cout << "Joueur 2 remporte le pli" << std::endl;
         ++second._score;
     }
-    else if (cartes[1] < cartes[0]) {
+    else if (second._cards.back() < premier._cards.back()) {
         std::cout << "Joueur 1 remporte le pli" << std::endl;
         ++premier._score;
+    }
+    else {
+        // égalité (bonus 6.1): une seule bataille
+        // vérifions d'abord s'il reste des cartes, sinon le comportement de pop_back() est indéfini
+        if(premier._cards.empty() and second._cards.empty())
+            return true; 
+
+        premier._cards.pop_back();
+        second._cards.pop_back();
+
+        if(premier._cards.empty() and second._cards.empty())
+            return true; 
+
+        // afficher les deux nouvelles cartes 
+        std::cout << "\tJoueur 1 (" << premier._name << "): " << premier._cards.back() << std::endl;
+        std::cout << "\tJoueur 2 (" << second._name << "): " << second._cards.back() << std::endl;
+
+        if(premier._cards.back() < second._cards.back()) {
+            std::cout << "\tJoueur 2 remporte la bataille" << std::endl;
+            second._score += 3;
+        }
+        else if (second._cards.back() < premier._cards.back()) {
+            std::cout << "\tJoueur 2 remporte la bataille" << std::endl;
+            premier._score += 3;
+        }
+        else {
+            std::cout << "\tNouvelle égalité, pas de modification des points" << std::endl;
+        }
+        
     }
     ++turn_number;
 
