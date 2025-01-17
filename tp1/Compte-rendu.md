@@ -74,3 +74,18 @@ Last element: 0
 
 ## Exercice 3:
 
+1. cf TP
+
+2. La phase de build (compilation) consiste à compiler le fichier en ajoutant les symboles présentes (variable, fonctions, ...) dans la table des symboles et les inclut dans un fichier binaire.
+La phase de link (édition des liens) consiste à regrouper depuis les fichiers-objet fournis les instructions nécessaires à son exécution.
+
+3. a. error: 'qqchose' was not declared in this scope  -> il ne sait pas comment l'interpréter pour le traduire en assembleur. (phase build)
+b. error: 'qqchose' is not a member of 'std' -> qqchose ne fait pas partie de std ou on n'a pas inclut les headers nécessaires. (phase link)
+
+4. Référence indéfinie, lors de la phase de link, il n'y a pas la définition de la fonction print_hello().
+```
+g++ -std=c++17 -o hello main.cpp
+/usr/bin/ld : /tmp/ccAWngLH.o : dans la fonction « main » :
+main.cpp:(.text+0x5) : référence indéfinie vers « print_hello() »
+collect2: error: ld returned 1 exit status
+```

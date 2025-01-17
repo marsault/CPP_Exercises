@@ -4,7 +4,7 @@
 
 void print_hello();
 
-// void print_bye()
-// {
-//     std::cout << "Bye" << std::endl;
-// }
+ void print_bye()
+{
+    std::cout << "Bye" << std::endl;
+}
