@@ -89,31 +89,35 @@ auto full_name = first_name + ' ' + last_name;
 3. Lancez le programme. Celui-ci vous demande votre nom, mais affiche toujours en sortie : "Bonjour Palluche La Faluche !".  
 Modifiez le programme pour qu'il affiche votre prénom à la place.
 
-4. Créez une nouvelle branche git nommée `tp1` et commitez vos changements dessus avec le message "tp1 - ex1 - q4".
-
-5. Lancez le programme et passez-lui un très long nom (au moins 20 caractères). Que se passe-t-il ?  
+4. Lancez le programme et passez-lui un très long nom (au moins 20 caractères). Que se passe-t-il ?  
 Quelle classe de la librairie standard faudrait-il utiliser à la place du tableau de `char` pour stocker le nom de l'utilisateur ?
 
-6. Modifiez le programme afin de réaliser ce changement. Testez et commitez vos modifications.
+5. Modifiez le programme afin de réaliser ce changement. Testez et commitez vos modifications.
 
-7. Prenez note des difficultés que vous avez rencontrées durant cet exercice et de comment vous les avez surmontées.
+6. Prenez note des difficultés que vous avez rencontrées durant cet exercice et de comment vous les avez surmontées.
  
 ## Exercice 2 - Tableaux dynamiques
 
 1. Ouvrez le fichier [main.cpp](ex2/main.cpp) et essayez de comprendre ce que font chacune de ses lignes.
 
-2. La boucle affichant le contennu du tableau est une boucle classique du C. Transformez là en une boucle `for-each`.
+2. Faire en sorte que le programme compile.
 
-3. Affichez les valeurs du premier et du dernier élément.
+3. La boucle affichant le contenu du tableau est une boucle classique du C. Transformez là en une boucle for-each.
 
-3. Écrivez un code ajoutant à la fin du tableau d'entiers le double de chaque valeur déjà présente.
+4. Affichez les valeurs du premier et du dernier élément.
 
-4. Plutôt que d'écrire en dur les premières valeurs du tableau, complétez le programme afin qu'il demande à l'utilisateur la suite de ces valeurs.
-   On terminera la saisie par la valeur 0.
+5. La fonction ajoute_double pour ajouter à la fin d'un tableau d'entiers le double de chaque valeur déjà présente ne fonctionne pas (pour plusieurs raisons). Corrigez-le, tout en gardant le même type de retour (void).
+En bonus, essayez d'optimiser cette fonction pour éviter le plus de copies et de déplacements possible du vecteur.
 
-5. Permettez à l'utilisateur d'effacer la dernière valeur saisie en entrant un nombre négatif.
+6. Faîtes en sorte d'afficher à nouveau le vecteur après l'appel à ajoute_double. Pour éviter de dupliquer du code, faire une nouvelle fonction libre affiche. Attention à ne pas faire de copie inutile: vérifiez avec votre chargé de TP que vous avez choisi la bonne signature pour la fonction.
 
-6. Prenez note des difficultés que vous avez rencontrées durant cet exercice et de comment vous les avez surmontées.
+7. Plutôt que d'écrire en dur les premières valeurs du tableau, modifiez le programme afin qu'il demande à l'utilisateur la suite de ces valeurs. On terminera la saisie par la valeur 0.
+
+8. Si l'utilisateur entre autre chose qu'un entier (par exemple son prénom), faîtes en sorte que le programme s'arrête en indiquant une erreur, après avoir affiché "Ceci n'est pas un entier!".
+
+9. Permettez à l'utilisateur d'effacer la dernière valeur saisie en entrant un nombre négatif.
+
+10. Prenez note des difficultés que vous avez rencontrées durant cet exercice et de comment vous les avez surmontées.
 
 ## Exercice 3 - Questions (30 min)
 
@@ -145,8 +149,3 @@ Que faudrait-il faire pour la résoudre ?
 6. Ajoutez le mot-clef `inline` devant la définition de la fonction `print_bye` dans [utils.hpp](ex3/utils.hpp). Que constatez-vous quand vous réessayez de compiler le programme ?  
 Selon-vous, quel est l'effet du mot-clef `inline` sur le linker ?
 
-## Pour terminer
-
-Commitez vos modifications si ce n'est pas déjà fait.  
-Revenez sur la branche `master`. Vous devriez voir disparaître tout votre beau travail.  
-Si vous souhaitez le retrouver, vous pouvez soit retourner sur la branche `tp1`, soit merger cette branche sur la branche `master`.
