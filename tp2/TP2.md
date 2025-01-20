@@ -25,6 +25,16 @@ Vous allez avoir besoin de représenter les éléments suivants :
     - la liste des cartes qu'il a en main
     - le nombre de plis emportés
 
+### Consignes et explications générales
+
+Divers fichiers doivent être manipulés dans le cadre de ce TP. De manière générale, sauf indication contraire, les fichiers d'en-tête (`.hpp`) doivent contenir toutes les déclarations, tandis que les fichiers source (`.cpp`) doivent contenir toutes les définitions.
+
+Vous serez amenés à définir des fonctions-membres ou des attributs dits statiques:
+
+1. un attribut statique est partagé par toutes les instances d'une classe, et possèdera donc la même indépendamment de l'objet créé; toute modification de cette attribut se répercute donc sur les autres instances de la classe, puisqu'elles se partagent le même champ;
+2. une fonction-membre statique peut être utilisée sans instancier la classe; si `f` est une fonction-membre statique de la classe `C`, on pourra donc écrire directement `C::f(bla);` plutôt que `auto X = C(); X.f(bla);`
+
+
 ### La classe `Card` (50min)
 
 1. Créez trois fichiers `Card.cpp`, `Card.hpp` et `main.cpp`.
@@ -109,9 +119,13 @@ Dedans, vous afficherez les deux cartes jouées au tour courant.
 Vous incrémenterez le score du joueur qui remporte le pli (en cas d'égalité, pas de changement), puis vous augmenterez le nombre de tours.  
 La fonction renverra sous forme de booléen si la partie est terminée ou pas.
 Attention, cette fonction **ne modifie pas** le contenu de `Player::_cards`, n'essayez pas de supprimer des éléments du `std::vector`.
-4. Enfin, définissez un **getter** dans `Player` permettant de récupérer le score de chaque joueur.  
+3. Enfin, définissez un **getter** dans `Player` permettant de récupérer le score de chaque joueur.  
 Assurez-vous qu'il puisse être utilisé sur des variables `const`. 
-5. Modifiez la fonction `main` pour simuler une partie de bataille entre `Julien` et `Gerald`.
-6. **(Bonus)** A quoi sert la fonction `std::this_thread::sleep_for` ?
+4. Modifiez la fonction `main` pour simuler une partie de bataille entre `Julien` et `Gerald`.
+5. **(Bonus)** A quoi sert la fonction `std::this_thread::sleep_for` ?
 Utilisez-la dans votre code pour qu'une seconde s'écoule entre chaque pli.
-7. **(Bonus)** Modifiez votre code de manière à gérer l'égalité comme dans les règles officielles : on pose une carte face cachée, puis une carte face visible, et le gagnant remporte alors 3 points au lieu de 1.
+6. **(Bonus)** Modifiez votre code de manière à gérer l'égalité comme dans les règles officielles : on pose une carte face cachée, puis une carte face visible, et le gagnant remporte alors 3 points au lieu de 1.
+
+    1. dans un premier temps, attribuez 0 points aux joueurs si les nouvelles cartes visibles sont égales en valeur, ou si les joueurs terminent leurs paquets avant de pouvoir placer cette nouvelle carte;
+    1. ensuite, gérez les nouvelles égalités qui peuvent survenir un nombre arbitraire de fois; les points remportés seront soit la moitié des cartes déposées pour cette bataille s'il y a un vainqueur, soit 0 points si l'on vide les paquets avant de pouvoir conclure.
+
