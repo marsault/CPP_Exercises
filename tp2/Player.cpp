@@ -1,5 +1,7 @@
 #include "Player.hpp"
 
+unsigned int Player::turn_number = 0u;
+
 Player::Player(const std::string& name)
     : _name {name}
     {}
@@ -29,4 +31,33 @@ const Card& Player::operator[](size_t index) const {
         std::cerr << "Index out of bounds" << std::endl;
     }
     return _cards[index];
+}
+
+const std::vector<Card>& Player::get_cards() const {
+    return _cards;
+}
+
+unsigned int Player::get_score() const {
+    return _score;
+}
+
+bool Player::play(Player& p1, Player& p2) {
+    if(turn_number >= p1._cards.size() || turn_number >= p2._cards.size()) {
+        return true;
+    }
+    std::cout << "Tour " << turn_number + 1 << std::endl;
+    std::cout << p1._name << " joue ";
+    p1[turn_number].print();
+    std::cout << p2._name << " joue ";
+    p2[turn_number].print();
+
+    if (p2[turn_number] < p1[turn_number]) {
+        ++p1._score;
+    }
+    if (p1[turn_number] < p2[turn_number]) {
+        ++p2._score;
+    } 
+
+    turn_number++;
+    return false;
 }
