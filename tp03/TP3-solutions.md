@@ -154,13 +154,14 @@ Pour chaque architecture, vous indiquerez les opérations que le programme devra
 
 ## Architecture C
 
-1. lister tous les salariés: 
-2. lister tous les départements: 
-3. lister les personnes appartenant à un département précis: 
-4. lister tous les managers: 
-5. lister les subordonnés d'un manager: 
-6. embaucher un nouveau salarié: 
-7. licencier un salarié: 
-8. changer un salarié de département: 
-9. augmenter le salaire d'une personne: 
-10. afficher la somme totale payée pour les salaires par département.
+1. lister tous les salariés: on doit parcourir la collection d'employés récursivement;
+2. lister tous les départements: on doit parcourir la collection de départements;
+3. lister les personnes appartenant à un département précis: on doit parcourir la collection d'employés récursivement, et ne garder que ceux dont le département correspond à celui demandé;
+4. lister tous les managers: on explore récursivement les employés qui possèdent des subordonnés;
+5. lister les subordonnés d'un manager: on explore récursivement les employés jusqu'à trouver celui dont on a reçu le nom, et on affiche ensuite sa collection de subordonnés;
+6. embaucher un nouveau salarié: si c'est un manager, on le rajoute à la collection dont fait partie par exemple charline; sinon, c'est le subordonné d'un ou plusieurs managers, et il faut explorer la structure récursivement pour faire les ajustements nécessaires. Dans tous les cas, on doit rajouter également une référence vers le département dont il fera partie.
+7. licencier un salarié: on le supprime des collections de subordonnés dont il fait partie, en n'oubliant pas d'effacer la référence au département auquel il appartient.
+8. changer un salarié de département: il faut mettre à jour la référence du salarié vers le nouveau département.
+9. augmenter le salaire d'une personne: explorer la structure d'employés récursivement à la recherche de la personne à augmenter et faire les modifications.
+10. afficher la somme totale payée pour les salaires par département: explorer la structure d'employés récursivement, et procéder aux calculs des sommes séparées par département.
+
