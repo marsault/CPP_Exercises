@@ -1,0 +1,64 @@
+Voici les réponses aux questions ne demandant pas (beaucoup) de code.
+
+# Exercice 1 - Graphes d'ownership
+
+## Cas A - Copie VS Référence
+
+1. Pourquoi n'y a-t-il pas de relation entre `last_wheel` et `wheels[3]` contrairement à `first_wheel` et `wheels[0]` ?
+
+    - La ligne `auto& first_wheel = car.wheels.front();` initialise une référence `first_wheel` au début de `car.wheels`, ce qui justifie la présence de la flèche en pointillé de `first_wheel` vers `car.wheels`. En revanche, la ligne `auto  last_wheel = car.wheels.back();` initialise une *copie*  `first_wheel` du dernier élément de `car.wheels`; il n'y a donc aucune raison d'avoir un lien entre les deux variables.
+
+## Cas B - Pointeurs-observants
+
+1. Dans le graphe d'ownership, comment distingue-t-on un pointeur d'une référence ?
+    - la flèche représentant un pointeur est continue, tandis qu'elle est pointillée pour les références;
+1. Comment est représenté un pointeur nul ?
+    - un X encerclé;
+1. En termes de code, quelles sont les deux différences principales entre un pointeur-observant et une référence ?
+    1. un pointeur peut être initialisé à une valeur vide (`nullptr`), alors qu'une référence **doit** se référer à un objet existant;
+    1. on peut changer la destination d'un pointeur (c'est-à-dire le faire pointer vers autre chose que l'adresse initiale) en cours de route, alors que la référence est toujours une référence au même objet que lors de son initialisation.
+    
+## Cas C - Insertions dans un std::vector
+
+Lors d'une insertion, si le buffer mémoire réservé par `std::vector` n'a pas la place de contenir le nouvel élément, alors le contenu du tableau est réalloué dans un tout nouveau buffer de taille suffisante. Chaque élément est déplacé de son ancienne adresse mémoire vers la nouvelle.
+
+1.    Essayez de représenter les transitions dans le graphe d'ownership après le dernier `push_back` si celui-ci déclenchait une réallocation mémoire.
+        - (TODO: à dessiner): une nouvelle case `products[2]` apparaît après  `products[1]`; une flèche continue de `products` vers  `products[2]` est créée; et comme les données sont déplacées, la fin de la flèche pointillée issue de `first_product` continue à pointer vers **l'ancienne adresse** de  `products[0]`;
+1.    Quel problème relève-t-on dans le graphe ?
+        - une "dangling reference", c'est-à-dire une référence qui pointe dans le vide (à savoir `first_product`) comme expliqué ci-dessus;
+1.    Modifiez le code ci-dessus afin que `products` contienne des pointeurs ownants. Pensez à ajouter un destructeur à `Client` pour libérer la mémoire allouée dynamiquement.
+    - `products` devient un `std::vector<Product*>` dans `Client`. Dans le `main`, il faut donc maintenant faire `push_back` de `new Product{}`. Enfin, les pointeurs de notre `struct Client` étant maintenant ownants, le constructeur à rajouter doit parcourir les pointeurs de `products` un à un pour veiller à libérer les données correspondantes via un `delete`. On obtient maintenant ceci:
+        
+            ```cpp
+            #include <memory>
+            #include <vector>
+
+            struct Product
+            {};
+
+            struct Client
+            {
+                std::vector<Product*> products;
+                ~Client() {
+                    for (auto* prod: products)
+                        delete prod;
+                };
+            };
+
+            int main()
+            {
+                auto client = Client {};
+
+                client.products.push_back(new Product{});
+                client.products.push_back(new Product{});
+
+                auto& first_product = client.products.front();
+                client.products.push_back(new Product{});
+                
+                return 0;
+            }
+            ```
+1.    Redessinez le graphe d'ownership de la question 1, mais en prenant en compte vos changements dans le code.
+        - (TODO: à dessiner)
+1.    Avez-vous toujours le problème relevé à la question 2 ?
+        - TODO expliquer
