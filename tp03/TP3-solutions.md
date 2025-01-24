@@ -99,3 +99,44 @@ Lors d'une insertion, si le buffer mémoire réservé par `std::vector` n'a pas 
     - `are_all_positives`: `values` n'a pas à être modifié, on le passe donc en référence constante pour éviter les copies inutiles par la même occasion. `negative_indices_out` est un tableau statique et est donc automatiquement passé par référence, il n'y a donc pas d'autre modification à faire. On obtient: `bool are_all_positives(const std::vector<int>& values, int negative_indices_out[], size_t& negative_count_out);`{:.cpp}.
     
     - `concatenate`: la fonction ne modifiant pas ses paramètres, on rajoute un `const` devant chacun d'eux. On obtient: `std::string concatenate(char* str1, char* str2);`{:.cpp}.
+
+
+## Exercice 3 - Gestion des resources (55min)
+
+Vous allez créer un logiciel permettant de gérer les salariés de votre entreprise.
+
+Dans votre logiciel, vous devez connaître pour chaque salarié :
+- son nom et prénom,
+- son salaire mensuel,
+- les autres salariés dont il est manager.
+
+Chaque salarié travaille pour un seul et unique département (la R&D, le marketing, etc).
+
+En tant que chef d'entreprise, vous voulez utiliser ce logiciel pour réaliser les actions suivantes :
+1. lister tous les salariés,
+2. lister tous les départements,
+3. lister les personnes appartenant à un département précis,
+4. lister tous les managers,
+5. lister les subordonnés d'un manager,
+6. embaucher un nouveau salarié,
+7. licencier un salarié,
+8. changer un salarié de département,
+9. augmenter le salaire d'une personne,
+10. afficher la somme totale payée pour les salaires par département.
+
+Pour chaque architecture, vous indiquerez les opérations que le programme devrait effectuer pour satisfaire chacun des besoins cités plus haut, sans jamais introduire de dangling-reference.
+
+## Architecture A
+
+1. lister tous les salariés: un simple parcours d'un `vector<Employee>` suffit.
+2. lister tous les départements:  un simple parcours d'un `vector<Department>` suffit.
+3. lister les personnes appartenant à un département précis: l'architecture A précise qu'il doit s'agir d'une collection de références, on parcourera donc un `vector<Employee*>` de pointeurs observants --- plutôt que des références, car plus bas on peut licencier des employés, ce qui poserait problème pour les références qui contrairement aux pointeurs ne peuvent pas être "nulles".
+4. lister tous les managers: un simple parcours d'un `vector<Employee>` suffit.
+5. lister les subordonnés d'un manager: on parcourt un `vector<Employee>` à la recherche du manager dont on a reçu le nom, puis l'on parcourt un `vector<Employee>` correspondant pour afficher son contenu.
+6. embaucher un nouveau salarié: ajout en fin d'un `vector<Employee>`.
+7. licencier un salarié: parcours et suppression dans un `vector<Employee>`, et suppression du pointeur observant correspondant dans l'unique département qui l'employait.
+8. changer un salarié de département: suppression du pointeur observant dans l'ancien département et ajout dans le nouveau.
+9. augmenter le salaire d'une personne: modification du champ correspondant dans `Employee`.
+10. afficher la somme totale payée pour les salaires par département: parcours simple d'un `vector<Department>` pour chaque département, et consultation des salaires via les références vers les employées appartenant au département.
+
+
