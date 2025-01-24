@@ -130,7 +130,7 @@ Pour chaque architecture, vous indiquerez les opérations que le programme devra
 
 1. lister tous les salariés: un simple parcours d'un `vector<Employee>` suffit.
 2. lister tous les départements:  un simple parcours d'un `vector<Department>` suffit.
-3. lister les personnes appartenant à un département précis: l'architecture A précise qu'il doit s'agir d'une collection de références, on parcourera donc un `vector<Employee*>` de pointeurs observants --- plutôt que des références, car plus bas on peut licencier des employés, ce qui poserait problème pour les références qui contrairement aux pointeurs ne peuvent pas être "nulles".
+3. lister les personnes appartenant à un département précis: l'architecture A précise qu'il doit s'agir d'une collection de références, on parcourra donc un `vector<Employee*>` de pointeurs observants --- plutôt que des références, car plus bas on peut licencier des employés, ce qui poserait problème pour les références qui contrairement aux pointeurs ne peuvent pas être "nulles".
 4. lister tous les managers: un simple parcours d'un `vector<Employee>` suffit.
 5. lister les subordonnés d'un manager: on parcourt un `vector<Employee>` à la recherche du manager dont on a reçu le nom, puis l'on parcourt un `vector<Employee>` correspondant pour afficher son contenu.
 6. embaucher un nouveau salarié: ajout en fin d'un `vector<Employee>`.
@@ -139,4 +139,28 @@ Pour chaque architecture, vous indiquerez les opérations que le programme devra
 9. augmenter le salaire d'une personne: modification du champ correspondant dans `Employee`.
 10. afficher la somme totale payée pour les salaires par département: parcours simple d'un `vector<Department>` pour chaque département, et consultation des salaires via les références vers les employées appartenant au département.
 
+## Architecture B
 
+1. lister tous les salariés: un simple parcours d'un `vector<Employee>` par département.
+2. lister tous les départements: un simple parcours d'un `vector<Department>` suffit.
+3. lister les personnes appartenant à un département précis: une fois le département identifié dans la collection, un simple parcours d'un `vector<Employee>` suffit.
+4. lister tous les managers: pour chaque département, il nous faut parcourir les employés qui s'y trouvent et identifier le manager parmi eux.
+5. lister les subordonnés d'un manager: on doit parcourir tous les départements à la recherche du manager, et une fois le manager trouvé, on a accès directement à sa collection de subordonnés.
+6. embaucher un nouveau salarié: on doit aller chercher le département auquel il va appartenir, puis seulement l'insérer dans la collection correspondante.
+7. licencier un salarié: parcourir les départements à la recherche de celui du salarié, puis le supprimer de la collection correspondante. Mais en plus de cela, il faut parcourir toutes les collections de subordonnés pour éliminer les références à l'employé licencié. Comme le montre le schéma, on doit parcourir tous les départements pour ce faire, puisqu'un employé peut être subordonné à quelqu'un d'un autre département.
+8. changer un salarié de département: l'extraire de sa collection actuelle et le rajouter à la collection future. Les relations de subordination sont mises à jour automatiquement grâce aux références.
+9. augmenter le salaire d'une personne: il faut parcourir chaque département à la recherche de l'employé, puis modifier le champ associé.
+10. afficher la somme totale payée pour les salaires par département: pour chaque département, sommer ce que l'on paie pour chacun de ses employés.
+
+## Architecture C
+
+1. lister tous les salariés: 
+2. lister tous les départements: 
+3. lister les personnes appartenant à un département précis: 
+4. lister tous les managers: 
+5. lister les subordonnés d'un manager: 
+6. embaucher un nouveau salarié: 
+7. licencier un salarié: 
+8. changer un salarié de département: 
+9. augmenter le salaire d'une personne: 
+10. afficher la somme totale payée pour les salaires par département.
