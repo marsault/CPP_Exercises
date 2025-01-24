@@ -27,7 +27,7 @@ Lors d'une insertion, si le buffer mémoire réservé par `std::vector` n'a pas 
 1.    Quel problème relève-t-on dans le graphe ?
         - une "dangling reference", c'est-à-dire une référence qui pointe dans le vide (à savoir `first_product`) comme expliqué ci-dessus;
 1.    Modifiez le code ci-dessus afin que `products` contienne des pointeurs ownants. Pensez à ajouter un destructeur à `Client` pour libérer la mémoire allouée dynamiquement.
-    - `products` devient un `std::vector<Product*>` dans `Client`. Dans le `main`, il faut donc maintenant faire `push_back` de `new Product{}`. Enfin, les pointeurs de notre `struct Client` étant maintenant ownants, le constructeur à rajouter doit parcourir les pointeurs de `products` un à un pour veiller à libérer les données correspondantes via un `delete`. On obtient maintenant ceci:
+        - `products` devient un `std::vector<Product*>` dans `Client`. Dans le `main`, il faut donc maintenant faire `push_back` de `new Product{}`. Enfin, les pointeurs de notre `struct Client` étant maintenant ownants, le constructeur à rajouter doit parcourir les pointeurs de `products` un à un pour veiller à libérer les données correspondantes via un `delete`. On obtient maintenant ceci:
         
             ```cpp
             #include <memory>
@@ -67,7 +67,7 @@ Lors d'une insertion, si le buffer mémoire réservé par `std::vector` n'a pas 
 
 1. Remplacez les `XX` par les bons types, de manière à ce que le programme compile et affiche `10 42`.
 
-    - `add` ne modifie ni `a` ni `b`, qui d'après le `main` sont des entiers; on peut donc au choix leur donner le type `int`{.cpp}, ou le type `const int&`{.cpp}. La fonction renvoyant une somme de deux entiers, son type de retour peut simplement être `int`{.cpp}. En revanche, la fonction `add_to` doit modifier `a`: son type doit donc être `int&`{.cpp}. Comme pour `add`, le type `b` sera `int`{.cpp} ou `const int&`{.cpp}. Enfin, la fonction ne renvoyant rien, son type de retour doit être `void`{.cpp}.
+    - `add` ne modifie ni `a` ni `b`, qui d'après le `main` sont des entiers; on peut donc au choix leur donner le type `int`{:.cpp}, ou le type `const int&`{:.cpp}. La fonction renvoyant une somme de deux entiers, son type de retour peut simplement être `int`{:.cpp}. En revanche, la fonction `add_to` doit modifier `a`: son type doit donc être `int&`{:.cpp}. Comme pour `add`, le type `b` sera `int`{:.cpp} ou `const int&`{:.cpp}. Enfin, la fonction ne renvoyant rien, son type de retour doit être `void`{:.cpp}.
 
         ```cpp
         #include <iostream>
@@ -94,8 +94,8 @@ Lors d'une insertion, si le buffer mémoire réservé par `std::vector` n'a pas 
 
 2. Modifiez si besoin les types des paramètres dans les fonctions ci-dessous pour que le passage soit le plus efficace et le plus sécurisé possible. Aidez-vous des commentaires pour comprendre comment les fonctions utilisent leurs paramètres.
 
-    - `count_a_occurrences`: l'énumération ne nécessite pas de modifier la chaîne, et l'absence de référence implique une copie. On va donc modifier la signature en `int count_a_occurrences(const std::string& s);`{.cpp}.
-    - `update_loop`: pas de changement à faire; on aurait éventuellement pu écrire seulement `float`{.cpp} pour `dt`.
-    - `are_all_positives`: `values` n'a pas à être modifié, on le passe donc en référence constante pour éviter les copies inutiles par la même occasion. `negative_indices_out` est un tableau statique et est donc automatiquement passé par référence, il n'y a donc pas d'autre modification à faire. On obtient: `bool are_all_positives(const std::vector<int>& values, int negative_indices_out[], size_t& negative_count_out);`{.cpp}.
+    - `count_a_occurrences`: l'énumération ne nécessite pas de modifier la chaîne, et l'absence de référence implique une copie. On va donc modifier la signature en `int count_a_occurrences(const std::string& s);`{:.cpp}.
+    - `update_loop`: pas de changement à faire; on aurait éventuellement pu écrire seulement `float`{:.cpp} pour `dt`.
+    - `are_all_positives`: `values` n'a pas à être modifié, on le passe donc en référence constante pour éviter les copies inutiles par la même occasion. `negative_indices_out` est un tableau statique et est donc automatiquement passé par référence, il n'y a donc pas d'autre modification à faire. On obtient: `bool are_all_positives(const std::vector<int>& values, int negative_indices_out[], size_t& negative_count_out);`{:.cpp}.
     
-    - `concatenate`: la fonction ne modifiant pas ses paramètres, on rajoute un `const` devant chacun d'eux. On obtient: `std::string concatenate(char* str1, char* str2);`{.cpp}.
+    - `concatenate`: la fonction ne modifiant pas ses paramètres, on rajoute un `const` devant chacun d'eux. On obtient: `std::string concatenate(char* str1, char* str2);`{:.cpp}.
