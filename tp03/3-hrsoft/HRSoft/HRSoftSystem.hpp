@@ -32,6 +32,16 @@ public:
         }
     }
 
+    // Exercice 3.4
+    void remove_employee(Employee& emp) 
+    {
+        // parcourir les départements à la recherche de l'employé, et le supprimer; comme un 
+        // employé travaille pour un seul département, on s'arrête après la première tentative fructueuse
+        for(auto& dep: _departments)
+            if(dep.remove_employee(emp))
+                break;         
+    }
+
 
 private:
     std::list<Department> _departments;

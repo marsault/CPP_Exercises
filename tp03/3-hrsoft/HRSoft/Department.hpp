@@ -28,10 +28,32 @@ public:
     // Exercice 3.2
     void print_employees() const 
     {
+        std::cout << _name << " department's employees: " << std::endl;
         for(const auto& emp: _employees)
         {
             std::cout << emp << std::endl;
         }
+    }
+
+    // supprime l'employé donné; renvoie true si ça a fonctionné, false sinon
+    bool remove_employee(const Employee& emp) 
+    {
+        std::list<Employee>::iterator it=_employees.begin();
+
+        for(; it!=_employees.end(); ++it) 
+            if(it->get_name() == emp.get_name())
+                break;
+
+        if(it == _employees.end())
+            return false;
+        
+        // employé trouvé, signalons d'abord à ses managers son licenciement...
+        for(auto& manager: _employees) 
+            manager.remove_subordinate(emp);
+
+        // ... puis supprimons-le
+        _employees.erase(it);
+        return true;
     }
 
     friend std::ostream& operator<<(std::ostream&, const Department&);

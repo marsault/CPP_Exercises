@@ -17,15 +17,15 @@ int main()
     system.print_all_departments();
     system.print_all_employees();
 
-    // TODO Q3.
+    // Q3.
     // Affiche tous les employés managés par Charline.
-    // charline.print_subordinates();
+    charline.print_subordinates();
 
-    // TODO Q4.
+    // Q4.
     // Jacques est licencié...
-    // system.remove_employee(jacques);
-    // rd_dpt.print_employees();
-    // charline.print_subordinates();
+    system.remove_employee(jacques);
+    rd_dpt.print_employees();
+    charline.print_subordinates();
 
     return 0;
 }
