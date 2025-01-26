@@ -11,11 +11,11 @@ int main()
     auto& jacques = rd_dpt.add_employee("Jacques", 2500, &charline);
     auto& paul = market_dpt.add_employee("Paul", 2500, &charline);
 
-    // TODO Q2.
+    // Q2.
     // Affiche différentes informations du système.
-    // rd_dpt.print_employees();
-    // system.print_all_departments();
-    // system.print_all_employees();
+    rd_dpt.print_employees();
+    system.print_all_departments();
+    system.print_all_employees();
 
     // TODO Q3.
     // Affiche tous les employés managés par Charline.
