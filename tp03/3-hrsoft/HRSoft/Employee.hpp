@@ -40,7 +40,9 @@ public:
         auto it = std::find(_subordinates.begin(), _subordinates.end(), &sub);
         // la supprimer de la liste si elle y est
         if(it!=_subordinates.end())
+        {
             _subordinates.erase(it);
+        }
     }
 
     // Exercice 3.4
@@ -59,6 +61,12 @@ public:
     { 
         return _name; 
     };
+
+    unsigned int get_salary() const 
+    { 
+        return _salary; 
+    };
+
 
 private:
     std::string _name;

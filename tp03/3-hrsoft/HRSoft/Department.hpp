@@ -38,7 +38,7 @@ public:
     // supprime l'employé donné; renvoie true si ça a fonctionné, false sinon
     bool remove_employee(const Employee& emp) 
     {
-        std::list<Employee>::iterator it=_employees.begin();
+        auto it=_employees.begin();
 
         for(; it!=_employees.end(); ++it) 
             if(it->get_name() == emp.get_name())
@@ -57,6 +57,20 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream&, const Department&);
+    friend class HRSoftSystem;  // Bonus
+    
+    // Bonus
+    std::string get_name() const { return _name; }
+
+    // Renvoie un pointeur vers l'employé dont le nom est fourni, ou nullptr s'il n'existe pas.
+    Employee* find_employee(const std::string& name) 
+    {
+        for(auto& emp: _employees)
+            if(emp.get_name() == name)
+                return &emp;
+
+        return nullptr;
+    }
 
 
 private:

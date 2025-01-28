@@ -52,7 +52,7 @@ Lors d'une insertion, si le buffer mémoire réservé par `std::vector` n'a pas 
                 client.products.push_back(new Product{});
                 client.products.push_back(new Product{});
 
-                auto& first_product = client.products.front();
+                auto* first_product = client.products.front();
                 client.products.push_back(new Product{});
                 
                 return 0;
