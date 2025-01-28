@@ -96,6 +96,23 @@ int main()
                 // ...
                 break;
 
+            case 'h':
+                // commande d'aide
+                std::cout << "Available commands:" << std::endl;
+                std::cout 
+                    << "    " << "d DEP                : adds a department named DEP " << std::endl
+                    << "    " << "l                    : lists all departments " << std::endl
+                    << "    " << "e NAME SALARY MANAGER: adds a new employee named NAME with their SALARY and MANAGER" << std::endl
+                    << "    " << "k                    : lists all employees" << std::endl
+                    << "    " << "f NAME               : removes employee NAME" << std::endl
+                    << "    " << "n DEP                : lists all employees in department DEP" << std::endl
+                    << "    " << "m                    : lists all managers" << std::endl
+                    << "    " << "m NAME               : lists all subordinates of manager NAME" << std::endl
+                    << "    " << "t NAME TARGET        : moves employee NAME to department TARGET" << std::endl
+                    << "    " << "r NAME AMOUNT        : raises employee NAME's by AMOUNT" << std::endl
+                    << "    " << "s                    : prints the sum of all salaries by department" << std::endl;
+                    break;
+
             default:
                 std::cout << "Unknown command " << command << std::endl;
                 break;
