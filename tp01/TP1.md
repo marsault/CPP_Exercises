@@ -107,7 +107,8 @@ Quelle classe de la librairie standard faudrait-il utiliser à la place du table
 
 4. Affichez les valeurs du premier et du dernier élément.
 
-5. La fonction `ajoute_double` pour ajouter à la fin d'un tableau d'entiers le double de chaque valeur déjà présente ne fonctionne pas (pour plusieurs raisons). Corrigez-le, tout en gardant le même type de retour (`void`).
+5. La fonction `ajoute_double` pour ajouter à la fin d'un tableau d'entiers le double de chaque valeur déjà présente ne fonctionne pas (pour plusieurs raisons). Corrigez-le, tout en gardant le même type de retour (`void`).\
+En bonus, essayez d'optimiser cette fonction pour éviter le plus de copies et de déplacements possible du vecteur.
 
 6. Faîtes en sorte d'afficher à nouveau le vecteur après l'appel à `ajoute_double`.  Pour éviter de dupliquer du code, faire une nouvelle fonction libre `affiche`. Attention à ne pas faire de copie inutile: vérifiez avec votre chargé de TP que vous avez choisi la bonne signature pour la fonction.
 
@@ -163,7 +164,6 @@ Que faudrait-il faire pour la résoudre ?
 > Il faut soit utiliser le mot clef `inline`, soit déplacer la définition de la fonction dans utils.cpp.
 
 6. Ajoutez le mot-clef `inline` devant la définition de la fonction `print_bye` dans [utils.hpp](ex3/utils.hpp). Que constatez-vous quand vous réessayez de compiler le programme ?  
-Selon-vous, quel est l'effet du mot-clef `inline` sur le linker ?
 
 > Le mot clef `inline` indique au compilateur que nous lui recommandons d'*inliner* la fonction `print_bye`. Inliner une fonction veut dire dupliquer le code de la fonction à l'endroit à chaque fois que la fonction est appelée, au lieu de créer un morceau de programme pour cette fonction que l'on visitera à chaque appel.  En théorie, ça économise du temps (l'appel de fonction) et ça augmente la taille du binaire (car on duplique du code machine).\
 > Pour pouvoir faire ça, le compilateur doit avoir le corps de la fonction accessible à chaque fois qu'elle pourrait être appellée. C'est pourquoi on doit mettre le code d'une fonction `inline` dans le header.\
