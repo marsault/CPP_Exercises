@@ -17,9 +17,8 @@ Cela vous évitera les **lags habituels du mode exam** ainsi que d'autres soucis
 ### Documentation
 
 Vous aurez accès à différentes ressources pour vous débloquez si nécessaire pendant la séance :
-- une version statique du cours en ligne,
-- [une version statique de cppreference](../resources/cppreference),
-- [les slides du cours magistral](../resources/slides).
+- [une version statique du cours en ligne](https://igm.univ-mlv.fr/~marsault/cpp/cours),
+- [une version statique de cppreference](https://www-igm.univ-mlv.fr/~marsault/cpp/ref/en/),
 
 ### Contenu du dossier
 
