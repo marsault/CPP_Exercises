@@ -33,17 +33,17 @@ void Card::print() const
     std::cout << " de " << _color;
 }
 
-bool Card::operator==(Card other) const
+bool Card::operator==(const Card& other) const
 {
     return _value == other._value and _color == other._color;
 }
 
-bool Card::operator<(Card other) const
+bool Card::operator<(const Card& other) const
 {
     return _value < other._value;
 }
 
-std::ostream& operator<<(std::ostream& sortie, Card carte)
+std::ostream& operator<<(std::ostream& sortie, const Card& carte)
 {
     switch (carte._value)
     {

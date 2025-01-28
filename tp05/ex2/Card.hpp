@@ -18,8 +18,8 @@ public:
     Card(unsigned, const std::string&);
 
     void print() const;
-    bool operator==(Card) const;
-    bool operator<(Card) const;
+    bool operator==(const Card&) const;
+    bool operator<(const Card&) const;
 
-    friend std::ostream& operator<<(std::ostream&, Card);
+    friend std::ostream& operator<<(std::ostream&, const Card&);
 };

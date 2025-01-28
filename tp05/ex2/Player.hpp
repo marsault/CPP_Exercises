@@ -13,10 +13,10 @@ public:
     Player(const std::string&);
 
     Card pop_back();
-    void push_front(Card);
+    void push_front(Card card);
 
-    std::vector<Card> cards() { return _cards; }
-    std::string       name() { return _name; }
+    const std::vector<Card>& cards() const { return _cards; }
+    const std::string&       name() { return _name; }
 
     static void deal_all_cards(Player&, Player&);
     static bool play(Player&, Player&, std::vector<Card> = {});
