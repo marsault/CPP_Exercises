@@ -16,7 +16,6 @@ public:
     // ==========================================
 
     Card(unsigned, const std::string&);
-    ~Card();
 
     void print() const;
     bool operator==(Card) const;

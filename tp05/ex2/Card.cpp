@@ -10,8 +10,6 @@ Card::Card(unsigned v, const std::string& c)
     _color = c;
 }
 
-Card::~Card()
-{}
 
 void Card::print() const
 {
