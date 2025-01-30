@@ -26,7 +26,7 @@ TEST_CASE("Lorsqu'on utilise get_number, la donnée pointée n'est pas désinsta
 
     // On récupère le numéro de Pauline
     const auto* pauline_phone = phone_book.get_number("Pauline");
-    REQUIRE(pauline_result != nullptr);
+    REQUIRE(pauline_phone != nullptr);
 
     // On ajoute quelques nouvelles entrées
     const auto other_phone = PhoneNumber { 1, 2, 3, 4, 5 };

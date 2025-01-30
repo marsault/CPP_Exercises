@@ -38,7 +38,7 @@ foreach(target ${TARGETS})
     )
 
     if(${result} EQUAL 0)
-        math(EXPR tests_failed "${tests_succeeded}+1")
+        math(EXPR tests_succeeded "${tests_succeeded}+1")
 
         execute_process(COMMAND 
             ${CMAKE_COMMAND} -E env CLICOLOR_FORCE=1
@@ -50,6 +50,7 @@ foreach(target ${TARGETS})
         endif()
 
     else()
+        math(EXPR tests_failed "${tests_failed}+1")
 
         execute_process(COMMAND 
             ${CMAKE_COMMAND} -E env CLICOLOR_FORCE=1
@@ -61,8 +62,6 @@ foreach(target ${TARGETS})
                 message(${output})
             endif()
         endif()
-
-        math(EXPR tests_failed "${tests_failed}+1")
 
     endif()
 
