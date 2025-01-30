@@ -31,14 +31,14 @@
 
 // Question 3
 // WrappedString permet de stocker une chaîne et d'encapsuler ses accès en lecture et en écriture
-// Pour le constructeur, vous devez indiquer le type du paramètre qui permettra d'intialiser _content:
+// Pour le constructeur, vous devez indiquer le type du paramètre qui permettra d'initialiser _content:
 //  WrappedString(ANSWER_3A initial_content)
-#define ANSWER_3A
+#define ANSWER_3A const std::string& // pas de modification ni de copie inutile
 // La fonction get_readonly_content() doit donner un accès en lecture seule à _content
 // ANSWER_3B get_readonly_content() ANSWER_3C { return _content; }
-#define ANSWER_3B
-#define ANSWER_3C
+#define ANSWER_3B const std::string& // la référence évite la copie, le const évite la modification
+#define ANSWER_3C const // la fonction ne modifie rien
 // La fonction get_readonly_content() doit donner un accès en lecture et écriture à _content
 // ANSWER_3D get_modifiable_content() ANSWER_3E { return _content; }
-#define ANSWER_3D
-#define ANSWER_3E
+#define ANSWER_3D std::string& // la référence permet la modification
+#define ANSWER_3E // rien, pour permettre la modification
