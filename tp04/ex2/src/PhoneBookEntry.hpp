@@ -1,3 +1,4 @@
+#pragma once                // test 32
 #include "PhoneNumber.hpp"
 
 class PhoneBookEntry {
