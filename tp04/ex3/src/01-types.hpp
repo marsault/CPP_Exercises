@@ -20,14 +20,14 @@
 // Question 1
 // stringify_integer convertit un entier en chaîne de caractères
 //  ANSWER_1A stringify_integer(ANSWER_1B integer);
-#define ANSWER_1A
-#define ANSWER_1B
+#define ANSWER_1A std::string // char* fonctionne mais moins souple
+#define ANSWER_1B const int&  // ou int, car pas besoin de modifier integer
 
 // Question 2
 // count_nb_elements permet de retourner le nombre d'éléments présents dans un tableau dynamique
 //  ANSWER_2A count_nb_elements(ANSWER_2B elements);
-#define ANSWER_2A
-#define ANSWER_2B
+#define ANSWER_2A unsigned int // la valeur est forcément naturelle
+#define ANSWER_2B const std::vector& // pas de modification ni de copie
 
 // Question 3
 // WrappedString permet de stocker une chaîne et d'encapsuler ses accès en lecture et en écriture
