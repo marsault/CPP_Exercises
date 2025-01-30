@@ -19,8 +19,8 @@
 // Le type char* est le mieux adapté pour représenter des chaînes de caractères.
 #define ANSWER_2 false // cela fonctionne, mais std::string est plus souple
 
-// On ne peut pas définir de fonctions-membres dans une struct.
-#define ANSWER_3 false // rappelez-vous du destructeur du TP 3
+// Dans une classe, il ne peut pas avoir plus d'un bloc `public` et un bloc `private`.
+#define ANSWER_3 false
 
 // Le littéral 0u est de type unsigned int.
 #define ANSWER_4 true
@@ -36,9 +36,10 @@
 #define ANSWER_7 false // le conflit sera apparent au moment où le linker doit faire son travail
 
 // Le mot-clef `auto` sert à définir des variables sans préciser leur valeur initiale.
-#define ANSWER_8 false // il sert à laisser le compilateur déduire le type de la variable, ce qu'il ne peut faire sans valeur
+#define ANSWER_8 false
+// il sert à laisser le compilateur déduire le type de la variable, ce qu'il ne peut faire sans valeur
 
-// Le type `std::vector` sert à créer des tableaux alloués dynamiquement.
+// Le type `std::vector` sert à créer des tableaux dynamiques.
 #define ANSWER_9 true
 
 // Il faut toujours penser à appeler `delete` sur les pointeurs observants.

@@ -4,7 +4,7 @@
 #define ANSWER_1 size
 
 // Question 2
-// Comment écrit-on une boucle permettant d'itérer sur tous les éléments d'un vector ? 
+// Comment écrit-on une boucle permettant d'itérer sur tous les éléments d'un vector ?
 //  ANSWER_2A (auto value ANSWER_2B values)
 #define ANSWER_2A for
 #define ANSWER_2B :
