@@ -67,17 +67,22 @@ Lors d'une insertion, si le buffer mémoire réservé par `std::vector` n'a pas 
 
 1. Remplacez les `XX` par les bons types, de manière à ce que le programme compile et affiche `10 42`.
 
-    - `add` ne modifie ni `a` ni `b`, qui d'après le `main` sont des entiers; on peut donc au choix leur donner le type `int`{:.cpp}, ou le type `const int&`{:.cpp}. La fonction renvoyant une somme de deux entiers, son type de retour peut simplement être `int`{:.cpp}. En revanche, la fonction `add_to` doit modifier `a`: son type doit donc être `int&`{:.cpp}. Comme pour `add`, le type `b` sera `int`{:.cpp} ou `const int&`{:.cpp}. Enfin, la fonction ne renvoyant rien, son type de retour doit être `void`{:.cpp}.
+    - `add` ne modifie ni `a` ni `b`, qui d'après le `main` sont des entiers; puisque qu'un entier est rapide à copier, il faut choir `int`, ou le type `const int&`. La fonction renvoyant une somme de deux entiers, son type de retour peut simplement être `int`. En revanche, la fonction `add_to` doit modifier `a`: son type doit donc être `int&`. Comme pour `add`, le type `b` sera `int` ou `const int&`. Enfin, la fonction ne renvoyant rien, son type de retour doit être `void`.
 
         ```cpp
         #include <iostream>
 
-        int add(const int& a, const int& b)
+        int add(int a, int b) // add ne modifie ni a ni b
+                              // D'après le main, ce sont des entiers, donc rapide à copier
+                              // Elle renvoie une nouvelle valeur d'entier donc son 
+                              // type de retour est int
         {
             return a + b;
         }
 
-        XX add_to(XX a, XX b)
+        void add_to(int& a, int b) // add_to modifie a: son type doit donc être int&
+                                   // elle ne modifie pas b: comme pour add, son type est int
+                                   // La fonction ne renvoie rien: le type de retour est void
         {
             a += b;
         }
@@ -93,13 +98,40 @@ Lors d'une insertion, si le buffer mémoire réservé par `std::vector` n'a pas 
         ```
 
 2. Modifiez si besoin les types des paramètres dans les fonctions ci-dessous pour que le passage soit le plus efficace et le plus sécurisé possible. Aidez-vous des commentaires pour comprendre comment les fonctions utilisent leurs paramètres.
+```cpp
+// Return the number of occurrences of 'a' found in string 's'.
+int count_a_occurrences(std::string s);
+// -> int count_a_occurrences(const std::string& s); car l'énumération ne nécessite pas de modifier la chaîne, et l'absence de référence implique une copie.
 
-    - `count_a_occurrences`: l'énumération ne nécessite pas de modifier la chaîne, et l'absence de référence implique une copie. On va donc modifier la signature en `int count_a_occurrences(const std::string& s);`{:.cpp}.
-    - `update_loop`: pas de changement à faire; on aurait éventuellement pu écrire seulement `float`{:.cpp} pour `dt`.
-    - `are_all_positives`: `values` n'a pas à être modifié, on le passe donc en référence constante pour éviter les copies inutiles par la même occasion. `negative_indices_out` est un tableau statique et est donc automatiquement passé par référence, il n'y a donc pas d'autre modification à faire. On obtient: `bool are_all_positives(const std::vector<int>& values, int negative_indices_out[], size_t& negative_count_out);`{:.cpp}.
-    
-    - `concatenate`: la fonction ne modifiant pas ses paramètres, on rajoute un `const` devant chacun d'eux. On obtient: `std::string concatenate(char* str1, char* str2);`{:.cpp}.
 
+// Update function of a rendering program.
+// - dt (delta time) is read by the function to know the time elapsed since the last frame.
+// - errors is a string filled by the function to indicate what errors have occured.
+void update_loop(const float& dt, std::string& errors_out);
+// -> int count_a_occurrences(float dt, std::string& errors_out); car float est un type primitif.
+
+// Return whether all numbers in 'values' are positive.
+// If there are negative values in it, fill the array 'negative_indices_out' with the indices
+// of these values and set its size in 'negative_count_out'.
+// ex: auto res = are_all_positive({ 1, -2, 3, -4 }, negative_indices, negative_count);
+//    -> res is false, since not all values are positive
+//    -> negative_indices contains { 1, 3 } because values[1] = -2 and values[3] = -4
+//    -> negative_count is 2
+bool are_all_positives(std::vector<int> values, int negative_indices_out[], size_t& negative_count_out);
+//-> bool are_all_positive(const std::vector<int>& values, std::vector<int>& negative_indices_out)
+// ou
+//-> std::vector<int> are_all_positive(const std::vector<int>& values)
+// values n'a pas a être modifié et c'est un objet potentiellement lourd donc const-ref
+// On utilisait apparemment une convention C pour le retour des indices négatif, et on aime pas le C
+// Suivant le besoin, on peut directement renvoyer un tableau dynamique avec les indices des entiers dynamique, ou passer un tableau dynamique par référence non-constante.
+
+// Concatenate 'str1' and 'str2' and return the result.
+// The input parameters are not modified by the function.
+std::string concatenate(char* str1, char* str2);
+// -> std::string concatenate(const std::string& str1, const std:d:string& str2);
+// En C++, on utilise quasiment jamais le type char*, on utilise std::string.
+// Ici, on n'a pas besoin de modifier les argumetns, donc les arguments doivent être des références constantes.
+```
 
 ## Exercice 3 - Gestion des resources (55min)
 
