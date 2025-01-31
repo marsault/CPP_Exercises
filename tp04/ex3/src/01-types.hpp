@@ -25,7 +25,7 @@
 // dynamique d'entiers
 //
 // Rappel:  ANSWER_2A count_nb_elements(ANSWER_2B elements);
-#define ANSWER_2A unsigned int            // la valeur est forcément naturelle
+#define ANSWER_2A unsigned int            // la valeur ne peut pas être négative
 #define ANSWER_2B const std::vector<int>& // pas de modification ni de copie
 
 // Question 3

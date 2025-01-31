@@ -14,7 +14,7 @@ private:
 public:
     // test 32: le type de retour peut être void
     // ... mais doit devenir bool pour le test 34
-    inline bool add_entry(const PhoneBookEntry& entry)
+    bool add_entry(const PhoneBookEntry& entry)
     {
         // tests 34, 35
         if (!(entry.get_number().is_valid()) // test 34
@@ -27,7 +27,7 @@ public:
     }
 
     // test 34
-    inline const PhoneNumber* get_number(const std::string& nom) const
+    const PhoneNumber* get_number(const std::string& nom) const
     {
         for (auto& entry : _entries)
             if (entry.get_name() == nom)
