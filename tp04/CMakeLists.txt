@@ -25,7 +25,7 @@ foreach(exercice_folder ${exercice_folders})
         add_executable("${exercice_id}-sandbox"
             ${exercice_src}
         )
-        list(REMOVE_ITEM exercice_src "${exercice_folder}/sandbox.cpp")
+        list(REMOVE_ITEM exercice_src "${exercice_folder}/src/sandbox.cpp")
     endif()
     
 
