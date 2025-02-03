@@ -18,7 +18,7 @@
 //
 // Rappel: ANSWER_1A stringify_integer(ANSWER_1B integer);
 #define ANSWER_1A std::string // char* fonctionne mais moins souple
-#define ANSWER_1B const int&  // ou int, car pas besoin de modifier integer
+#define ANSWER_1B int         // pas besoin de modifier integer
 
 // Question 2
 // count_nb_elements permet de retourner le nombre d'éléments présents dans un tableau
