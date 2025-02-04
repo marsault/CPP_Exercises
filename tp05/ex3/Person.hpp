@@ -7,17 +7,17 @@
 
 class Person
 {
-    friend std::ostream& operator<<(std::ostream& o, Person p);
+    friend std::ostream& operator<<(std::ostream& o, const Person& p);
 
 public:
     Person(std::string given_name, std::string family_name)
-        : _given_name { given_name }
-        , _family_name { family_name }
+        : _given_name { std::move(given_name) }
+        , _family_name { std::move(family_name) }
     {}
 
     void operator++() { _age++; }
 
-    bool operator==(Person other);
+    bool operator==(const Person& other);
 
 private:
     std::string _given_name;

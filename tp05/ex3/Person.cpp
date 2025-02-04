@@ -1,6 +1,6 @@
 #include "Person.hpp"
 
-std::ostream& operator<<(std::ostream& o, Person p)
+std::ostream& operator<<(std::ostream& o, const Person& p)
 {
     if (!p._given_name.empty())
         o << p._given_name[0];
@@ -13,7 +13,7 @@ std::ostream& operator<<(std::ostream& o, Person p)
     return o << ":" << p._age;
 }
 
-bool Person::operator==(Person other)
+bool Person::operator==(const Person& other)
 {
     return _given_name == other._given_name && _family_name == other._family_name && _age == other._age;
 }

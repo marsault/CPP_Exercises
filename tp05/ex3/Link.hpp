@@ -6,13 +6,15 @@ class LinkedList;
 
 class Link
 {
+    friend LinkedList; // On autorise LinkedList à modifier Link;
 public:
-    // Il faut réflechir aux prototypes des fonctions-membres ci-dessous, certains ne sont pas corrects.
-    // Link(Person);
-    // Person value();
-    // Link(Link*, Person);
-    // Link(Link*, Person, Link*);
-    // Link*  _prev;
-    // Link*  _next;
-    // Person _value;
+    Link(Person);
+
+    Person&       value();
+    const Person& value() const;
+    Link(Link*, Person);
+    Link(Link*, Person, Link*);
+    Link*  _prev = nullptr;
+    Link*  _next = nullptr;
+    Person _value;
 };
