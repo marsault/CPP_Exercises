@@ -47,7 +47,8 @@
 
 // Si une classe `MyClass` a un attribut `std::string& _name` alors, par défaut,
 // la destruction d'une instance o de  `MyClass` détruit la chaîne de caractère référencée par o._name.
-#define ANSWER_11 true
+#define ANSWER_11 \
+    false // détruire o détruit bien la référence o._name, mais pas l'objet référencé par o._name
 
 // Si une classe `MyBoxingClass` a un attribut `std::vector<MyBoxedClass> _data` alors, par défaut,
 // la destruction d'une instance o de  `MyBoxingClass` provoque la destruction de toutes les instances de
