@@ -21,7 +21,7 @@ void assert_no_copy(std::string const& test_name)
 
 void assert_mem_count(std::string const& test_name, int count)
 {
-    if (Tracker::copies() != count)
+    if (Tracker::count() != count)
     {
         std::string top =
             "==================== Failed at assert named \"" + test_name + "\" ====================";

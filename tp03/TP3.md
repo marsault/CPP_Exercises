@@ -200,12 +200,15 @@ Dans votre programme, vous aurez les classes suivantes :
 On vous propose trois architectures différentes pour le programme :
 
 **Architecture A**
+
 ![](images/ex3-a.svg)
 
 **Architecture B**
+
 ![](images/ex3-b.svg)
 
 **Architecture C**
+
 ![](images/ex3-c.svg)
 
 Pour chacune d'entre elles, vous indiquerez les opérations que le programme devrait effectuer pour satisfaire chacun des besoins cités plus haut, sans jamais introduire de dangling-reference.
