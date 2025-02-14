@@ -63,16 +63,19 @@ bool Player::play(Player& p1, Player& p2, std::vector<Card> stake)
     std::cout << "\t" << p1._name << " joue " << p1_card << " \t" << p2._name << " joue " << p2_card
               << std::endl;
 
+    bool p2_wins = p1_card < p2_card;
+    bool p1_wins = p2_card < p1_card;
     stake.push_back(std::move(p1_card));
     stake.push_back(std::move(p2_card));
-    if (p1_card < p2_card)
+
+    if (p1_wins)
     {
         std::shuffle(stake.begin(), stake.end(), std::default_random_engine(rd()));
         for (Card& c : stake)
             p2.push_front(std::move(c));
         std::cout << "\t" << p2._name << " remporte le pli (" << stake.size() << " cartes)" << std::endl;
     }
-    else if (p2_card < p1_card)
+    else if (p2_wins)
     {
         std::shuffle(stake.begin(), stake.end(), std::default_random_engine(rd()));
         for (Card& c : stake)
@@ -81,7 +84,6 @@ bool Player::play(Player& p1, Player& p2, std::vector<Card> stake)
     }
     else
     {
-
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
         return play(p1, p2, std::move(stake));
     }
