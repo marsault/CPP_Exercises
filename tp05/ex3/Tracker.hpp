@@ -52,6 +52,9 @@ private:
 };
 
 void assert_no_copy(std::string const& test_name);
+void assert_no_copy_since_last_check(std::string const& test_name);
+void assert_copy_count(std::string const& test_name, int count);
+void assert_copy_count_since_last_check(std::string const& test_name, int n);
 void assert_mem_count(std::string const& test_name, int count);
 
 // Il est interdit de modifier ce fichier !!

@@ -56,7 +56,7 @@ Même question pour le constructeur de déplacement ?
 Cet exercice est simple. Nous avons repris une solution du tp02 (un peu amélioré) dans lequel quasiment toutes les fonctions passent leurs argument par valeur. Il n'y a donc aucune fuite mémoire, mais le code fait des copies (notamment de `Card`) sans arrêt.\
 Votre mission est de faire en sorte qu'il continue de fonctionner pareil, mais sans jamais ne faire aucune copie de `Card` et sans créer de fuite mémoire.
 
-Onn utilise la classe `Tracker` pour suivre les copies au fil du code.
+On utilise la classe `Tracker` pour suivre les copies au fil du code.
 
 1. Ouvrez le fichier `Tracker.hpp` et lisez le.  
 
@@ -78,4 +78,35 @@ Hormis cela, vous n'avez la plupart du temps qu'à modifier les prototypes des f
    - `mkdir build && cd build && cmake ..` pour faire le Makefile
    - `make ex2 && ./ex2 10` pour compiler et lancer 10 tours de bataille.
 
-## Exercice 3 - Implémentations de listes chaînées 
+
+## Exercice 3 - Implémentations de listes chaînées ( 45min )
+
+Dans l'exercice 2, on a montré comment un developpeur utilise les copie et déplacements le plus fréquemment, c'est-à-dire comme "client" des structures de données déjà codées.\
+Dans cet exercice, on va prendre le rôle inverse, celui du développeur d'une nouvelle structure de donnéé révolutionnaire: les liste doublement chainées.
+Le but est de ne pas faire de fuite mémoire et de faire le minimum de copies.
+
+Description du code fourni:
+- La classe `Tracker`, comme dans l'exercice 2 permet de traquer les copies et les instances présentes en mémoire.
+- Le main contient des tests pour votre code. Vous pouvez ajouter du debug dans le main mais me gardez le flow général du TP.  N'hésitez pas à décommenter les lignes une par une plutôt que partie par partie.
+- La classe `Person` est implémentée naïvement et vous devez l'améliorer tout en gardant les fonctionnalités.
+- Des prototypes de fonction-membres sont données dans les autres classes (`Link`, `LinkedList`) pour vous aider à comprendre ce qu'on attend. Leurs prototype n'est pas forcément correctes.
+
+1. Pour commencer, on va écrire la classe `Link`, qui implémente un chainon de la liste.  A ce stade, les attributs `_prev` et `_next` restent toujours des pointeurs nuls.
+
+2. La partie 2 demande d'implémenter les fonctionnalités de base d'une liste dans la classe `LinkedList`: ajout d'un élément, accès au début et à la fin de la liste, taille de la liste, affichage, etc.
+Les attributs de `LinkedList` sont donnés pour vous guider.
+Attention au fait que pour faire passer le dernier test de cette partie, il faut désallouer correctement les éléments dans la liste.
+
+3. On fera en suite en sorte que la copie d'une liste se passe correctement (les éléments de la liste sont effectivements copiés).\
+Bien que ça ne soit pas testé dans le main qu'on vous a donné, qu'est-ce qu'il faudrait aussi implémenter dans la classe `LinkedList` ?
+
+4. Même chose pour le déplacement d'une liste.\
+Bien que ça ne soit pas testé dans le main qu'on vous a donné, qu'est-ce qu'il faudrait aussi implémenter dans la classe `LinkedList` ?
+
+5. Ici on vous demande d'implémenter la concaténation de deux listes.  Ici, on est dans le cas d'école où on peut gagner du temps quand on à le droit de voler le contenu de l'argument (à `LinkedList::concatenate_back`).
+
+6. Pour préparer la question suivante, implémentons une fonction pour tester si une Personne est dans la liste. Elle renvoie `true` si l'argument appartient à la liste.  On pourra utiliser l'opérateur l'égalité de `Person`.
+
+7. En réutilisant la fonction précédente, on veut implémenter une fonction qui ajoute dans la liste un élément qui n'est pas déjà présent.  La difficulté ici se trouve dans le fait qu'on ne peut pas savoir statiquement si on aura besoin de faire une copie de l'argument ou non.
+
+8. Si vous n'avez pas utilisez `std::move` dans le constructeur de Person : bouh, vous ne travaillez que contre les tests, et vous n'avez pas pris toutes les bons reflexes de programmation!

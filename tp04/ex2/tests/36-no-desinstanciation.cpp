@@ -17,7 +17,7 @@ bool are_phone_numbers_equal(PhoneNumber pn1, PhoneNumber pn2)
     return true;
 }
 
-TEST_CASE("Lorsqu'on utilise get_number, la donnée pointée n'est pas désinstanciée par d'éventuelles "
+TEST_CASE("Lorsqu'on utilise get_number, la donnée pointée est toujours valide après d'éventuelles "
           "insertions dans le PhoneBook")
 {
     auto phone_book = PhoneBook {};
