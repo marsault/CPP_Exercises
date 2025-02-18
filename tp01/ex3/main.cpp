@@ -1,8 +1,7 @@
 #include "utils.hpp"
 
-int main()
-{
+int main() {
     print_hello();
-    // print_bye();
+    print_bye();
     return 0;
 }
