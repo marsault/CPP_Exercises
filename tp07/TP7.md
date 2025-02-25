@@ -115,7 +115,7 @@ Sur base de ces règles:
 
 ## Exercice 2 - Donjons (1h40)
 
-L'objectif de ce programme est de créer une simulation dans laquelle différentes entitées évoluent à l'intérieur d'un donjon et peuvent potentiellement intéragir entre elles.
+L'objectif de ce programme est de créer une simulation dans laquelle différentes entités évoluent à l'intérieur d'un donjon et peuvent potentiellement interagir entre elles.
 
 ### A. Existant
 
@@ -125,19 +125,19 @@ Une fois de plus, nous vous avons préparé le squelette du programme.
 
 ```b
 # Configurer le projet dans un dossier de build
-cmake -B <chemin_vers_le_dossier_build> -S <chemin_vers_le_dossier_tp5>
+cmake -B <chemin_vers_le_dossier_build> -S <chemin_vers_le_dossier_tp7>
 
 # Compiler le programme
-cmake --build <chemin_vers_le_dossier_build> --target tp6-ex1
+cmake --build <chemin_vers_le_dossier_build> --target tp7-ex2
 
 # Lancer le programme
-<chemin_vers_le_dossier_build>/tp6-ex1
+<chemin_vers_le_dossier_build>/tp7-ex2
 ```
 
 2. Prenez connaissance du contenu des fichiers pré-existants et répondez aux questions suivantes :
 - Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `display` ?
 - Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `update` ?
-- Quelle variable du `main` porte l'ownership des entitées ?
+- Quelle variable du `main` porte l'ownership des entités ?
 
 ### B. Personnage
 
@@ -182,7 +182,7 @@ Une fois vos changements faits, le compilateur devrait vous empêcher de compile
 
 ### D. Intéractions
 
-Lorsque deux entités se retrouvent sur la même case, elles peuvent intéragir entre elles.
+Lorsque deux entités se retrouvent sur la même case, elles peuvent interagir entre elles.
 Ce comportement est géré par la fonction `trigger_interactions` de [Dungeons.cpp](dungeon/Dungeon.cpp).
 
 1. Implémentez le minimum de code permettant de décommenter les deux lignes commentées dans la fonction `trigger_interactions`.
