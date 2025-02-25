@@ -12,7 +12,7 @@ Pour chacun des appels ci-dessous, déterminez le type dynamique et le type stat
 Déduisez-en la fonction qui sera appelée au moment de l'exécution du programme.
 
 ```cpp
-
+#include <iostream>
 
 class Animal
 {
@@ -86,6 +86,31 @@ int main()
     return 0;
 }
 ```
+
+Solutions: rappelons (cf. cours) que le **type statique** est le type de la variable ou de l’expression, et que son **type dynamique** est le type avec lequel l’objet est construit. De plus, la résolution d’un appel de fonction se fait en 3 étapes:
+
+1. Le compilateur recherche la fonction appelée dans le type statique de l’objet. S’il ne trouve pas la fonction, il remonte dans la classe du parent, et ainsi de suite.
+2. Une fois cette fonction trouvée, il regarde si elle est virtuelle ou non.
+3. Si oui, alors la résolution de l’appel est finalisée à l’exécution, en utilisant la virtual table du type dynamique de l’objet.
+    Si non, alors la résolution de l’appel s’achève pendant la compilation.
+
+Sur base de ces règles:
+
+| Appel | Type statique | Type dynamique | Fonction appelée | Affichage |
+|-------|---------------|----------------|------------------|-----------|
+| I1    | Tiger         | Tiger          | Tiger::move, puisqu'elle existe dans le type statique et n'est pas virtuelle  | Running! |
+| I2    | Animal        | Tiger          | Animal::move existe dans le type statique, mais elle est virtuelle, donc ce sera Tiger::move qui la redéfinit    | Running! |
+| I3    | Bird          | Bird           | Bird::move, puisqu'elle existe dans le type statique et n'est pas virtuelle                 |  Flying! |
+| I4    | Animal        | Bird           | Animal::move existe dans le type statique et est virtuelle; on remarque qu'il existe aussi un Bird::move, mais qui est const et n'est donc pas une redéfinition, donc ce sera Animal::move qui sera appelée | Moving! | <- doute
+| I5    | Bird          | Bird           | Bird::can_eat_plant, puisqu'elle existe dans le type statique et n'est pas virtuelle        |  Miam! |
+| I6    | Herbivore     | Bird           | Herbivore::can_eat_plant existe et est const dans le type statique,  et est virtuelle; on remarque qu'il existe aussi un Bird::can_eat_plant, mais qui n'est pas const et n'est donc pas une redéfinition, donc ce sera Herbivore::can_eat_plant qui sera appelée | Yum!  | <- doute
+| I7    | Carnivore     | Bird           | Carnivore::can_eat_plant, puisqu'elle existe dans le type statique et n'est pas virtuelle | Berk! |
+| I8    | Tiger         | Tiger          | Tiger::can_eat_plant n'existe pas, on remonte donc Carnivore qui en contient une, donc ce sera Carnivore::can_eat_plant  | Berk! |
+| I9    | Tiger         | Tiger          | Tiger::can_eat_meat, puisqu'elle existe dans le type statique et n'est pas virtuelle  | Miam! |
+| I10   | Carnivore     | Tiger          | Carnivore::can_eat_meat, puisqu'elle existe dans le type statique et n'est pas virtuelle   | Yum! |
+| I11   | Bird          | Bird           | Bird::type, puisqu'elle existe dans le type statique et n'est pas virtuelle | Bird |
+| I12   | Animal        | Bird           | Animal::type, puisqu'elle existe dans le type statique et n'est pas virtuelle                 | Animal |
+| I13   | Animal        | Tiger          | Tiger::move, puisqu'elle existe dans le type statique et n'est pas virtuelle                 | Animal |
 
 
 ## Exercice 2 - Donjons (1h40)
