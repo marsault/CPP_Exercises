@@ -17,7 +17,7 @@ public:
 
     virtual /* <- question B.3 */ char get_representation() const { return '?'; } 
 
-    void update() { random_move(_x, _y); }
+    virtual /* <- question C.2 */ void update() { random_move(_x, _y); }
 
 private:
     int _x = 0;

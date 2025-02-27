@@ -184,7 +184,7 @@ Elles seront représentées par le symbole `$` sur la grille.
 Pour cela, vous allez retirer l'implémentation de `Entity::get_representation` et rendre cette fonction virtuelle pure.
 Une fois vos changements faits, le compilateur devrait vous empêcher de compiler votre programme à cause des `std::make_unique<Entity>(...)` dans le `main`. Remplacez ces appels afin de créer des `Character` à la place.
 
-### D. Intéractions
+### D. Interactions
 
 Lorsque deux entités se retrouvent sur la même case, elles peuvent interagir entre elles.
 Ce comportement est géré par la fonction `trigger_interactions` de [Dungeons.cpp](dungeon/Dungeon.cpp).
