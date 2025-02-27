@@ -1,3 +1,4 @@
+#pragma once
 // question C.3 (version pré-refactorisation)
 /*
 #include "Entity.hpp" // Entity

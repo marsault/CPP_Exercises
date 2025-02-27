@@ -15,7 +15,8 @@
 #include <vector>
 
 using Cell = std::vector<Entity*>;
-using Grid = std::array<std::array<Cell, 50>, 10>;
+//using Grid = std::array<std::array<Cell, 50>, 10>;
+using Grid = std::array<std::array<Cell, 5>, 5>;
 
 void fill_grid(Grid& grid, const std::vector<std::unique_ptr<Entity>>& entities)
 {
@@ -98,8 +99,8 @@ void trigger_interactions(const std::vector<Entity*>& entities)
 {
     if (entities.size() > 1)
     {
-        // entities[0]->interact_with(*entities[1]);
-        // entities[1]->interact_with(*entities[0]);
+        entities[0]->interact_with(*entities[1]);
+        entities[1]->interact_with(*entities[0]);
     }
 }
 
