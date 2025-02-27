@@ -23,7 +23,12 @@ public:
     // lignes de trigger_interactions; il faut bien veiller à passer Entity par référence, car
     // la présence de la fonction virtuelle empêche la construction d'une copie d'Entity et donc
     // aussi le passage par valeur puisqu'il implique une copie
-    virtual void interact_with(Entity& entity) {};
+    virtual void interact_with(Entity& entity) {}
+
+    // question E.1
+    virtual bool should_destroy() const { return false; }
+
+    virtual ~Entity() {}; // question E.4
 
 private:
     int _x = 0;

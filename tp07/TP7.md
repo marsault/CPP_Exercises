@@ -187,7 +187,7 @@ Une fois vos changements faits, le compilateur devrait vous empêcher de compile
 ### D. Interactions
 
 Lorsque deux entités se retrouvent sur la même case, elles peuvent interagir entre elles.
-Ce comportement est géré par la fonction `trigger_interactions` de [Dungeons.cpp](dungeon/Dungeon.cpp).
+Ce comportement est géré par la fonction `trigger_interactions` de [Dungeon.cpp](dungeon/Dungeon.cpp).
 
 1. Implémentez le minimum de code permettant de décommenter les deux lignes commentées dans la fonction `trigger_interactions`.
 
@@ -216,7 +216,7 @@ Voici les règles de gestion pour chacune des entités :
 - `Potion` : une potion doit être supprimée lorsqu'elle est consommée par un personnage qui n'a pas toutes ses vies.
 
 1. Rajoutez une nouvelle fonction virtuelle `should_destroy` dans `Entity` qui permettra de savoir si une entité doit être supprimée du programme ou pas. Par défaut, elle renverra toujours `false`.
-Modifiez ensuite la condition dans la fonction `remove_dead_entities` de [Dungeons.cpp](dungeon/Dungeon.cpp) afin que les entités concernées puissent être supprimées du programme.
+Modifiez ensuite la condition dans la fonction `remove_dead_entities` de [Dungeon.cpp](dungeon/Dungeon.cpp) afin que les entités concernées puissent être supprimées du programme.
 
 2. Implémentez la redéfinition de votre fonction dans `Character` afin d'obtenir le comportement attendu, puis testez.
 

@@ -108,7 +108,8 @@ void remove_dead_entities(std::vector<std::unique_ptr<Entity>>& entities)
 {
     for (auto it = entities.begin(); it != entities.end();)
     {
-        const auto should_remove = false; // <- modifiez cette condition
+        // const auto should_remove = false; // <- modifiez cette condition
+        const auto should_remove = it->get()->should_destroy(); // question E.1
         if (should_remove)
         {
             it = entities.erase(it);
@@ -178,7 +179,8 @@ int main()
     all_entities.push_back(std::make_unique<Character>(7, 6));
     // all_entities.push_back(std::make_unique<Character>()); // question B.1
     all_entities.push_back(std::make_unique<Character>(40, 5));  // question B.2
-    all_entities.push_back(std::make_unique<Trap>(width, height)); // question C.3
+    for(int i=0; i<10; ++i)
+        all_entities.push_back(std::make_unique<Trap>(width, height)); // question C.3
     all_entities.push_back(std::make_unique<Trap>(width, height)); // question C.3
 
     fill_grid(grid, all_entities);

@@ -1,7 +1,9 @@
+#include <iostream>
 #pragma once
 #include "Entity.hpp" // Entity
 #include "Trap.hpp"
 #include "Potion.hpp"
+#include "Logger.hpp"
 
 // question B.1: la classe vide suffit
 class Character: public Entity {
@@ -26,11 +28,12 @@ class Character: public Entity {
         // question D.2
         void interact_with(Entity& entity) override 
         {
-            const auto* trap = dynamic_cast<Trap*>(&entity);
+            auto* trap = dynamic_cast<Trap*>(&entity);
             if (trap != nullptr)
             {
                 // entity est bien une instance de Trap
                 --_lives_left;
+                trap->consume(); // question E.3
             }
             else 
             {   // question D.4
@@ -42,6 +45,15 @@ class Character: public Entity {
                 }
     
             }
+        }
+
+        // question E.1
+        bool should_destroy() const override { return not _lives_left; }
+
+        // question E.4
+        ~Character() override 
+        {
+            logger << "A character has died at position (" << get_x() << ", " << get_y() << ")" << std::endl;
         }
         
         private:

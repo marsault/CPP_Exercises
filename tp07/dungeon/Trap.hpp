@@ -15,9 +15,15 @@ class Trap : public Entity {
 
 // question C.4 (version post-refactorisation)
 #include "Item.hpp"
+#include "Character.hpp"
 
 class Trap : public Item {
     public:  
-        Trap(int width, int height) : Item(width, height) {}
+        Trap(int width, int height) : Item(width, height) { }
         char get_representation() const override { return 'X'; }  
+
+
+        // question E.1
+        bool should_destroy() const override { return is_consumed; }
+
 };
