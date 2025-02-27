@@ -15,7 +15,7 @@ public:
     int get_x() const { return _x; }
     int get_y() const { return _y; }
 
-    char get_representation() const { return '?'; }
+    virtual /* <- question B.3 */ char get_representation() const { return '?'; } 
 
     void update() { random_move(_x, _y); }
 

@@ -139,6 +139,10 @@ cmake --build <chemin_vers_le_dossier_build> --target tp7-ex2
 - Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `update` ?
 - Quelle variable du `main` porte l'ownership des entités ?
 
+Solutions: 
+- `display` affiche la grille passée en paramètre avec son contenu, ainsi que le contenu des logs passés en paramètre;
+- `update` met à jour l'état d'une grille en fonction de ce qui s'y est passé: elle appelle la fonction update de chaque entité, remplit la grille via fill_grid, puis déclenche les interactions entre les entités. Ensuite, elle évacue les entités mortes et refait un appel à fill_grid pour la rafraîchir.
+
 ### B. Personnage
 
 Vous allez maintenant définir des sous-types d'entités.
@@ -199,7 +203,7 @@ if (trap != nullptr)
 ```
 
 3. Testez votre programme.
-Pour augmentez la probabilité d'intéractions, n'hésitez pas à réduire la taille de la grille ou à ajouter des éléments en plus à l'aide d'une boucle.
+Pour augmentez la probabilité d'interactions, n'hésitez pas à réduire la taille de la grille ou à ajouter des éléments en plus à l'aide d'une boucle.
 
 4. Faites maintenant le nécessaire pour que les potions "restorent la vie" des personnages : la représentation d'un personnage passera alors de `o` à `O`.
 
