@@ -1,5 +1,6 @@
 #include "Entity.hpp"
 #include "Character.hpp" // Character
+#include "Trap.hpp" // Trap
 #include "Logger.hpp"
 
 #include <array>
@@ -173,8 +174,8 @@ int main()
     all_entities.push_back(std::make_unique<Entity>(7, 6));
     // all_entities.push_back(std::make_unique<Character>()); // question B.1
     all_entities.push_back(std::make_unique<Character>(40, 5));  // question B.2
-    // all_entities.push_back(std::make_unique<Trap>(width, height));
-    // all_entities.push_back(std::make_unique<Trap>(width, height));
+    all_entities.push_back(std::make_unique<Trap>(width, height)); // question C.3
+    all_entities.push_back(std::make_unique<Trap>(width, height)); // question C.3
 
     fill_grid(grid, all_entities);
 
