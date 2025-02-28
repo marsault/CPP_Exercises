@@ -101,6 +101,20 @@ public:
         _root.register_action(path, target, args_expected, 0);
     }
 
+    void register_action(const std::vector<std::string> &path, int args_expected, std::function<void(ProgramData &)> target)
+    {
+        ActionTarget ext_target = [target](const ActionManager &, ProgramData &data, std::deque<std::string>)
+        { target(data); };
+        _root.register_action(path, ext_target, args_expected, 0);
+    }
+
+    void register_action(const std::vector<std::string> &path, int args_expected, std::function<void(ProgramData &, std::deque<std::string>)> target)
+    {
+        ActionTarget ext_target = [target](const ActionManager &, ProgramData &data, std::deque<std::string> args)
+        { target(data, args); };
+        _root.register_action(path, ext_target, args_expected, 0);
+    }
+
 private:
     Node _root;
 };

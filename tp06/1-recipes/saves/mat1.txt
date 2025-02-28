@@ -1,7 +1,3 @@
 new mat Eau
-add mat Eau
-add mat Eau
 new mat Sirop
-add mat Eau
-add mat Sirop
 list mat

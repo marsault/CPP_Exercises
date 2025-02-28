@@ -12,21 +12,37 @@ void ProgramData::get_all_possible_materials(std::vector<const Material *> &mate
         materials.emplace_back(ptr.get());
 }
 
-void ProgramData::add_material(std::string name)
+void ProgramData::add_material_to_inventory(const Material *mat, size_t quantity)
 {
-    const Material *mat = get_material_by_name(name);
     auto it = _inventory.find(mat);
     if (it == _inventory.end())
-        _inventory[mat] = 1;
+    {
+        _inventory[mat] = quantity;
+        std::cout << "Added " << quantity << " " << *mat << " to inventory" << std::endl;
+    }
     else
-        ++(it->second);
+    {
+        it->second += quantity;
+        std::cout << "Inventory now contains " << it->second << " " << *mat << std::endl;
+    }
 }
 
-void ProgramData::get_inventory(MaterialBag &materials) const
+void ProgramData::get_inventory(std::vector<std::pair<const Material *, size_t>> &materials) const
 {
+    for (auto &p : _inventory)
+        materials.emplace_back(p);
 }
 
-void ProgramData::register_recipe(std::vector<std::string> materials, std::vector<std::string> products)
+const Material *ProgramData::get_material_by_name(const std::string &name) const
+{
+    auto it = _material_from_name.find(name);
+    if (it == _material_from_name.end())
+        return nullptr;
+    else
+        return it->second;
+}
+
+void ProgramData::register_recipe(std::vector<const Material *> materials, const Material *)
 {
 }
 

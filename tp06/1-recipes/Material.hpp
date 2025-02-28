@@ -29,4 +29,5 @@ public:
     };
 };
 
+using MaterialAmount = std::pair<const Material *, size_t>;
 using MaterialBag = std::unordered_map<const Material *, size_t, MaterialHasher>;

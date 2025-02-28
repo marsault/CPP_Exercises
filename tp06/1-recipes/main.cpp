@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-void print_usage(const ActionManager &, ProgramData &, std::deque<std::string>)
+void print_usage(ProgramData &)
 {
     std::cout << "Usage:" << std::endl;
     std::cout << "\tm <nom>                                 : Ajoute le materiau donne a l'inventaire"
@@ -55,10 +55,14 @@ std::string pop_next(std::deque<std::string> &words)
     }
 }
 
-bool is_valid_name(const std::string &name)
+bool is_valid_name(const std::string &name, bool display_error = true)
 {
-    return !name.empty() && std::all_of(name.begin(), name.end(), [](char c)
-                                        { return std::isalnum(c); });
+    bool result = !name.empty();
+    for (char c : name)
+        result &= (std::isupper(c) || std::islower(c));
+    if (!result && display_error)
+        std::cerr << "Invalid material name '" << name << "'" << std::endl;
+    return result;
 }
 
 std::vector<std::string> consume_names(std::deque<std::string> &words)
@@ -296,29 +300,40 @@ std::vector<std::string> consume_names(std::deque<std::string> &words)
 // }
 
 // Action 'add mat'
-void add_mat(const ActionManager &manager, ProgramData &data, std::deque<std::string> args)
+void add_mat(ProgramData &data, std::deque<std::string> args)
 {
-    data.add_material(std::move(args.front()));
+    if (!is_valid_name(args.front()))
+        return;
+    const Material *mat = data.get_material_by_name(args.front());
+    data.add_material_to_inventory(mat);
 }
+
 // Action 'list mat'
-void list_mat(const ActionManager &manager, ProgramData &data, std::deque<std::string> args)
+void list_mat(ProgramData &data, std::deque<std::string> args)
 {
     std::vector<const Material *> buffer;
     data.get_all_possible_materials(buffer);
+    std::cout << "Registered materials: " << (buffer.empty() ? "(empty)" : "") << std::endl;
     for (const auto *m : buffer)
-        std::cout << *m << std::endl;
+        std::cout << "  - " << *m << std::endl;
 }
 
 // Action 'list rec'
-void list_rec(const ActionManager &manager, ProgramData &data, std::deque<std::string> args) {}
+void list_rec(ProgramData &data, std::deque<std::string> args) {}
 
 // Action 'list inv'
-void list_inv(const ActionManager &manager, ProgramData &data, std::deque<std::string> args)
+void list_inv(ProgramData &data, std::deque<std::string> args)
 {
-    MaterialBag buffer;
+    std::vector<std::pair<const Material *, size_t>> buffer;
     data.get_inventory(buffer);
+    std::cout << "Inventory: " << (buffer.empty() ? "(empty)" : "") << std::endl;
     for (const auto &p : buffer)
-        std::cout << *(p.first) << " x" << std::endl;
+    {
+        std::cout << "  - " << *(p.first);
+        if (p.second > 1)
+            std::cout << " x" << p.second;
+        std::cout << std::endl;
+    }
 }
 
 // Action 'new mat'
@@ -330,32 +345,51 @@ void new_mat(const ActionManager &manager, ProgramData &data, std::deque<std::st
 // Action 'new rec'
 void new_rec(const ActionManager &manager, ProgramData &data, std::deque<std::string> args)
 {
-    auto materials = consume_names(args);
-    if (materials.empty())
-    {
-        std::cerr << "No materials have been given" << std::endl;
-        return;
-    }
+    auto material_names = consume_names(args);
     if (auto next = pop_next(args); next != "=>")
     {
-        std::cerr << "Unexpected token '" << next << "' while parsing recipe formula" << std::endl;
+        std::cerr << "Unexpected token '" << next << "' while parsing requirement of 'new rec'" << std::endl;
         return;
     }
-
-    auto products = consume_names(args);
-    if (products.empty())
-    {
-        std::cerr << "No products have been given" << std::endl;
-        return;
-    }
-
+    auto product_names = consume_names(args);
     if (auto next = pop_next(args); next != "")
     {
-        std::cerr << "Unexpected token '" << next << "' while parsing arguments of 'new rec'" << std::endl;
+        std::cerr << "Unexpected token '" << next << "' while parsing product of 'new rec'" << std::endl;
+        return;
+    }
+    if (material_names.empty())
+    {
+        std::cerr << "No requirement provide for recipe" << std::endl;
+        return;
+    }
+    if (product_names.empty())
+    {
+        std::cerr << "No product given for recipe" << std::endl;
+        return;
+    }
+    if (product_names.size() != 1)
+    {
+        std::cerr << "Too many products, each recipe must have one product" << std::endl;
         return;
     }
 
-    data.register_recipe(std::move(materials), std::move(products));
+    std::vector<const Material *> materials;
+    for (auto &s : product_names)
+    {
+        materials.emplace_back(data.get_material_by_name(s));
+        if (materials.back() == nullptr)
+        {
+            std::cerr << "Material " << s << " is not registered" << std::endl;
+            return;
+        }
+    }
+    const Material *product = data.get_material_by_name(product_names.front());
+    if (product == nullptr)
+    {
+        std::cerr << "Material " << product_names.front() << " is not registered" << std::endl;
+        return;
+    }
+    data.register_recipe(std::move(materials), std::move(product));
 }
 
 // Action 'load'
@@ -371,7 +405,8 @@ void load(const ActionManager &manager, ProgramData &data, std::deque<std::strin
     unsigned i = 0;
     for (std::string line; getline(file, line);)
     {
-        std::cerr << "Line " << ++i << " of file " << args.front() << "] " << line << std::endl;
+        std::cout << std::endl;
+        std::cout << " > Loading line " << ++i << " of file " << args.front() << ": " << line << std::endl;
         manager.execute_action(data, parse_words(line));
     }
 }
@@ -401,5 +436,6 @@ int main(int argc, char **argv)
         if (command == "quit")
             break;
         manager.execute_action(data, arguments);
+        std::cout << std::endl;
     }
 }

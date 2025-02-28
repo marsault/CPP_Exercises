@@ -7,6 +7,7 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
+#include <list>
 
 // Contient le résultat de la production d'une recette.
 struct ProductionResult
@@ -29,13 +30,16 @@ public:
     void get_all_possible_materials(std::vector<const Material *> &materials) const;
 
     // Ajoute un nouveau materiau à l'inventaire.
-    void add_material(std::string name);
+    void add_material_to_inventory(const Material *material, size_t quantity = 1u);
 
-    // Récupère la liste des matériaux présents dans l'inventaire.
-    void get_inventory(MaterialBag &materials) const;
+    // Récupère la liste des matériaux présents dans l'inventaire avec la quantité correspondante
+    void get_inventory(std::vector<MaterialAmount> &materials) const;
 
     // Enregistre un nouveau modèle de recette au répertoire.
-    void register_recipe(std::vector<std::string> materials, std::vector<std::string> products);
+    void register_recipe(std::vector<const Material *> materials, const Material *);
+
+    // Enregistre un nouveau modèle de recette au répertoire.
+    void get_all_recipes(std::list<const Recipe &> materials);
 
     // Collecte la liste des recettes réalisables avec les matériaux présents dans l'inventaire.
     void collect_doable_recipes(std::vector<const Recipe *> &recipes) const;
