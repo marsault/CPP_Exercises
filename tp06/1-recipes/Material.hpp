@@ -1,9 +1,32 @@
 #pragma once
 
-#include <ostream>
+#include <iostream>
+#include <unordered_map>
 
 class Material
 {
     // Affiche le nom d'un materiau.
-    friend std::ostream& operator<<(std::ostream& stream, const Material& material) { return stream; }
+    friend std::ostream &operator<<(std::ostream &stream, const Material &material) { return stream << material._name; }
+
+public:
+    Material(std::string name) : _name{name} { std::cerr << "Material <" << *this << "> was created." << std::endl; }
+
+    const std::string &name() const { return _name; }
+
+    ~Material() { std::cerr << "Material <" << *this << "> was deleted." << std::endl; }
+
+private:
+    std::string _name;
 };
+
+class MaterialHasher
+{
+public:
+    size_t operator()(const Material *m) const
+    {
+        std::hash<std::string> hasher;
+        return hasher(m->name());
+    };
+};
+
+using MaterialBag = std::unordered_map<const Material *, size_t, MaterialHasher>;
