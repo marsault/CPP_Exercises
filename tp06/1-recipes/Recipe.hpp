@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+#include <set>
 #include "Material.hpp"
 
 class Recipe
@@ -27,6 +28,11 @@ public:
     size_t id() const { return _id; }
 
     const MaterialBag &requirements() const { return _requirements; }
+    const Material *product() const { return _product; }
+
+    bool operator<(const Recipe &other) const { return id() < other.id(); }
+
+    bool operator==(const Recipe &other) const { return id() == other.id(); }
 
 private:
     MaterialBag _requirements;
@@ -34,3 +40,6 @@ private:
     size_t _id = ++_next_id;
     static inline size_t _next_id = 0;
 };
+
+inline bool operator<(const Recipe &left, size_t right) { return left.id() < right; }
+inline bool operator<(size_t left, const Recipe &right) { return left < right.id(); }

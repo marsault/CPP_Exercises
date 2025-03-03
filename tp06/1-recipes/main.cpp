@@ -339,15 +339,38 @@ void list_doable(ProgramData &data)
 }
 
 // Action 'produce'
-void produce(ProgramData &data, std::string arg) {}
+void produce(ProgramData &data, std::string arg)
+{
+    MaterialBag buffer;
+    int i = std::stoi(arg);
+    const Recipe *recipe = data.get_recipe_by_id(i);
+    if (recipe != nullptr)
+    {
+        switch (data.produce(*recipe, buffer))
+        {
+        case Outcome::SUCCESS:
+            break;
+        case Outcome::FAILURE:
+            std::cout << "Could not produce: " << *recipe << std::endl;
+            std::cout << "Missing materials:" << std::endl;
+            for (const MaterialAmount &p : buffer)
+            {
+                std::cout << "  - " << *(p.first);
+                if (p.second > 1)
+                    std::cout << " x" << p.second;
+                std::cout << std::endl;
+            }
+        }
+    }
+}
 
 // Action 'list inv'
 void list_inv(ProgramData &data)
 {
-    std::vector<std::pair<const Material *, size_t>> buffer;
+    MaterialBag buffer;
     data.get_inventory(buffer);
     std::cout << "Inventory: " << (buffer.empty() ? "(empty)" : "") << std::endl;
-    for (const auto &p : buffer)
+    for (const MaterialAmount &p : buffer)
     {
         std::cout << "  - " << *(p.first);
         if (p.second > 1)
@@ -418,6 +441,12 @@ void load(const ActionManager &manager, ProgramData &data, std::deque<std::strin
     }
 }
 
+// Action 'reset'
+void reset(ProgramData &data)
+{
+    data.reset();
+}
+
 int main(int argc, char **argv)
 {
     ProgramData data;
@@ -432,6 +461,7 @@ int main(int argc, char **argv)
     manager.register_action({"list", "doable"}, 0, list_doable);
     manager.register_action({"list", "inv"}, 0, list_inv);
     manager.register_action({"produce"}, 1, produce);
+    manager.register_action({"reset"}, 0, reset);
     while (true)
     {
         std::cout << ">> Entrez une commande :" << std::endl;

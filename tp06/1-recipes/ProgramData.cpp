@@ -27,10 +27,31 @@ void ProgramData::add_material_to_inventory(const Material *mat, size_t quantity
     }
 }
 
-void ProgramData::get_inventory(std::vector<std::pair<const Material *, size_t>> &materials) const
+void ProgramData::remove_material_from_inventory(const Material *mat, size_t quantity)
+{
+    auto it = _inventory.find(mat);
+    if (it == _inventory.end() || it->second < quantity)
+        std::cout << "Could not remove " << quantity << " " << *mat << " from inventory (not enough)." << std::endl;
+    else
+    {
+        std::cout << "Removed " << quantity << " " << *mat << "; inventory ";
+        if (it->second == quantity)
+        {
+            _inventory.erase(it);
+            std::cout << "no longer contains any " << *mat << std::endl;
+        }
+        else
+        {
+            it->second -= quantity;
+            std::cout << " now contains " << it->second << " " << *mat << std::endl;
+        }
+    }
+}
+
+void ProgramData::get_inventory(MaterialBag &materials) const
 {
     for (auto &p : _inventory)
-        materials.emplace_back(p);
+        materials.emplace(p);
 }
 
 const Material *ProgramData::get_material_by_name(const std::string &name) const
@@ -40,6 +61,15 @@ const Material *ProgramData::get_material_by_name(const std::string &name) const
         return nullptr;
     else
         return it->second;
+}
+
+const Recipe *ProgramData::get_recipe_by_id(size_t id) const
+{
+    auto it = _registered_recipes.find(id);
+    if (it == _registered_recipes.end())
+        return nullptr;
+    else
+        return &(*it);
 }
 
 void ProgramData::register_recipe(std::vector<const Material *> materials, const Material *product)
@@ -55,28 +85,27 @@ void ProgramData::register_recipe(std::vector<const Material *> materials, const
     }
     Recipe new_recipe{std::move(materials_as_bag), product};
     std::cout << "Recipe <" << new_recipe << "> was registered" << std::endl;
-    _registered_recipes.emplace(new_recipe.id(), std::move(new_recipe));
+    _registered_recipes.emplace(std::move(new_recipe));
 }
 
 void ProgramData::get_all_recipes(std::vector<const Recipe *> &recipes) const
 {
     for (const auto &p : _registered_recipes)
-        recipes.push_back(&p.second);
+        recipes.push_back(&p);
 }
 
 void ProgramData::get_doable_recipes(std::vector<const Recipe *> &recipes) const
 {
     for (const auto &p : _registered_recipes)
-        //                                               vvvvvvvvvvvvv empty material bag
-        if (missing_material(p.second.requirements()) != MaterialBag{})
-            recipes.push_back(&p.second);
+        if (missing_material(p.requirements()).empty())
+            recipes.push_back(&p);
 }
 
 size_t ProgramData::get_material_count_in_inventory(const Material *material) const
 {
     auto it = _inventory.find(material);
     if (it == _inventory.end())
-        return 0;
+        return 0u;
     else
         return it->second;
 }
@@ -90,12 +119,21 @@ MaterialBag ProgramData::missing_material(const MaterialBag &bag) const
         if (count < p.second)
             result[p.first] = p.second - count;
     }
-
     return result;
 }
 
-ProductionResult ProgramData::produce(size_t recipe_id)
+Outcome ProgramData::produce(const Recipe &recipe, MaterialBag &materials)
 {
-    ProductionResult result;
-    return result;
+    MaterialBag missing = missing_material(recipe.requirements());
+    if (!missing.empty())
+    {
+        materials = missing;
+        return Outcome::FAILURE;
+    }
+    for (const auto &p : recipe.requirements())
+        remove_material_from_inventory(p.first, p.second);
+    add_material_to_inventory(recipe.product());
+    return Outcome::SUCCESS;
 }
+
+void ProgramData::reset() {}
