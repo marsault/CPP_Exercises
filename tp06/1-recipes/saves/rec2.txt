@@ -1,0 +1,16 @@
+new mat Paille
+new mat Bois
+new mat Pierre
+new mat Maison
+new rec Paille Paille Paille Paille => Maison
+new rec Bois Bois Bois => Maison
+new rec Pierre Pierre => Maison
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Bois
+add mat Bois
+list doable

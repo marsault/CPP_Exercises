@@ -115,6 +115,14 @@ public:
         _root.register_action(path, ext_target, args_expected, 0);
     }
 
+    void register_action(const std::vector<std::string> &path, int args_expected, std::function<void(ProgramData &, std::string)> target)
+    {
+        assert(args_expected == 1);
+        ActionTarget ext_target = [target](const ActionManager &, ProgramData &data, std::deque<std::string> args)
+        { target(data, std::move(args.front())); };
+        _root.register_action(path, ext_target, args_expected, 0);
+    }
+
 private:
     Node _root;
 };

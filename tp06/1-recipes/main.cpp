@@ -65,22 +65,22 @@ bool is_valid_name(const std::string &name, bool display_error = true)
     return result;
 }
 
-std::vector<std::string> consume_names(std::deque<std::string> &words)
-{
-    auto names = std::vector<std::string>{};
+// std::vector<std::string> consume_names(std::deque<std::string> &words)
+// {
+//     auto names = std::vector<std::string>{};
 
-    while (!words.empty())
-    {
-        if (!is_valid_name(words.front()))
-        {
-            break;
-        }
+//     while (!words.empty())
+//     {
+//         if (!is_valid_name(words.front()), false)
+//         {
+//             break;
+//         }
 
-        names.emplace_back(pop_next(words));
-    }
+//         names.emplace_back(pop_next(words));
+//     }
 
-    return names;
-}
+//     return names;
+// }
 
 // // returns true if the program should quit
 // bool execute_command(ProgramData &data, const std::string &command)
@@ -309,7 +309,7 @@ void add_mat(ProgramData &data, std::deque<std::string> args)
 }
 
 // Action 'list mat'
-void list_mat(ProgramData &data, std::deque<std::string> args)
+void list_mat(ProgramData &data)
 {
     std::vector<const Material *> buffer;
     data.get_all_possible_materials(buffer);
@@ -319,10 +319,30 @@ void list_mat(ProgramData &data, std::deque<std::string> args)
 }
 
 // Action 'list rec'
-void list_rec(ProgramData &data, std::deque<std::string> args) {}
+void list_rec(ProgramData &data)
+{
+    std::vector<const Recipe *> buffer;
+    data.get_all_recipes(buffer);
+    std::cout << "Registered recipes: " << (buffer.empty() ? "(empty)" : "") << std::endl;
+    for (const auto *r : buffer)
+        std::cout << "  - " << (*r) << std::endl;
+}
+
+// Action 'list doable'
+void list_doable(ProgramData &data)
+{
+    std::vector<const Recipe *> buffer;
+    data.get_doable_recipes(buffer);
+    std::cout << "Doable recipes: " << (buffer.empty() ? "(empty)" : "") << std::endl;
+    for (const auto *r : buffer)
+        std::cout << "  - " << (*r) << std::endl;
+}
+
+// Action 'produce'
+void produce(ProgramData &data, std::string arg) {}
 
 // Action 'list inv'
-void list_inv(ProgramData &data, std::deque<std::string> args)
+void list_inv(ProgramData &data)
 {
     std::vector<std::pair<const Material *, size_t>> buffer;
     data.get_inventory(buffer);
@@ -337,44 +357,36 @@ void list_inv(ProgramData &data, std::deque<std::string> args)
 }
 
 // Action 'new mat'
-void new_mat(const ActionManager &manager, ProgramData &data, std::deque<std::string> args)
+void new_mat(ProgramData &data, std::string args)
 {
-    data.register_material(std::move(args.front()));
+    data.register_material(std::move(args));
 }
 
 // Action 'new rec'
-void new_rec(const ActionManager &manager, ProgramData &data, std::deque<std::string> args)
+void new_rec(ProgramData &data, std::deque<std::string> args)
 {
-    auto material_names = consume_names(args);
-    if (auto next = pop_next(args); next != "=>")
+    if (args.empty())
     {
-        std::cerr << "Unexpected token '" << next << "' while parsing requirement of 'new rec'" << std::endl;
-        return;
-    }
-    auto product_names = consume_names(args);
-    if (auto next = pop_next(args); next != "")
-    {
-        std::cerr << "Unexpected token '" << next << "' while parsing product of 'new rec'" << std::endl;
-        return;
-    }
-    if (material_names.empty())
-    {
-        std::cerr << "No requirement provide for recipe" << std::endl;
-        return;
-    }
-    if (product_names.empty())
-    {
-        std::cerr << "No product given for recipe" << std::endl;
-        return;
-    }
-    if (product_names.size() != 1)
-    {
-        std::cerr << "Too many products, each recipe must have one product" << std::endl;
+        std::cerr << "No arguments provided to 'new rec'" << std::endl;
         return;
     }
 
+    const Material *product = data.get_material_by_name(args.back());
+    if (product == nullptr)
+    {
+        std::cerr << "Product of recipe (" << args.back() << ") is not registered" << std::endl;
+        return;
+    }
+    args.pop_back();
+    if (args.back() != "=>")
+    {
+        std::cerr << "Expected '=>' instead of '" << args.back() << "'" << std::endl;
+        return;
+    }
+    args.pop_back();
+
     std::vector<const Material *> materials;
-    for (auto &s : product_names)
+    for (auto &s : args)
     {
         materials.emplace_back(data.get_material_by_name(s));
         if (materials.back() == nullptr)
@@ -383,13 +395,8 @@ void new_rec(const ActionManager &manager, ProgramData &data, std::deque<std::st
             return;
         }
     }
-    const Material *product = data.get_material_by_name(product_names.front());
-    if (product == nullptr)
-    {
-        std::cerr << "Material " << product_names.front() << " is not registered" << std::endl;
-        return;
-    }
-    data.register_recipe(std::move(materials), std::move(product));
+
+    data.register_recipe(std::move(materials), product);
 }
 
 // Action 'load'
@@ -405,8 +412,8 @@ void load(const ActionManager &manager, ProgramData &data, std::deque<std::strin
     unsigned i = 0;
     for (std::string line; getline(file, line);)
     {
-        std::cout << std::endl;
-        std::cout << " > Loading line " << ++i << " of file " << args.front() << ": " << line << std::endl;
+        std::cout << ">> Executing line " << ++i << " of file " << args.front() << ":" << std::endl
+                  << line << std::endl;
         manager.execute_action(data, parse_words(line));
     }
 }
@@ -422,10 +429,12 @@ int main(int argc, char **argv)
     manager.register_action({"new", "rec"}, -1, new_rec);
     manager.register_action({"list", "mat"}, 0, list_mat);
     manager.register_action({"list", "rec"}, 0, list_rec);
+    manager.register_action({"list", "doable"}, 0, list_doable);
     manager.register_action({"list", "inv"}, 0, list_inv);
+    manager.register_action({"produce"}, 1, produce);
     while (true)
     {
-        std::cout << "> Entrez une commande :" << std::endl;
+        std::cout << ">> Entrez une commande :" << std::endl;
 
         auto command = std::string{};
         while (command.empty())
