@@ -138,13 +138,10 @@ cmake --build <chemin_vers_le_dossier_build> --target tp7-ex2
 - Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `display` ?
 - Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `update` ?
 - Quelle variable du `main` porte l'ownership des entités ?
-<<<<<<< HEAD
 
 Solutions: 
 - `display` affiche la grille passée en paramètre avec son contenu, ainsi que le contenu des logs passés en paramètre;
 - `update` met à jour l'état d'une grille en fonction de ce qui s'y est passé: elle appelle la fonction update de chaque entité, remplit la grille via fill_grid, puis déclenche les interactions entre les entités. Ensuite, elle évacue les entités mortes et refait un appel à fill_grid pour la rafraîchir.
-=======
->>>>>>> master
 
 ### B. Personnage
 
