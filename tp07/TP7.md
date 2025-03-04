@@ -110,7 +110,7 @@ Sur base de ces règles:
 | I10   | Carnivore     | Tiger          | Carnivore::can_eat_meat, puisqu'elle existe dans le type statique et n'est pas virtuelle   | Yum! |
 | I11   | Bird          | Bird           | Bird::type, puisqu'elle existe dans le type statique et n'est pas virtuelle | Bird |
 | I12   | Animal        | Bird           | Animal::type, puisqu'elle existe dans le type statique et n'est pas virtuelle                 | Animal |
-| I13   | Animal        | Tiger          | Tiger::move, puisqu'elle existe dans le type statique et n'est pas virtuelle                 | Animal |
+| I13   | Animal        | Tiger          | Animal::type, puisqu'elle existe dans le type statique et n'est pas virtuelle                 | Animal |
 
 
 ## Exercice 2 - Donjons (1h40)
