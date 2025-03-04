@@ -9,7 +9,7 @@ class Material
     friend std::ostream &operator<<(std::ostream &stream, const Material &material) { return stream << material._name; }
 
 public:
-    Material(std::string name) : _name{name} { std::cerr << "Material <" << *this << "> was created." << std::endl; }
+    Material(std::string name) : _name{std::move(name)} { std::cerr << "Material <" << *this << "> was created." << std::endl; }
 
     const std::string &name() const { return _name; }
 

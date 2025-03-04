@@ -33,19 +33,7 @@ void ProgramData::remove_material_from_inventory(const Material *mat, size_t qua
     if (it == _inventory.end() || it->second < quantity)
         std::cout << "Could not remove " << quantity << " " << *mat << " from inventory (not enough)." << std::endl;
     else
-    {
-        std::cout << "Removed " << quantity << " " << *mat << "; inventory ";
-        if (it->second == quantity)
-        {
-            _inventory.erase(it);
-            std::cout << "no longer contains any " << *mat << std::endl;
-        }
-        else
-        {
-            it->second -= quantity;
-            std::cout << " now contains " << it->second << " " << *mat << std::endl;
-        }
-    }
+        std::cout << "Removed " << quantity << " " << *mat << " from inventory" << std::endl;
 }
 
 void ProgramData::get_inventory(MaterialBag &materials) const

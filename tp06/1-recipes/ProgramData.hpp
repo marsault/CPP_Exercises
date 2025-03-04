@@ -11,8 +11,6 @@
 #include <set>
 #include <map>
 
-using MaterialAmount = std::pair<const Material *, size_t>;
-using MaterialBag = std::unordered_map<const Material *, size_t, MaterialHasher>;
 using RecipeCollection = std::set<Recipe, std::less<>>;
 
 enum class Outcome

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ostream>
-#include <set>
 #include "Material.hpp"
 
 class Recipe
