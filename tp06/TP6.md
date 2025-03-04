@@ -22,13 +22,13 @@ Vous devriez rapidement constater qu'à part le parsing des commandes utilisateu
 
 ```b
 # Configurer le projet dans un dossier de build
-cmake -B <chemin_vers_le_dossier_build> -S <chemin_vers_le_dossier_tp5>
+cmake -B <chemin_vers_le_dossier_build> -S <chemin_vers_le_dossier_tp6>
 
 # Compiler le programme
-cmake --build <chemin_vers_le_dossier_build> --target tp6-ex1
+cmake --build <chemin_vers_le_dossier_build> --target ex1
 
 # Lancer le programme
-<chemin_vers_le_dossier_build>/tp6-ex1
+<chemin_vers_le_dossier_build>/ex1
 ```
 
 2. Ouvrez le fichier [`ProgramData.hpp`](./1-recipes/ProgramData.hpp) : il contient la classe `ProgramData`, dont chacune des fonctions est appelée par l'une des commandes utilisateur.
@@ -101,7 +101,7 @@ Cela vous permettra de mieux comprendre comment fonctionnent les unique_ptr.
 Avant de commencer à coder, voici les instructions pour configurer le projet CMake, compiler le programme et le lancer :
 ```b
 # Configurer le projet dans un dossier de build
-cmake -B <chemin_vers_le_dossier_build> -S <chemin_vers_le_dossier_tp5>
+cmake -B <chemin_vers_le_dossier_build> -S <chemin_vers_le_dossier_tp6>
 
 # Compiler le programme
 cmake --build <chemin_vers_le_dossier_build> --target ex2

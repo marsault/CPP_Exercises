@@ -1,67 +1,73 @@
 # TP8 - Révisions
 
+
 ## Objectifs
 
 - Découvrir le format des TPs notés
 - Lancer les tests unitaires
 - Revoir les différentes notions du cours
 
-## Amorce de la séance
+## Au début du TP noté
 
-Avant le début de l'examen, on vous demandera de prendre place à vos machines, de vous connecter et d'exécuter le script Python `prepare_station.py` fourni.
-Celui-ci servira à extraire les différents fichiers au bon endroit sur la machine et à lancer VSCode.
+Avant le début de l'examen, on vous demandera de prendre place à vos machines, de vous connecter et d'exécuter une commande qui servira à extraire les différents fichiers au bon endroit sur la machine.
+
+Il faudra lancer une commande spécifique (probablement `python3 prepare_station.py tpn1`) qui va extraire l'archive contenant le sujet puis lancer VSCode.
+On vous le rappelera, mais si vous devez réouvrir VSCode plus tard pendant la séance, il faudra toujours passer par cette commande.
+Elle permet d'éviter (une partie des) **lags habituels du mode exam** ainsi que d'autres soucis de configuration.
 
 ### Documentation
 
 Vous aurez accès à différentes ressources pour vous débloquez si nécessaire pendant la séance :
-- une version statique du cours en ligne,
-- [une version statique de cppreference](/usr/share/cppreference/doc/html/en/),
-- [les slides du cours magistral](../resources/slides).
+- [une version statique du cours en ligne](https://igm.univ-mlv.fr/~marsault/cpp/cours),
+- [une version statique de cppreference](https://www-igm.univ-mlv.fr/~marsault/cpp/ref/en/)
+
+Pour ce TP, nous vous recommandons d'utiliser la version statique de cpp référence, en particulier pour vous habituer à naviguer dans les menus en l'absence d'une fonction de recherche.
 
 ### Contenu du dossier
 
-Le dossier du TP noté sera extrait dans `${HOME}/EXAM/`.
+Le dossier du TP noté sera extrait dans `${HOME}/EXAM/`.  Il ne faudra travailler que dans ce répertoire, les autres répertoires ne nous serons pas visibles après.
 
 Il sera structuré à peu près de la même manière que le dossier de ce TP4.
-- `cmake`: un dossier contenant des fichiers de configuration pour CMake
-- `exN`: le code de l'exercice n°N
-  - `src`: **les fichiers de code que vous devrez modifier**
-  - `tests`: les fichiers contenant les **tests unitaires** à faire passer
-- `extern`: contient des librairies externes, notamment la librairie Catch2 pour les tests unitaires
-- `CMakeLists.txt`: le fichier de configuration pour CMake
-- `TPNx.md` ou `TPNx.pdf`: le sujet du TP
+- `cmake`: Dossier contenant des fichiers de configuration pour CMake. **A ne pas modifier.**
+- `ex<N>`: le code de l'exercice n°N
+  - `src`: Dossier où coder. Il y aura parfois du code fourni et vous devrez le modifier.
+    - `sandbox.cpp`: Un fichier spécial, que vous pouvez utiliser pour compiler un binaire `ex<N>-sandbox` pour tester votre code indépendamment du système de test.  Ce fichier ne sera pas considéré par la correction.
+  - `tests`: Dossier où se trouve les fichiers contenant les **tests unitaires** à faire passer.
+   **A ne pas modifier.**
+  - `lib`: Ce dossier optionnel comprend des fichiers de code fournit.
+   **A ne pas modifier.**
+  - `extern`: contient des librairies externes, notamment la librairie Catch2 pour les tests unitaires.
+- `CMakeLists.txt`: le fichier de configuration pour CMake. **A ne pas modifier.**
+- `TPN<x>.md` et/ou `TPN<x>.pdf`: le sujet du TP noté.
 
-Tous les fichiers que vous aurez **à modifier ou à ajouter** se trouvent dans **`src`**.  
-Vous devrez aller consulter le contenu de `tests`, mais il ne faudra en aucun cas modifier les fichiers.  
-Si vous arrivez à faire passer un test en le réécrivant, vous n'aurez pas les points !
+Pour résumer:
+- Vous devrez coder dans le répertoire `src` de chaque exercice.
+- Vous devrez consulter les répertoires `lib` et `tests` de chaque exercice, mais il ne faudra en aucun cas modifier les fichiers.  Si vous arrivez à faire passer un test en le réécrivant, vous n'aurez pas les points !
+- Vous n'avez pas à vous préoccupez des autres fichiers, ils sont là pour faire en sorte que tout fonctionne.
 
-Ne vous préoccupez pas du restant des fichiers, ils sont là pour faire en sorte que tout fonctionne.
+## Pendant le TP noté
 
-## Compilation et exécution
+Rappelez vous, lorsqu'on utilise CMake, les fichiers sont générés dans un répertoire séparé des sources.  Par défaut c'est dans le sous-répertoire `build`, mais pour que le mode exam fonctionne correctement, on utilise le répertoire `/tmp/CPP_EXAM/build`.
 
-Lorsqu'on utilise CMake, les fichiers sont générés dans un répertoire séparé des sources.  
-Cela permet d'isoler le code, qui est portable et à vocation à être partagé, des fichiers que vous générez pour vous seul.
+### 1. Configuration
+Pour configurer, vous pouvez soit utiliser la commande `CMake: Configure` de VSCode (accessible avec le raccourci `Ctrl + Shift + P`), où faire un clic-droit sur le fichier `CMakeLists.txt` et choisir `Clean Reconfigure All Projects`.
 
-La première étape correspond à la configuration du projet, qui permet de référencer les exécutables à compiler et avec quelles options.  
-Pour cela, vous pouvez soit utiliser la commande `CMake: Configure` de VSCode (accessible avec le raccourci `Ctrl + Shift + P`), soit lancer les commandes suivantes dans un terminal :
-```b
-# Créer le dossier qui contiendra les fichiers générés
-mkdir build
+Pour la suite, il faut donc se placer dans le répertoire `/tmp/CPP_EXAM/build`.
 
-# Rentre à l'intérieur du dossier `build`
-cd build
+La configuration tient en compte le fait.
 
-# Configure le projet afin qu'il utilise le CMakeLists.txt dans `tp8` et place les fichiers générés dans `build`
-cmake -S chemin/vers/le/dossier/tp8 -B .
-```
-
+### 2. Optionellement, compiler la bibliothèque Catch2
 Une fois la configuration terminée, compilez le framework de tests unitaires avec la commande suivante :
-```b
-cmake --build . --target Catch2WithMain -j
+```sh
+make Catch2WithMain -j
 ```
 
-Enfin, vous pouvez compiler les tests et les exécuter à partir du script `run_tests.sh` généré dans votre dossier de build.
-```b
+### 3. Lancer les tests 
+
+#### Lancer plusieurs tests avec `run_tests.sh`
+
+Enfin, vous pouvez compiler les tests et les exécuter à partir du script `run_tests.sh` généré dans votre dossier de `/tmp/CPP_EXAM/build`.  (La bibliothèque Catch2 est compilée si nécessaire, ce qui peut prendre un peu de temps.)
+```sh
 # Lance la compilation et l'exécution de tous les tests unitaires
 ./run_tests.sh
 
@@ -74,10 +80,43 @@ Enfin, vous pouvez compiler les tests et les exécuter à partir du script `run_
 ./run_tests.sh ex2-23   # => exercice 2, test 23 uniquement
 ```
 
+Le script `run_tests.sh` a quelques options utiles:
+
+```sh
+./run_tests.sh -h   # l'option -h affiche l'aide
+
+./run_tests.sh -q   # l'option -q n'affiche pas la sortie des tests, 
+                       # elle est utile pour avoir une résumé de ce qu'on a fait
+                       # (pas de non-regression)
+
+./run_tests.sh -s   # l'option -s : le programme s'arrête au premier test échoué
+                       # elle est utile quand on progresse dans un exercice
+```
+
+
+#### Compiler et lancer un test unique avec `make`
+
+On peut compiler et lancer un test spécifique directement avec make:
+```sh
+make ex2-01-phone-number     # Compile le test 01-phone-number de
+
+make run-ex2-01-phone-number # Lance le test et fait une backup des sources s'il
+                             # est réussi  (voir ci-dessous)
+
+./ex2-01-phone-number        # Lance le test, mais ne fait **pas** de backup  
+                             # des sources
+```
+(On rappelle que dans un terminal, on peut utiliser `TAB` pour completer le nom des cibles de make.)
+
+
+#### Sauvegarde automatique
+
 Chaque fois que vous réussirez à faire passer un test unitaire, les fichiers-sources concernés seront sauvegardés dans le dossier [backup](backup).  
 Ainsi, si vous vous rendez compte que vos dernières modifications ont cassé votre code, vous pourrez retrouver la dernière version fonctionnelle de vos fichiers dans ce dossier.
 
-## Exercice 1 - Vrai ou Faux (30 min)
+## Dans le TP04
+
+### Exercice 1 - Vrai ou Faux (30 min)
 
 Le premier exercice est un vrai ou faux.
 
@@ -85,7 +124,7 @@ Ouvrez le fichier [ex1/src/qcm.hpp](ex1/src/qcm.hpp).
 Vous devez indiquer pour chaque proposition si celle-ci est vraie (`true`) ou fausse (`false`).  
 Attention, une réponse incorrecte peut vous retirer des points, donc laissez le champ vide si vous ne savez pas.
 
-Par exemple, si je sais que Victor a les cheveux courts, que Céline a les cheveux longs, mais que je ne sais pas pour Antoine, je réponds :
+Par exemple, si je sais que Victor a les cheveux courts, mais qu'on ne sait pas si Céline a les cheveux longs, :
 ```cpp
 // Question 1
 // Victor a les cheveux longs.
@@ -93,16 +132,12 @@ Par exemple, si je sais que Victor a les cheveux courts, que Céline a les cheve
 
 // Question 2
 // Céline a les cheveux longs.
-#define ANSWER_2 true
-
-// Question 3
-// Antoine a les cheveux longs.
-#define ANSWER_3
+#define ANSWER_2
 ```
 
 Si vous exécutez `./run_tests.sh ex1`, le test associé deviendra vert dès lors que vous aurez répondu à toutes les questions (même si vous avez mal répondu).
 
-## Rappel
+### Exerices 2 et 3
 
 Dans les exercices 2 et 3, vous devez coder différentes classes et fonctions afin de faire passer les tests unitaires fournis.  
 Avec le framework Catch2, les tests unitaires ont la forme suivante :

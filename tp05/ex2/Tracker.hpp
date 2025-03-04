@@ -42,7 +42,7 @@ public:
     static int count() { return _count; }
     static int copies() { return _copies; }
 
-    int id() { return _id; }
+    int id() const { return _id; }
 
 private:
     int               _id;

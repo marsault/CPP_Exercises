@@ -138,10 +138,13 @@ cmake --build <chemin_vers_le_dossier_build> --target tp7-ex2
 - Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `display` ?
 - Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `update` ?
 - Quelle variable du `main` porte l'ownership des entités ?
+<<<<<<< HEAD
 
 Solutions: 
 - `display` affiche la grille passée en paramètre avec son contenu, ainsi que le contenu des logs passés en paramètre;
 - `update` met à jour l'état d'une grille en fonction de ce qui s'y est passé: elle appelle la fonction update de chaque entité, remplit la grille via fill_grid, puis déclenche les interactions entre les entités. Ensuite, elle évacue les entités mortes et refait un appel à fill_grid pour la rafraîchir.
+=======
+>>>>>>> master
 
 ### B. Personnage
 
@@ -154,11 +157,11 @@ Décommentez l'instruction ci-dessous dans le `main` et vérifiez qu'un troisiè
 all_entities.push_back(std::make_unique<Character>());
 ```
 
-2. Définissez maintenant un constructeur prenant en paramètre deux entiers `x` et `y`. Vous passerez ces paramètres **au constructeur de la classe de base** afin d'initialiser la position du personnage.  
+2. Définissez maintenant un constructeur prenant en paramètres deux entiers `x` et `y`. Vous passerez ces paramètres **au constructeur de la classe de base** afin d'initialiser la position du personnage.  
 Adaptez l'instruction du `main` de manière à ce que le personnage apparaisse en `(40, 5)` et testez votre programme.
 
 3. Modifiez la fonction `Entity::get_representation() const` afin que celle-ci puisse être redéfinie dans les classes-filles.
-Ajoutez ensuite la redéfinition de cette fonction dans `Character`, afin que les personnages soient représentés par des `O` plutôt que par des `?`. Pensez bien à y ajouter le mot-clef **`override`** pour vous assurez que votre redéfinition est valide.
+Ajoutez ensuite la redéfinition de cette fonction dans `Character`, afin que les personnages soient représentés par des `O` plutôt que par des `?`. Pensez bien à y ajouter le mot-clef **`override`** pour vous assurer que votre redéfinition est valide.
 
 ### C. Pièges et potions
 
@@ -205,14 +208,14 @@ if (trap != nullptr)
 3. Testez votre programme.
 Pour augmentez la probabilité d'interactions, n'hésitez pas à réduire la taille de la grille ou à ajouter des éléments en plus à l'aide d'une boucle.
 
-4. Faites maintenant le nécessaire pour que les potions "restorent la vie" des personnages : la représentation d'un personnage passera alors de `o` à `O`.
+4. Faites maintenant le nécessaire pour que les potions "restaurent la vie" des personnages : la représentation d'un personnage passera alors de `o` à `O`.
 
 ### E. Destructions
 
 Les entités doivent être supprimées du programme une fois qu'elles ne sont plus censées exister sur la grille.
 Voici les règles de gestion pour chacune des entités :
-- `Character` : un personnage doit être supprimé dès lorsqu'il a perdu ses deux vies.
-- `Trap`: un piège doit être détruit dès lorsqu'il rentre en contact avec un personnage.
+- `Character` : un personnage doit être supprimé dès lors qu'il a perdu ses deux vies.
+- `Trap`: un piège doit être détruit dès lors qu'il rentre en contact avec un personnage.
 - `Potion` : une potion doit être supprimée lorsqu'elle est consommée par un personnage qui n'a pas toutes ses vies.
 
 1. Rajoutez une nouvelle fonction virtuelle `should_destroy` dans `Entity` qui permettra de savoir si une entité doit être supprimée du programme ou pas. Par défaut, elle renverra toujours `false`.
@@ -220,11 +223,11 @@ Modifiez ensuite la condition dans la fonction `remove_dead_entities` de [Dungeo
 
 2. Implémentez la redéfinition de votre fonction dans `Character` afin d'obtenir le comportement attendu, puis testez.
 
-3. Pour faire disparaître les `Item` de la grille, ajoutez leur un attribut `is_consumed` de type booléen ainsi qu'une fonction publique `consume` qui passe cet attribut à `true`.
+3. Pour faire disparaître les `Item` de la grille, ajoutez-leur un attribut `is_consumed` de type booléen ainsi qu'une fonction publique `consume` qui passe cet attribut à `true`.
 Appelez cette fonction à l'endroit approprié, et utilisez la valeur de `is_consumed` pour définir l'implémentation de `should_destroy` dans les instances d'`Item`.
 
 4. Ajoutez un destructeur spécifique à la classe `Character` afin de logger dans la console qu'un personnage est mort. Vous écrirez dans la variable globale `logger` (voir [Logger.hpp](dungeon/Logger.hpp)) plutôt que dans `std::cout`. Cela permettra d'afficher les logs en dessous de la grille.
 On attendra quelque chose comme : `"A character died at position (5, 7)"`.
-Si votre destructeur n'est pas appelé, demandez-vous sur quel est le type statique de l'objet détruit et ce qu'il se passe au cours de la résolution de l'appel.
+Si votre destructeur n'est pas appelé, demandez-vous quel est le type statique de l'objet détruit et ce qu'il se passe au cours de la résolution de l'appel.
 
 5. **(Bonus)** Faites en sorte que les entités qui sortent de la grille soient aussi supprimées.
