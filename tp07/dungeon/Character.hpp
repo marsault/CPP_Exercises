@@ -37,11 +37,12 @@ class Character: public Entity {
             }
             else 
             {   // question D.4
-                const auto* potion = dynamic_cast<Potion*>(&entity);
-                if (potion != nullptr)
+                auto* potion = dynamic_cast<Potion*>(&entity);
+                if (potion != nullptr && _lives_left < 2)
                 {
                     // entity est bien une instance de Potion
                     ++_lives_left;
+                    potion->consume();
                 }
     
             }

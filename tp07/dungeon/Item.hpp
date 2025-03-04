@@ -13,6 +13,8 @@ class Item : public Entity {
         }
         void update()                   override { }
         void consume() { is_consumed = true; } // question E.3
+        bool should_destroy() const override { return is_consumed; }  // question E.3
+
 
     protected:
         bool is_consumed; // question E.3

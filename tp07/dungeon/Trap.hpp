@@ -26,4 +26,7 @@ class Trap : public Item {
         // question E.1
         bool should_destroy() const override { return is_consumed; }
 
+        // question E.4
+        ~Trap() override {}
+
 };
