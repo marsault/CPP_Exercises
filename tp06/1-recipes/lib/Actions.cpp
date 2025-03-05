@@ -13,50 +13,6 @@
 #include <string>
 #include <vector>
 
-void print_usage(ProgramData &)
-{
-    std::cout << "Usage:" << std::endl;
-    std::cout << "\tm <nom>                                 : Ajoute le materiau donne a l'inventaire"
-              << std::endl;
-    std::cout
-        << "\tl                                       : Affiche les materiaux presents dans l'inventaire"
-        << std::endl;
-    std::cout << "\tr <m1> [<m2> ...] => <p1> [<p2> ...]    : Enregistre la recette donnee" << std::endl;
-    std::cout << "\tt                                       : Affiche les recettes realisables avec "
-                 "l'inventaire actuel"
-              << std::endl;
-    std::cout << "\tp <id>                                  : Tente de produire la recette demandee"
-              << std::endl;
-    std::cout << "\tq                                       : Ferme le programme" << std::endl;
-}
-
-std::deque<std::string> parse_words(const std::string &command)
-{
-    auto words = std::deque<std::string>{};
-
-    auto str = std::stringstream{command};
-    while (str.good())
-    {
-        str >> words.emplace_back();
-    }
-
-    return words;
-}
-
-std::string pop_next(std::deque<std::string> &words)
-{
-    if (words.empty())
-    {
-        return "";
-    }
-    else
-    {
-        auto next = std::move(words.front());
-        words.pop_front();
-        return next;
-    }
-}
-
 bool is_valid_name(const std::string &name, bool display_error = true)
 {
     bool result = !name.empty();
@@ -65,6 +21,13 @@ bool is_valid_name(const std::string &name, bool display_error = true)
     if (!result && display_error)
         std::cerr << "Invalid material name '" << name << "'" << std::endl;
     return result;
+}
+
+// Action 'help'
+void help(const ActionManager &manager)
+{
+    std::cout << "Liste des commandes:" << std::endl
+              << manager;
 }
 
 // Action 'add mat'
@@ -190,6 +153,19 @@ void new_rec(ProgramData &data, std::deque<std::string> args)
     data.register_recipe(std::move(materials), product);
 }
 
+std::deque<std::string> parse_words(const std::string &command)
+{
+    auto words = std::deque<std::string>{};
+
+    auto str = std::stringstream{command};
+    while (str.good())
+    {
+        str >> words.emplace_back();
+    }
+
+    return words;
+}
+
 // Action 'load'
 void load(const ActionManager &manager, ProgramData &data, std::deque<std::string> args)
 {
@@ -197,7 +173,6 @@ void load(const ActionManager &manager, ProgramData &data, std::deque<std::strin
     if (!file.is_open())
     {
         std::cerr << "Failed to open save '" << args.front() << "'" << std::endl;
-        print_usage;
         return;
     }
     unsigned i = 0;
@@ -207,4 +182,9 @@ void load(const ActionManager &manager, ProgramData &data, std::deque<std::strin
                   << line << std::endl;
         manager.execute_action(data, parse_words(line));
     }
+}
+
+// False action 'quit'. This function is never called.
+void quit(const ActionManager &manager)
+{
 }

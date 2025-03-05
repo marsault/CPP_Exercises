@@ -11,7 +11,7 @@ using ActionTarget = std::function<void(const ActionManager &, ProgramData &, st
 class Node
 {
 public:
-    void register_action(const std::vector<std::string> &path, ActionTarget target, int arg_expected, size_t index)
+    void register_action(const std::vector<std::string> &path, ActionTarget target, int arg_expected, std::string description, size_t index)
     {
         assert(!(_target));
         if (path.size() == index)
@@ -19,12 +19,13 @@ public:
             assert(_children.size() == 0);
             _target = target;
             _arg_expected = arg_expected;
+            _description = description;
         }
         else
         {
             if (_children.count(path[index]) == 0)
                 _children[path[index]] = Node{};
-            _children[path[index]].register_action(path, target, arg_expected, index + 1);
+            _children[path[index]].register_action(path, target, arg_expected, description, index + 1);
         }
     }
 
@@ -80,14 +81,37 @@ public:
         return it->second.find_action(path, arguments);
     }
 
+    std::ostream &put(std::ostream &o, const std::string &prefix = "") const
+    {
+        if (_children.empty())
+        {
+            o << prefix;
+            for (int i = 0; i < _arg_expected; ++i)
+                o << " <arg>";
+            if (_arg_expected == -1)
+                o << " <arg> [<arg> ...] => <arg>";
+            o << " :\t" << _description << std::endl;
+        }
+        else
+            for (auto &child : _children)
+                child.second.put(o, prefix + " " + child.first);
+        return o;
+    }
+
 private:
     std::map<std::string, Node> _children;
     ActionTarget _target;
     int _arg_expected;
+    std::string _description;
 };
 
 class ActionManager
 {
+    friend std::ostream &operator<<(std::ostream &o, const ActionManager &manager)
+    {
+        return manager._root.put(o, "\t-");
+    }
+
 public:
     void execute_action(ProgramData &data, std::deque<std::string> arguments) const
     {
@@ -96,31 +120,38 @@ public:
             target(*this, data, arguments);
     }
 
-    void register_action(const std::vector<std::string> &path, int args_expected, ActionTarget target)
+    void register_action(const std::vector<std::string> &path, int args_expected, std::string description, ActionTarget target)
     {
-        _root.register_action(path, target, args_expected, 0);
+        _root.register_action(path, target, args_expected, description, 0);
     }
 
-    void register_action(const std::vector<std::string> &path, int args_expected, std::function<void(ProgramData &)> target)
+    void register_action(const std::vector<std::string> &path, int args_expected, std::string description, std::function<void(ProgramData &)> target)
     {
         ActionTarget ext_target = [target](const ActionManager &, ProgramData &data, std::deque<std::string>)
         { target(data); };
-        _root.register_action(path, ext_target, args_expected, 0);
+        _root.register_action(path, ext_target, args_expected, description, 0);
     }
 
-    void register_action(const std::vector<std::string> &path, int args_expected, std::function<void(ProgramData &, std::deque<std::string>)> target)
+    void register_action(const std::vector<std::string> &path, int args_expected, std::string description, std::function<void(const ActionManager &)> target)
+    {
+        ActionTarget ext_target = [target](const ActionManager &manager, ProgramData &, std::deque<std::string>)
+        { target(manager); };
+        _root.register_action(path, ext_target, args_expected, description, 0);
+    }
+
+    void register_action(const std::vector<std::string> &path, int args_expected, std::string description, std::function<void(ProgramData &, std::deque<std::string>)> target)
     {
         ActionTarget ext_target = [target](const ActionManager &, ProgramData &data, std::deque<std::string> args)
         { target(data, args); };
-        _root.register_action(path, ext_target, args_expected, 0);
+        _root.register_action(path, ext_target, args_expected, description, 0);
     }
 
-    void register_action(const std::vector<std::string> &path, int args_expected, std::function<void(ProgramData &, std::string)> target)
+    void register_action(const std::vector<std::string> &path, int args_expected, std::string description, std::function<void(ProgramData &, std::string)> target)
     {
         assert(args_expected == 1);
         ActionTarget ext_target = [target](const ActionManager &, ProgramData &data, std::deque<std::string> args)
         { target(data, std::move(args.front())); };
-        _root.register_action(path, ext_target, args_expected, 0);
+        _root.register_action(path, ext_target, args_expected, description, 0);
     }
 
 private:
