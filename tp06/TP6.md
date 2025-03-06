@@ -1,4 +1,4 @@
-# TP6 - unique_ptr
+# TP6 - bibliothèque standard
 
 ## Objectifs
 
