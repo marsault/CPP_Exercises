@@ -8,8 +8,6 @@ add_executable(ex1
     1-recipes/ProgramData.hpp
     1-recipes/Recipe.hpp
     1-recipes/lib/ActionManager.hpp
-    1-recipes/lib/Scripts.hpp
-    1-recipes/lib/Scripts.cpp
 )
 target_compile_features(ex1 PRIVATE cxx_std_17)
 

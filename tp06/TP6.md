@@ -31,13 +31,27 @@ cmake --build <chemin_vers_le_dossier_build> --target ex1
 <chemin_vers_le_dossier_build>/ex1
 ```
 
-2. Ouvrez le fichier [`ProgramData.hpp`](./1-recipes/ProgramData.hpp) : il contient la classe `ProgramData`, dont chacune des fonctions est appelée par l'une des commandes utilisateur.
-Ouvrez maintenant le fichier [`ProgramData.cpp`](./1-recipes/ProgramData.cpp).
-Pourquoi le programme ne fait rien ?
+2. 
+    a. Ouvrez le fichier [`ProgramData.hpp`](./1-recipes/ProgramData.hpp) : il contient la classe `ProgramData`, dont chacune des fonctions est appelée par l'une des commandes utilisateur.
+
+    b. Ouvrez maintenant le fichier [`ProgramData.cpp`](./1-recipes/ProgramData.cpp).
+    Pourquoi le programme ne fait rien ?
+
+    c. Le fichier [`aliases.hpp`](./1-recipes/aliases.hpp) contient des définitions de types qui servent d'interface entre le frontend (qui vous est donné) et le backend (que vous devez écrire.)
+
+    d.
+
+3. Finalement, le programme contient aussi des fichiers que vous n'aurez pas à modifier.
+
+    a. le fichier [`main.cpp`](./1-recipes/main.cpp) contient la boucle principale du programme.
+    
+    b. Le fichier [`lib/Actions.hpp`](./1-recipes/lib/Actions.hpp) contient le code des fonctions qui sont appelés par les différentes actions.
+
+    c. Le fichier [`lib/ActionManager.hpp`](./1-recipes/lib/ActionManager.hpp) contient la structure de données permettant de gérer les actions.  **Vous n'avez a priori pas besoin de comprendre comment il fonctionne.**
 
 ### B. Matériaux
 
-Pour le restant de l'exercice, n'hésitez pas à ajouter les fonctions qui vous sembleraient pertinentes, même si on ne vous les demande pas explicitement.
+Pour le restant de l'exercice, n'hésitez pas à ajouter les fonctions-membres qui vous vous sembleraient pertinentes, même si on ne vous les demande pas explicitement.
 
 1. Commencez par définir une classe `Material` qui contiendra un attribut `_name` de type `std::string`.
 2. Modifiez le contenu de l'`operator<<` acceptant un `Material` afin d'afficher son nom.
