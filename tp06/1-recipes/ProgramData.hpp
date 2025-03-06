@@ -2,16 +2,16 @@
 
 #include "Material.hpp"
 #include "Recipe.hpp"
+#include "aliases.hpp"
 
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <memory>
 #include <list>
 #include <set>
 #include <map>
-
-using RecipeCollection = std::set<Recipe, std::less<>>;
 
 enum class Outcome
 {
@@ -33,44 +33,47 @@ struct ProductionResult
 class ProgramData
 {
 public:
-    // Ajoute un nouveau materiau existant
+    // Déclare un nouveau type de materiau
     void register_material(std::string);
 
-    // Récupère la liste des matériaux présents dans l'inventaire.
-    void get_all_possible_materials(std::vector<const Material *> &) const;
+    // Récupère la liste des matériaux présents dans l'inventaire
+    void get_registered_materials(std::vector<const Material *> &) const;
 
-    // Ajoute un nouveau materiau à l'inventaire.
+    // Recupère un matériau avec le nom donné.
+    const Material *get_material_by_name(const std::string &name) const;
+
+    // Ajoute un nouveau materiau à l'inventaire
     void add_material_to_inventory(const Material *, size_t = 1u);
 
     // Récupère la liste des matériaux présents dans l'inventaire avec la quantité correspondante
     void get_inventory(MaterialBag &) const;
 
-    // Enregistre un nouveau modèle de recette au répertoire.
+    // Enregistre un nouveau modèle de recette au répertoire
     void register_recipe(std::vector<const Material *>, const Material *);
 
     // Collecte la liste de toutes les recettes
     void get_all_recipes(std::vector<const Recipe *> &) const;
 
-    // Collecte la liste des recettes réalisables avec les matériaux présents dans l'inventaire.
+    // Collecte la liste des recettes réalisables avec les matériaux présents dans l'inventaire
     void get_doable_recipes(std::vector<const Recipe *> &) const;
+
+    //
+    const Recipe *get_recipe_by_id(size_t id) const;
 
     // Tente de réaliser la recette demandée
     // Si c'est possible, renvoie SUCCESS et indique le Material créé dans materials
     // Sinon, renvoie FAILURE et indique les materiaux manquant dans Renvoie SUCCESS si c'est possible et FAILURE sinon
     Outcome produce(const Recipe &recipe, MaterialBag &materials);
 
-    // Réinitialise les données du programmes (vide toutes les structures)
-    void reset();
-
-    const Material *get_material_by_name(const std::string &name) const;
-    const Recipe *get_recipe_by_id(size_t id) const;
+    //
     size_t get_material_count_in_inventory(const Material *material) const;
 
+    //
     void remove_material_from_inventory(const Material *, size_t = 1u);
 
 private:
     // Placez vos données ici...
-    std::vector<std::unique_ptr<Material>> _all_possible_materials;
+    std::vector<std::unique_ptr<Material>> _registered_materials;
     RecipeCollection _registered_recipes;
     std::unordered_map<std::string, Material *> _material_from_name;
     MaterialBag _inventory;

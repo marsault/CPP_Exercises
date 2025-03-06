@@ -2,13 +2,13 @@
 
 void ProgramData::register_material(std::string name)
 {
-    _all_possible_materials.emplace_back(new Material{name});
-    _material_from_name[std::move(name)] = _all_possible_materials.back().get();
+    auto &x = _registered_materials.emplace_back(new Material{name});
+    _material_from_name[std::move(name)] = x.get();
 }
 
-void ProgramData::get_all_possible_materials(std::vector<const Material *> &materials) const
+void ProgramData::get_registered_materials(std::vector<const Material *> &materials) const
 {
-    for (auto &ptr : _all_possible_materials)
+    for (auto &ptr : _registered_materials)
         materials.emplace_back(ptr.get());
 }
 
@@ -123,5 +123,3 @@ Outcome ProgramData::produce(const Recipe &recipe, MaterialBag &materials)
     add_material_to_inventory(recipe.product());
     return Outcome::SUCCESS;
 }
-
-void ProgramData::reset() {}

@@ -1,7 +1,10 @@
 #pragma once
 
 #include <ostream>
+
+#include "aliases.hpp"
 #include "Material.hpp"
+#include "MaterialHasher.hpp"
 
 class Recipe
 {

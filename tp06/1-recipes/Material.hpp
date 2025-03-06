@@ -18,16 +18,3 @@ public:
 private:
     std::string _name;
 };
-
-class MaterialHasher
-{
-public:
-    size_t operator()(const Material *m) const
-    {
-        std::hash<std::string> hasher;
-        return hasher(m->name());
-    };
-};
-
-using MaterialAmount = std::pair<const Material *, size_t>;
-using MaterialBag = std::unordered_map<const Material *, size_t, MaterialHasher>;

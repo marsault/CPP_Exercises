@@ -49,6 +49,7 @@
         "fstream": "cpp",
         "map": "cpp",
         "list": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "unordered_set": "cpp"
     }
 }

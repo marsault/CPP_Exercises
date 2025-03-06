@@ -43,7 +43,7 @@ void add_mat(ProgramData &data, std::deque<std::string> args)
 void list_mat(ProgramData &data)
 {
     std::vector<const Material *> buffer;
-    data.get_all_possible_materials(buffer);
+    data.get_registered_materials(buffer);
     std::cout << "Registered materials: " << (buffer.empty() ? "(empty)" : "") << std::endl;
     for (const auto *m : buffer)
         std::cout << "  - " << *m << std::endl;
