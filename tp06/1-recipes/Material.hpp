@@ -1,26 +1,12 @@
 #pragma once
 
-#include <iostream>
-#include <unordered_map>
+#include <ostream>
 
 class Material
 {
-  // Affiche le nom d'un materiau.
+  // Affiche le nom d'un matériau
   friend std::ostream& operator<<(std::ostream& stream, const Material& material)
   {
-    return stream << material._name;
+    return stream;
   }
-
-public:
-  Material(std::string name) : _name{std::move(name)}
-  {
-    std::cerr << "Material <" << *this << "> was created." << std::endl;
-  }
-
-  const std::string& name() const { return _name; }
-
-  ~Material() { std::cerr << "Material <" << *this << "> was deleted." << std::endl; }
-
-private:
-  std::string _name;
 };

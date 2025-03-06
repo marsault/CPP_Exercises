@@ -22,8 +22,10 @@ int main(int argc, char** argv)
                           list_doable);
   manager.register_action({"list", "inv"}, 0, "Affiche les matériaux dans l'inventaire",
                           list_inv);
+  manager.register_action({"del", "rec"}, 1,
+                          "Supprime la recette dont l'identifiant est donné", del_rec);
   manager.register_action(
-      {"produce"}, 1, "Tente de réaliser la recette dont l'identifiant est <arg>", produce);
+      {"prod"}, 1, "Tente de réaliser la recette dont l'identifiant est <arg>", produce);
   manager.register_action({"new", "rec"}, -1, "Déclare une nouvelle recette", new_rec);
   manager.register_action({"quit"}, 0, "Termine le programme", quit);
 

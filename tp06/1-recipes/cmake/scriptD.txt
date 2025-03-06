@@ -1,0 +1,12 @@
+new mat Eau
+new mat Sirop
+new mat Grenadine
+new rec Eau Sirop => Grenadine
+new mat Oxygen
+new mat Hydrogen
+new rec Hydrogen Oxygen => Eau
+del rec 2
+new rec Hydrogen Hydrogen Oxygen => Eau
+del rec 1
+new rec Eau Eau Sirop Eau Eau Eau Eau  => Grenadine
+list rec
