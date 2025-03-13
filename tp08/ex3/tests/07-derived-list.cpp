@@ -4,6 +4,7 @@
 #include "../src/DerivedString.hpp"
 
 #include <catch2/catch_test_macros.hpp>
+#include <sstream>
 
 TEST_CASE(
     "Il existent une classe DerivedList, qui dérive de base, et qui contient un ensemble de base.  Pour que "

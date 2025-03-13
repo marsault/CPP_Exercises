@@ -4,6 +4,7 @@
 #include "../src/DerivedString.hpp"
 
 #include <catch2/catch_test_macros.hpp>
+#include <sstream>
 
 TEST_CASE("On peut déplacer l'objet ajouté quand on add.")
 {

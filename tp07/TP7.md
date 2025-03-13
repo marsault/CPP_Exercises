@@ -110,9 +110,12 @@ cmake --build <chemin_vers_le_dossier_build> --target tp7-ex2
 ```
 
 2. Prenez connaissance du contenu des fichiers pré-existants et répondez aux questions suivantes :
-- Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `display` ?
-- Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `update` ?
-- Quelle variable du `main` porte l'ownership des entités ?
+- Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `display` ?  
+    La fonction permet de déssiner le plateau.
+- Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `update` ?  
+    C'est la fonction qui permet de mettre à jour le jeux et les perso sur la grille.
+- Quelle variable du `main` porte l'ownership des entités ?  
+    C'est la variable `all_entities`.
 
 ### B. Personnage
 
