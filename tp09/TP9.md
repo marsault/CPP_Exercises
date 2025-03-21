@@ -140,6 +140,36 @@ Une seule contrainte, on vous imposera un algorithme de la librairie standard à
         apply_on_entities_with_type(all_entities, "Monster", [&life_decrease](Entities& ents) { for(auto& e: ents) e->life -= life_decrease; });
     }
    ```
+
+   Pour éliminer les entités mortes d'un certain type, un appel à `remove_if` identifiera avec un lambda approprié toutes les entités dont la vie est <= 0. Le prédicat `remove_if_dead` sera un lambda qui, après avoir identifié ces entités, les éliminera réellement via un appel à `erase`. On obtient donc ceci:
+   
+   ```cpp
+   void remove_dead_entities(std::map<std::string, Entities>& all_entities)
+   {
+       auto remove_if_dead = [](Entities& ents) 
+       {
+           auto new_end = std::remove_if(ents.begin(), ents.end(), [](std::unique_ptr<Entity>& e) { return e->life <= 0;} );
+           ents.erase(new_end, ents.end());
+       };
+       apply_on_entities_with_type(all_entities, "Monster", remove_if_dead);
+       apply_on_entities_with_type(all_entities, "Human", remove_if_dead);
+   }
+   ```
+   
+   Enfin, pour ajouter une entité, il faut que le lambda spécifié appelle le `push_back` de la liste correspondante. Petite subtilité: comme on manipule des `unique_ptr`, on ne peut pas les copier ... mais on peut leur appliquer un `std::move`:
+    
+   ```cpp
+   void add_entity(std::map<std::string, Entities>& all_entities, const std::string& type, std::unique_ptr<Entity> entity)
+   {
+       apply_on_entities_with_type
+       (
+           all_entities, 
+           type, 
+           [&entity](Entities& ents) {ents.push_back(std::move(entity));}
+       );
+   }
+   ```
+   
    
 ## Exercice 3 - unordered_map (30 min)
 
