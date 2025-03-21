@@ -31,21 +31,116 @@ Exemple : Si `ctn` est un `std::vector`, alors `it` peut être invalidé en cas 
 Ouvrez chacun des liens ci-dessous et complétez le code afin que les fonctions produisent les résultats attendus.  
 Une seule contrainte, on vous imposera un algorithme de la librairie standard à utiliser.
 
-1. Algorithme: std::remove_if  
+
+1. Algorithme: std::remove_if 
+
    Code: https://godbolt.org/z/KaTnr8Pr4  
+   
+   Solution: rajouter `#include <algorithm>`, car c'est là qu'est définie `std::remove_if`, qui permet de retirer du vecteur tous les éléments vérifiant un prédicat. Nous allons retirer tous les animaux dont le champs `species` vaut `"cat"`, il nous faut donc définir le prédicat correspondant à l'aide, par exemple, d'une fonction `lambda`: `[](const Animal& bestiole) { return bestiole.species == "cat"; }`. Enfin, il ne faut pas oublier d'appler `std::erase` sur le résultat, pour réellement procéder à la suppression des éléments. Ceci donne:
+   
+   ```cpp
+   void remove_cats(std::vector<Animal>& animals)
+   {
+       const auto new_end = std::remove_if(animals.begin(), animals.end(), [](const Animal& bestiole) { return bestiole.species == "cat"; });
+       animals.erase(new_end, animals.end());
+   }
+   ```
 
-2. Algorithme: std::find_if  
+2. Algorithme: std::find_if 
+
    Code: https://godbolt.org/z/55x9Efrza  
+   
+   Solution: même structure que la question précédente, si ce n'est qu'il faut maintenant rajouter entre les crochets de la fonction lambda le paramètre `species` dont elle aura besoin (sinon il lui est invisible). `std::find_if` nous renvoyant un itérateur, pour obtenir la position de l'élément trouver, il faut calculer sa différence avec `animals.begin()`. On continuera à renvoyer `-1` si l'élément n'a pas été trouvé, auquel cas l'itérateur vaudra `animals.end()`. On obtient ceci:
+   
+   ```cpp
+   std::ptrdiff_t get_position_of_first_with_species(const std::deque<Animal>& animals, const std::string& species)
+   {
+        const auto it = std::find_if(animals.begin(), animals.end(), [&species](const Animal& bestiole) { return bestiole.species == species; });
+        if(it == animals.end())
+            return -1;
+        return it - animals.begin();
+   }
+   ```
+   
+   
 
-3. Algorithme: std::transform + std::back_inserter  
-   Code: https://godbolt.org/z/PrPoEYK5d  
+3. Algorithme: std::transform + std::back_inserter 
 
-4. Algorithme: std::accumulate  
+   Code: https://godbolt.org/z/PrPoEYK5d 
+   
+   Solution: rajouter `#include <algorithm>`, car c'est là que sont définies les fonctions nécessaires. La transformation à appliquer va simplement concaténer chaque prénom avec le nom correspondant. Attention, `std::transform` ne peut transférer directement le résultat de la transformation vers sa sortie que si celle-ci est de la même taille que l'entrée. Ici, ce n'est pas le cas (`full_names` est vide), donc on doit utiliser `back_inserter` pour demander à faire des `push_back` dans `full_names` à chaque insertion. On obtient ceci:
+   
+   ```cpp
+    std::vector<std::string> compute_full_names(const std::vector<Person>& persons)
+    {
+        std::vector<std::string> full_names;
+        std::transform(persons.begin(), persons.end(), std::back_inserter(full_names), [](const Person& p) { return p.first_name + " " + p.last_name; });
+        return full_names;
+    }
+   ```
+
+4. Algorithme: std::accumulate
+
    Code: https://godbolt.org/z/61P6K414P  
+   
+   Solution: rajouter `#include <numeric>`, car c'est là qu'est définie `accumulate`. On va réaliser la concaténation des chaînes en majuscules, il nous faut donc un moyen de convertir une chaîne en majuscules. Comme `std::toupper` ne fonctionne que sur les caractères, on définit d'abord une fonction qui va traiter les chaînes:
+   
+   ```cpp
+   std::string capstring(const std::string& s)
+   {
+       std::string result;
+       std::transform(s.begin(), s.end(), std::back_inserter(result), [](const char& c) {return std::toupper(c); });
+       return result;
+   }
+   ```
 
-6. Algorithme: peu importe, du moment que vous implémentez le contenu de apply_on_entities_with_type et que vous l'utilisez ensuite.  
-   Code: https://godbolt.org/z/v5rn1aqGe  
+   Une fois que c'est fait, `accumulate` permet de réaliser la concaténation en "accumulant" le résultat des transformations dans une chaîne initialement vide.  L'opérateur prendra deux chaînes en paramètres: celle déjà "accumulée", et la seconde à rajouter. On obtient alors ceci:
+   
+    ```cpp
+    std::string concat_in_caps(const std::vector<std::string>& words)
+    {
+        std::string result;
+        return std::accumulate(words.begin(), words.end(), result, [](const std::string& a, const std::string& b) { return a + capstring(b);});
+    }
+    ```
 
+
+6. Algorithme: peu importe, du moment que vous implémentez le contenu de apply_on_entities_with_type et que vous l'utilisez ensuite.
+
+   Code: https://godbolt.org/z/v5rn1aqGe 
+   
+   Solution: la fonction `apply_on_entities_with_type` se contentera de parcourir la `map` et de n'appliquer la fonction qu'aux entrées dont le type correspond à celui donné. On a donc:
+   
+   ```cpp
+   void apply_on_entities_with_type(std::map<std::string, Entities>& all_entities,
+                                 const std::string& type,
+                                 const std::function<void(Entities&)>& fcn)
+   {
+       for(auto& pair: all_entities)
+           if(pair.first == type)
+               fcn(pair.second);
+   }
+   ```
+
+    Une fois cette fonction réalisée, `print_entities` se contente de l'appeler avec un lambda qui passe à `std::cout` les champs que l'on veut afficher:
+    
+    
+   ```cpp
+   void print_entities(std::map<std::string, Entities>& all_entities, const std::string& type)
+   {
+       apply_on_entities_with_type(all_entities, type, [](const Entities& ents) { for(auto& e: ents) std::cout << e->name << " (" << e->life << ")" << std::endl; });
+   }
+   ```
+
+   `hit_monsters` se base sur le même principe, mais doit cette fois retirer `life_decrease` de la vie des monstres (attention à bien passer ce paramètre au lambda):
+   
+   ```cpp
+    void hit_monsters(std::map<std::string, Entities>& all_entities, int life_decrease)
+    {
+        apply_on_entities_with_type(all_entities, "Monster", [&life_decrease](Entities& ents) { for(auto& e: ents) e->life -= life_decrease; });
+    }
+   ```
+   
 ## Exercice 3 - unordered_map (30 min)
 
 L'objectif de cet exercice est de vous faire implémenter un type que vous pourrez utiliser en temps que clé de hashage d'une `unordered_map`.
