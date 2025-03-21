@@ -10,6 +10,10 @@
 #define ANSWER_EX2 false
 //                 ^^^^^
 //
+// Dans la suite On utilise la commande de précompilation suivante pour que vous ayez
+// la coloration syntaxique du code dans VSCode.
+// #ifdef CODE_IGNORE_PAR_LE_COMPILATEUR
+//
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // 1. // ====================================================================================================
@@ -40,7 +44,7 @@ private:
 };
 #endif
 // Est-ce que l'implémentation 1 est meilleure que l'implémentation 2?
-#define ANSWER_1
+#define ANSWER_1 true
 
 // 2. // ====================================================================================================
 // Voici deux implémentations de constructeurs pour une classe Dog
@@ -70,7 +74,7 @@ private:
 };
 #endif
 // Est-ce que l'implémentation 1 est meilleure que l'implémentation 2?
-#define ANSWER_2
+#define ANSWER_2 false // L'implémentation 1 stocke une référence à une variable locale, c'est n'importe quoi
 
 // 3. // ====================================================================================================
 #ifdef CODE_IGNORE_PAR_LE_COMPILATEUR
@@ -84,13 +88,13 @@ public:
     }
 
 private:
-    std::vector<std::string> keys;
-    std::vector<td::string*> values;
+    std::vector<std::string>  keys;
+    std::vector<std::string*> values;
 };
 #endif
 // Est-ce que l'utilisation de la classe ci-dessus est susceptible de créer des problèmes de mémoire (fuite,
 // double-déallocation, etc.) ?
-#define ANSWER_3
+#define ANSWER_3 true // Une fuite mémoire: les std::string dans values ne sont jamais libérée
 
 // 4. // ====================================================================================================
 #ifdef CODE_IGNORE_PAR_LE_COMPILATEUR
@@ -116,7 +120,9 @@ private:
 #endif
 // Est-ce que l'utilisation de la classe ci-dessus est susceptible de créer des problèmes de mémoire (fuite,
 // double-déallocation, etc.) ?
-#define ANSWER_4
+#define ANSWER_4 false
+// Les std::string dans keys sont supprimées automatiquement par la suppressions des std::unique_ptr
+// Les std::string dans values sont supprimées manuellement par le destructeur de AssocVector
 
 // 5. // ====================================================================================================
 #ifdef CODE_IGNORE_PAR_LE_COMPILATEUR
@@ -131,7 +137,7 @@ public:
 
     ~AssocVector()
     {
-        for (auto& a: values)
+        for (auto& a : values)
             delete a.get();
     }
 
@@ -142,10 +148,10 @@ private:
 #endif
 // Est-ce que l'utilisation de la classe ci-dessus est susceptible de créer des problèmes de mémoire (fuite,
 // double-déallocation, etc.) ?
-#define ANSWER_5
+#define ANSWER_5 true // Les std::string dans values sont supprimées deux fois.
 
 // 1X. // ================================================================================================
-// considère le code ci-dessous
+// Pour les questions 1X, on considère le code ci-dessous.
 #ifdef CODE_IGNORE_PAR_LE_COMPILATEUR
 int& f(int a, int& b)
 {
@@ -166,24 +172,24 @@ int main()
 }
 #endif
 // Dans les questions suivantes, on ne parle que de la ligne 4.
-// 10. L'expression w est-elle une r-value?
-#define ANSWER_10
-// 11. L'expression 1 est-elle une r-value?
-#define ANSWER_11
-// 12. L'expression x+1 est-elle une r-value?
-#define ANSWER_12
-// 13. L'expression y est-elle une r-value?
-#define ANSWER_13
-// 14. L'expression g(x + 1, y) est-elle une r-value?
-#define ANSWER_14
-// 15. L'expression f(g(x + 1, y), z) est-elle une r-value?
-#define ANSWER_15
-// 16. L'expression f(w, f(g(x + 1, y), z)) est-elle une r-value?
-#define ANSWER_16
+// 10. L'expression w est-elle une R-value?
+#define ANSWER_10 false
+// 11. L'expression 1 est-elle une R-value?
+#define ANSWER_11 true
+// 12. L'expression x+1 est-elle une R-value?
+#define ANSWER_12 true
+// 13. L'expression y est-elle une R-value?
+#define ANSWER_13 false
+// 14. L'expression g(x + 1, y) est-elle une R-value?
+#define ANSWER_14 true
+// 15. L'expression f(g(x + 1, y), z) est-elle une R-value?
+#define ANSWER_15 false
+// 16. L'expression f(w, f(g(x + 1, y), z)) est-elle une R-value?
+#define ANSWER_16 false
 
 // 2X. // ===================================================================================================
-// On conside un programme avec deux classes, Fille et Mère, où Fille hérite de Mère.
-// Les deux classes Fille et Mere possèdent une fonction-membre fct().
+// Pour les questions 2X, on conside un programme avec deux classes, Fille et Mère, où Fille hérite de Mère.
+// Les deux classes Fille et Mere possèdent une fonction-membre void fct().
 #ifdef CODE_IGNORE_PAR_LE_COMPILATEUR
 int main()
 {
@@ -192,8 +198,8 @@ int main()
 }
 #endif
 // 20. Si je veux redéfinir fct() dans Fille, je dois utiliser le mot-clef "virtual" dans la déclaration on de
-// Mere::fct(), sans quoi Fille ::fct() ne sera pas appelée à la ligne 2 ci-dessus.
-#define ANSWER_20
+// Mere::fct(), sans quoi Fille::fct() ne sera pas appelée à la ligne 2 ci-dessus.
+#define ANSWER_20 true
 // 21. Si je veux redéfinir fct() dans Fille, je dois utiliser le mot-clef "virtual" dans la déclaration de
 // Fille::fct(), sans quoi Fille ::fct() ne sera pas appelée à la ligne 2 ci-dessus.
 #define ANSWER_21
