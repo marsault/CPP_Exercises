@@ -26,6 +26,8 @@ Exemple : Si `ctn` est un `std::vector`, alors `it` peut être invalidé en cas 
 
 3. Quelle est la différence entre les fonctions `push_back` et `emplace_back` de la classe-template `std::vector` ?
 
+    Solution: supposons que les objets du vecteur soient de type `T`. `push_back` rajoute un objet de type `T` déjà créé au vecteur, tandis que `emplace_back` utilisera les paramètres qui lui sont communiqués pour construire un nouvel objet de type `T` via le constructeur associé, puis ensuite l'ajouter au vecteur.
+
 ## Exercice 2 - Lambdas et algorithmes (40 min)
 
 Ouvrez chacun des liens ci-dessous et complétez le code afin que les fonctions produisent les résultats attendus.  
