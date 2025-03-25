@@ -20,10 +20,13 @@
     | set           | N/A                          | N/A                            | N/A    |
     | unordered_set | N/A                          | N/A                            | N/A    |
 
-2. Supposons que vous ayez récupéré un itérateur sur un élément d'un conteneur avec : `auto it = std::find(ctn.begin(), ctn.end(), element_to_find)`.  
-En fonction du type de conteneur, quelles sont les opérations susceptibles d'invalider cet itérateur ? Essayez d'être précis dans vos réponses.  
-Exemple : Si `ctn` est un `std::vector`, alors `it` peut être invalidé en cas de suppression d'un élément précédent `it` dans le conteneur.
-
+2. Supposons que vous ayez récupéré un itérateur sur un élément d'un conteneur avec : `auto it = std::find(ctn.begin(), ctn.end(), element_to_find)`. 
+    En fonction du type de conteneur, quelles sont les opérations susceptibles d'invalider cet itérateur ? Essayez d'être précis dans vos réponses. 
+    
+    Exemple : Si `ctn` est un `std::vector`, alors `it` peut être invalidé en cas de suppression d'un élément précédent `it` dans le conteneur.
+    
+    Solution: voir les sections "Iterator invalidation" des pages correspondantes de la documentation.
+    
 3. Quelle est la différence entre les fonctions `push_back` et `emplace_back` de la classe-template `std::vector` ?
 
     Solution: supposons que les objets du vecteur soient de type `T`. `push_back` rajoute un objet de type `T` déjà créé au vecteur, tandis que `emplace_back` utilisera les paramètres qui lui sont communiqués pour construire un nouvel objet de type `T` via le constructeur associé, puis ensuite l'ajouter au vecteur.
