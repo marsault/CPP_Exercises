@@ -38,6 +38,11 @@ int main()
 {
     // const auto image = ...;
     // image_lib::save(image, "images/mandelbrot.png");
+    // question B: initialisons une image de taille width w height avec la fonction mandelbrot
+    // pour compiler: g++ mandelbrot.cpp ../lib/image_lib.cpp -o mandelbrot
+    const auto image = Image<uint8_t, width, height>(mandelbrot);
+    image_lib::save(image, "images/mandelbrot.png");
+    
 
     return 0;
 }
