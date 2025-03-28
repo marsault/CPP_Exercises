@@ -10,21 +10,19 @@
 
 1. Consulter la documentation des conteneurs spécifiés afin de renseigner les complexités en temps de chacune des opérations :
 
-| Conteneur     | Insertion (en tête / en fin) | Suppression (en tête / en fin) | Accès |
-|---------------|--------------|--------------|--------------|
-| array         |     N/A      |     N/A      |              |
-| vector        |              |              |              |
-| deque         |              |              |              |
-| forward_list  |              |              |              |
-| list          |              |              |              |
-| set           |              |              |              |
-| unordered_set |              |              |              |
+| Conteneur     | Insertion (en tête / en fin) | Suppression (en tête / en fin) |     Accès    |
+|---------------|----------------------------- |--------------------------------|--------------|
+| array         |     N/A                      |     N/A                        |              |
+| deque         |                              |                                |              |
+| forward_list  |                              |                                |              |
+| set           |                              |                                |              |
+| unordered_map |                              |                                |              |
 
 2. Supposons que vous ayez récupéré un itérateur sur un élément d'un conteneur avec : `auto it = std::find(ctn.begin(), ctn.end(), element_to_find)`.  
-En fonction du type de conteneur, quelles sont les opérations susceptibles d'invalider cet itérateur ? Essayez d'être précis dans vos réponses.  
+En fonction du type de conteneur, quelles sont les opérations susceptibles d'invalider cet itérateur ?  
 Exemple : Si `ctn` est un `std::vector`, alors `it` peut être invalidé en cas de suppression d'un élément précédent `it` dans le conteneur.
+Répondre pour les conteneurs array, forward_list et unordered_map.
 
-3. Quelle est la différence entre les fonctions `push_back` et `emplace_back` de la classe-template `std::vector` ?
 
 ## Exercice 2 - Lambdas et algorithmes (40 min)
 
@@ -37,14 +35,18 @@ Une seule contrainte, on vous imposera un algorithme de la librairie standard à
 2. Algorithme: std::find_if  
    Code: https://godbolt.org/z/55x9Efrza  
 
-3. Algorithme: std::transform + std::back_inserter  
+3. Algorithme: std::for_each
+   Code: https://godbolt.org/z/nrGaa8aEa
+
+4. Algorithme: std::transform + std::back_inserter  
    Code: https://godbolt.org/z/PrPoEYK5d  
 
-4. Algorithme: std::accumulate  
-   Code: https://godbolt.org/z/61P6K414P  
+5. Algorithme: std::transform + std::accumulate  
+   Code: https://godbolt.org/z/fdeExxzWE 
 
 6. Algorithme: peu importe, du moment que vous implémentez le contenu de apply_on_entities_with_type et que vous l'utilisez ensuite.  
    Code: https://godbolt.org/z/v5rn1aqGe  
+
 
 ## Exercice 3 - unordered_map (30 min)
 
@@ -100,6 +102,7 @@ struct hash<type_pour_lequel_on_specialise>
 ```
 
 2. Définissez la spécialisation de `std::hash` pour le type `Point2d` et vérifiez que `grid` peut maintenant être définie avec le type `std::unordered_map<Point2d, Content>`.
+
 
 ## Exercice 4 - set (30 min)
 
