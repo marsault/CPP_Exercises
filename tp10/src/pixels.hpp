@@ -51,7 +51,7 @@ template <>
 RGB convert<RGB, Luma>(const Luma& x) 
 { 
     const auto data = image_lib::grayscale_to_rgb(x.gray); 
-    return {data[0], data[1], data[2]};
+    return RGB {data[0], data[1], data[2]};
 }
 
 // RGBA -> Luma: on utilise convert<RGBA, RGB> et convert<RGB,Luma>
