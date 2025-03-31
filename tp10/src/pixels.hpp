@@ -107,3 +107,16 @@ RGB operator+(const Luma& lhs, const RGB& rhs)
     const auto new_rhs = convert<RGBA, RGB>(rhs);
     return convert<RGB, RGBA>(new_lhs + new_rhs);
 }
+
+// question D.5:
+RGBA operator+(const RGBA& lhs, const Luma& rhs)
+{
+    auto v = lhs;
+    v.a = v.a * rhs.gray / 255;
+    return v;
+}
+
+RGBA operator+(const RGB& lhs, const Luma& rhs)
+{
+    return convert<RGBA, RGB>(lhs) + rhs;
+}
