@@ -37,9 +37,16 @@ int main(int argc, char** argv)
     }
 
     {
-        const auto base   = image_lib::load<Luma, 499, 499>(input_path / "sonic_mask.png");
-        const auto effect = image_lib::load<RGBA, 499, 499>(input_path / "sonic_new_bg.png");
-        const auto sum    = base + effect;
+        const auto base        = image_lib::load<Luma, 499, 499>(input_path / "sonic_mask.png");
+        const auto effect_orig = image_lib::load<RGBA, 499, 499>(input_path / "sonic_new_bg.png");
+        const auto effect_gray = Image<RGBA, 499, 499>(
+            [&effect_orig](size_t i, size_t j)
+            {
+                RGBA p = effect_orig(i, j);
+                p.a    = 191u;
+                return p;
+            });
+        const auto sum = base + effect_gray;
         image_lib::save(sum, "images/sonic_mask_and_stars.png");
     }
 
