@@ -152,6 +152,23 @@ int main()
     // Tree
     factory.register_entity<Animal>("Dog", "dog");
 
+    // exercice 1.4.1: la sortie devient
+    // Object
+    // Jean
+    // dog
+    // Tree
+    // House owned by propriétaire
+    Person proprio("propriétaire");
+    factory.register_entity<House>("House", proprio);
+    // exercice 1.4.2
+    // Object
+    // Jean
+    // dog
+    // Tree
+    // House owned by Picsou
+    proprio.set_name("Picsou");
+
+
     std::vector<std::unique_ptr<Entity>> entities;
 
     std::stringstream s;
