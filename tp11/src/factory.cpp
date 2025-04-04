@@ -28,17 +28,32 @@ public:
     // également ce type de retour ici plutôt qu'un simple Entity
     using Builder = std::function<std::unique_ptr<Entity>()>;
 
-    template <typename TDerivedEntity>
-    // void register_entity(const std::string& id)
-    void register_entity(const std::string& id) /* 1.1.3: rajout de id */
+    // version originale:
+    // template <typename TDerivedEntity>
+    // void register_entity() 
+
+    // version modifiée:
+    template <typename TDerivedEntity, typename... TArgs> /* 1.3.3: ajout de template variadique*/
+    //                   1.1.3: rajout de id    1.1.3: rajout des arguments TArgs
+    void register_entity(const std::string& id, TArgs&&... args)
     {
         // exercice 1.1.3: on rajoute à la map la clé id, et la valeur associée est une lambda qui
         // invoquera le constructeur associé
+        /*
         _builders.emplace(
             id, 
-            []() 
+            []()
             {
-                return std::make_unique<TDerivedEntity>();
+                return std::make_unique<TDerivedEntity>(); 
+            }
+        );
+        */
+        // exercice 1.3.3: il faut maintenant transmettre les paramètres variadiques au constructeur
+        _builders.emplace(
+            id, 
+            [&args...]() // ne pas oublier l'expansion ici ...
+            {
+                return std::make_unique<TDerivedEntity>(std::forward<TArgs>(args)...); // ... et là
             }
         );
     }
@@ -118,9 +133,24 @@ private:
 int main()
 {
     Factory factory;
-    // exercice 1.2: la sortie est bien Object, suivi de Tree
+    // exercice 1.2: la sortie est bien:
+    // Object
+    // Tree
     factory.register_entity<Object>("Object");
     factory.register_entity<Tree>("Tree");
+
+    // exercice 1.3.1: le programme ne compilera pas avant d'avoir adapté register_entity
+    // une fois l.3.2 terminé, la sortie devient:
+    // Object
+    // Jean
+    // Tree
+    factory.register_entity<Person>("Person", "Jean");
+    // exercice l.3.3: la sortie devient:
+    // Object
+    // Jean
+    // dog
+    // Tree
+    factory.register_entity<Animal>("Dog", "dog");
 
     std::vector<std::unique_ptr<Entity>> entities;
 
