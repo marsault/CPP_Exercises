@@ -1,4 +1,6 @@
+#include <functional>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -22,16 +24,33 @@ public:
 class Factory
 {
 public:
-    // using Builder = ...;
+    using Builder = std::function<std::unique_ptr<Entity>()>;
 
-    template <typename TDerivedEntity>
-    void register_entity()
-    {}
+    // template <typename TDerivedEntity>
+    // void register_entity(std::string id)
+    // {
+    //     _builders.emplace(id, []() { return std::make_unique<TDerivedEntity>(); });
+    // }
 
-    std::unique_ptr<Entity> build(const std::string& id) const { return nullptr; }
+    template <typename TDerivedEntity, typename... Args>
+    void register_entity(std::string id, Args&&... args)
+    {
+        _builders.emplace(id, [&args...]()
+                          { return std::make_unique<TDerivedEntity>(std::forward<Args>(args)...); });
+    }
+
+    std::unique_ptr<Entity> build(const std::string& id) const
+    {
+        auto it = _builders.find(id);
+        if (it != _builders.end())
+        {
+            return it->second();
+        }
+        return nullptr;
+    }
 
 private:
-    // ...
+    std::map<std::string, Builder> _builders;
 };
 
 class Object : public Entity
@@ -91,8 +110,17 @@ private:
 int main()
 {
     Factory factory;
-    // factory.register_entity<Object>("Object");
+    factory.register_entity<Object>("Object");
 
+    factory.register_entity<Tree>("Tree");
+
+    factory.register_entity<Person>("Person", "Jean");
+
+    factory.register_entity<Animal>("Dog", "dog");
+
+    auto thierno = Person("Thierno");
+
+    factory.register_entity<House>("House", thierno);
     std::vector<std::unique_ptr<Entity>> entities;
 
     std::stringstream s;

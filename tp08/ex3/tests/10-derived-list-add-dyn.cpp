@@ -4,6 +4,7 @@
 #include "../src/DerivedString.hpp"
 
 #include <catch2/catch_test_macros.hpp>
+#include <sstream>
 
 class Derived42 : public DerivedInt
 {

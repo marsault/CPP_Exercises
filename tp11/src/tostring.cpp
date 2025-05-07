@@ -2,10 +2,39 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <type_traits>
+#include <typeinfo>
 #include <vector>
 
 template <typename T>
-auto to_string(const T& data)
+constexpr bool is_std_string_v = std::is_same_v<std::decay_t<T>, std::string>;
+
+template <typename T>
+constexpr bool is_c_string_v = std::is_convertible_v<T, const char*> && !is_std_string_v<T>;
+
+template <typename T>
+std::enable_if_t<is_c_string_v<T>, std::string> to_string(const T& data)
+{
+    return std::string(data);
+}
+
+template <typename T>
+std::enable_if_t<is_std_string_v<T>, std::string> to_string(const T& data)
+{
+    return data;
+}
+
+template <typename T>
+constexpr bool is_num = std::is_arithmetic_v<T>;
+
+template <typename T>
+std::enable_if_t<is_num<T>, std::string> to_string(const T& data)
+{
+    return std::to_string(data);
+}
+
+template <typename T>
+std::enable_if_t<!is_c_string_v<T> && !is_std_string_v<T> && !is_num<T>, std::string> to_string(const T& data)
 {
     std::stringstream ss;
     ss << "<" << typeid(data).name() << ": " << &data << ">";
@@ -39,7 +68,8 @@ class Both : public Streamable, public Convertible
 {};
 
 template <typename T>
-void print_test(std::string type, T&& value) {
+void print_test(std::string type, T&& value)
+{
     std::cout << type << std::endl;
     std::cout << "** Error: value is not a std::string" << std::endl;
 }

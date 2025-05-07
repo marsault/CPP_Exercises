@@ -45,7 +45,8 @@ int main()
 
 ![](images/ex1-a.svg)
 
-1. Pourquoi n'y a-t-il pas de relation entre `last_wheel` et `wheels[3]` contrairement à `first_wheel` et `wheels[0]` ?
+1. Pourquoi n'y a-t-il pas de relation entre `last_wheel` et `wheels[3]` contrairement à `first_wheel` et `wheels[0]` ?  
+   - Parce que `last_wheel` est une copie de `wheels.back()`, alors que `first_wheel` est une référence à `wheels.front()`.
 
 ### Cas B - Pointeurs-observants
 
@@ -73,8 +74,11 @@ int main()
 ![](images/ex1-b.svg)
 
 1. Dans le graphe d'ownership, comment distingue-t-on un pointeur d'une référence ?
+   - Non.
 2. Comment est représenté un pointeur nul ?
+   - Par un pointeur qui pointe vers un rond rempli d'une croix.
 3. En termes de code, quelles sont les deux différences principales entre un pointeur-observant et une référence ?
+   - Un pointeur-observant peut être nul, et peut être réaffecté.
 
 ### Cas C - Insertions dans un `std::vector`
 
@@ -110,10 +114,45 @@ Lors d'une insertion, si le buffer mémoire réservé par `std::vector` n'a pas 
 Chaque élément est déplacé de son ancienne adresse mémoire vers la nouvelle.
 
 1. Essayez de représenter les transitions dans le graphe d'ownership après le dernier `push_back` si celui-ci déclenchait une réallocation mémoire.
+   - ![](images/CasC1.png)
 2. Quel problème relève-t-on dans le graphe ?
+   - `first_product` est une référence sur un élément qui a été déplacé lors de la réallocation mémoire, et pointe donc vers une zone mémoire invalide.
 3. Modifiez le code ci-dessus afin que `products` contienne des pointeurs ownants. Pensez à ajouter un destructeur à `Client` pour libérer la mémoire allouée dynamiquement.
+   - ```cpp
+        #include <memory>
+        #include <vector>
+
+        struct Product
+        {};
+
+        struct Client
+        {
+            ~Client()
+            {
+                for (auto product : products)
+                {
+                    delete product;
+                }
+            }
+            std::vector<Product*> products;
+        };
+
+        int main()
+        {
+            auto client = Client {};
+
+            client.products.push_back(new Product{});
+            client.products.push_back(new Product{});
+
+            auto first_product = client.products.front();
+                                                            
+            client.products.push_back(new Product{});
+            return 0;
+        }
+        ```
 4. Redessinez le graphe d'ownership de la question 1, mais en prenant en compte vos changements dans le code.
 5. Avez-vous toujours le problème relevé à la question 2 ?
+   - Oui on a toujours le problème en cas de réallocation du vector.
 
 ## Exercice 2 - La meilleure signature (15min)
 
@@ -122,18 +161,15 @@ Chaque élément est déplacé de son ancienne adresse mémoire vers la nouvelle
 ```cpp
 #include <iostream>
 
-XX add(XX a, XX b)
-{
+int add(const int& a, const int& b) {
     return a + b;
 }
 
-XX add_to(XX a, XX b)
-{
+void add_to(int& a, const int& b) {
     a += b;
 }
 
-int main()
-{
+int main() {
     int x = 10;
     int y = add(x, x);
     add_to(y, 22);
@@ -146,7 +182,7 @@ int main()
 Vous pouvez vous aider des commentaires pour comprendre comment les fonctions utilisent leurs paramètres.
 ```cpp
 // Return the number of occurrences of 'a' found in string 's'.
-int count_a_occurrences(std::string s);
+int count_a_occurrences(const std::string& s);
 
 // Update function of a rendering program.
 // - dt (delta time) is read by the function to know the time elapsed since the last frame.
@@ -160,11 +196,11 @@ void update_loop(const float& dt, std::string& errors_out);
 //    -> res is false, since not all values are positive
 //    -> negative_indices contains { 1, 3 } because values[1] = -2 and values[3] = -4
 //    -> negative_count is 2
-bool are_all_positives(std::vector<int> values, int negative_indices_out[], size_t& negative_count_out);
+bool are_all_positives(const std::vector<int>& values, int negative_indices_out[], size_t& negative_count_out);
 
 // Concatenate 'str1' and 'str2' and return the result.
 // The input parameters are not modified by the function.
-std::string concatenate(char* str1, char* str2);
+std::string concatenate(const char* str1, const char* str2);
 ```
 
 ## Exercice 3 - Gestion des resources (55min)
@@ -243,6 +279,7 @@ Ce programme instancie les mêmes données que celles présentées dans les sch�
 Pour quelle raison le programme utilise-t-il des `std::list` plutôt que des `std::vector` pour stocker les départements et les employés ?  
 Si vous ne trouvez pas, remplacez les `list` par des `vector` et lancez le programme en mode Debug pour observer le comportement.
 En particulier, utilisez le debugger pour surveiller le contenu de `rd_dpt`.
+    - Car on ne veut pas que les éléments soient déplacés lors de l'ajout d'un nouvel élément vu que les pointeurs-observants pointent vers les éléments de ces listes.
 
 2. Implémentez la fonction `print_employees` dans la classe `Department` (notez que `operator<<` est déjà fourni pour `Employee`).  
 Faites de même pour `print_all_departments` et `print_all_employees` dans la classe `HRSoftSystem`.  

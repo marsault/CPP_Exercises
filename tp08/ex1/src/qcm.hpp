@@ -44,7 +44,7 @@ private:
 };
 #endif
 // Est-ce que l'implémentation 1 est meilleure que l'implémentation 2?
-#define ANSWER_1
+#define ANSWER_1 true
 
 // 2. // ====================================================================================================
 // Voici deux implémentations de constructeurs pour une classe Dog
@@ -74,7 +74,7 @@ private:
 };
 #endif
 // Est-ce que l'implémentation 1 est meilleure que l'implémentation 2?
-#define ANSWER_2
+#define ANSWER_2 false
 
 // 3. // ====================================================================================================
 #ifdef CODE_IGNORE_PAR_LE_COMPILATEUR
@@ -94,7 +94,7 @@ private:
 #endif
 // Est-ce que l'utilisation de la classe ci-dessus est susceptible de créer des problèmes de mémoire (fuite,
 // double-déallocation, etc.) ?
-#define ANSWER_3
+#define ANSWER_3 true
 
 // 4. // ====================================================================================================
 #ifdef CODE_IGNORE_PAR_LE_COMPILATEUR
@@ -120,7 +120,7 @@ private:
 #endif
 // Est-ce que l'utilisation de la classe ci-dessus est susceptible de créer des problèmes de mémoire (fuite,
 // double-déallocation, etc.) ?
-#define ANSWER_4
+#define ANSWER_4 false
 
 // 5. // ====================================================================================================
 #ifdef CODE_IGNORE_PAR_LE_COMPILATEUR
@@ -146,7 +146,7 @@ private:
 #endif
 // Est-ce que l'utilisation de la classe ci-dessus est susceptible de créer des problèmes de mémoire (fuite,
 // double-déallocation, etc.) ?
-#define ANSWER_5
+#define ANSWER_5 true
 
 // 1X. // ================================================================================================
 // Pour les questions 1X, on considère le code ci-dessous.
@@ -171,19 +171,19 @@ int main()
 #endif
 // Dans les questions suivantes, on ne parle que de la ligne 4.
 // 10. L'expression w est-elle une R-value?
-#define ANSWER_10
+#define ANSWER_10 false
 // 11. L'expression 1 est-elle une R-value?
-#define ANSWER_11
+#define ANSWER_11 true
 // 12. L'expression x+1 est-elle une R-value?
-#define ANSWER_12
+#define ANSWER_12 true
 // 13. L'expression y est-elle une R-value?
-#define ANSWER_13
+#define ANSWER_13 false
 // 14. L'expression g(x + 1, y) est-elle une R-value?
-#define ANSWER_14
+#define ANSWER_14 true
 // 15. L'expression f(g(x + 1, y), z) est-elle une R-value?
-#define ANSWER_15
+#define ANSWER_15 false
 // 16. L'expression f(w, f(g(x + 1, y), z)) est-elle une R-value?
-#define ANSWER_16
+#define ANSWER_16 false
 
 // 2X. // ===================================================================================================
 // Pour les questions 2X, on conside un programme avec deux classes, Fille et Mère, où Fille hérite de Mère.
@@ -197,16 +197,16 @@ int main()
 #endif
 // 20. Si je veux redéfinir fct() dans Fille, je dois utiliser le mot-clef "virtual" dans la déclaration on de
 // Mere::fct(), sans quoi Fille::fct() ne sera pas appelée à la ligne 2 ci-dessus.
-#define ANSWER_20
+#define ANSWER_20 true
 // 21. Si je veux redéfinir fct() dans Fille, je dois utiliser le mot-clef "virtual" dans la déclaration de
 // Fille::fct(), sans quoi Fille ::fct() ne sera pas appelée à la ligne 2 ci-dessus.
-#define ANSWER_21
+#define ANSWER_21 false
 // 22. Si je veux redéfinir fct() dans Fille, je dois utiliser le mot-clef "override" dans la définition de
 // Fille::fct(), sans quoi Fille::fct() ne sera pas appelée ligne 2 ci-dessus.
-#define ANSWER_22
+#define ANSWER_22 false
 // 23. Si Mere::fct() est virtuelle pure, il est impossible d'instancier la classe Mere.
-#define ANSWER_23
+#define ANSWER_23 true
 // 24. On utilise le mot-clef "pure virtual" pour indiquer qu'une fonction-membre est virtuelle pure.
-#define ANSWER_24
+#define ANSWER_24 false // virtual ... = 0;
 // 25. S'il est impossible d'instancier la classe Mere, le code à la ligne 1 ci-dessus ne compile pas.
-#define ANSWER_25
+#define ANSWER_25 false

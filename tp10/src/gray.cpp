@@ -1,6 +1,6 @@
 #include "../lib/image_lib.hpp"
 #include "image.hpp"
-#include "pixels.hpp"
+//#include "pixels.hpp"
 
 #include <filesystem>
 #include <iostream>
