@@ -170,8 +170,8 @@ Si vous avez réussi à le faire passer, passez au test suivant, etc.
 
 Le test `ex2-01` demande de trouver deux types qui ont le comportement attendu. Il faut utiliser des alias et il est inutile de créer de nouvelles classes.
 
-Les questions 1X de cet exercice reposent sur la classe [`InstanceCounter`](ex2/lib/InstanceCounter.hpp) qui est fournie.  Prenez le temps de bien lire le code cette classe avant de commencer à coder.  
-Le but est de coder une classe `StringInstancePair` qui représente une paire (`std::string`, `InstanceCounter`) tout en satisfaisant un certain nombre de contraintes posées par les tests.
+Les questions 1X de cet exercice reposent sur la classe [`Tracker`](ex2/lib/Tracker.hpp) qui est fournie.  Prenez le temps de bien lire le code cette classe avant de commencer à coder.
+Le but est de coder une classe `StringInstancePair` qui représente une paire (`std::string`, `Tracker`) tout en satisfaisant un certain nombre de contraintes posées par les tests.
 
 
 ## Exercice 3 - Petit exercice sur l'héritage (45 min)
