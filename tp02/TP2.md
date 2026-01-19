@@ -29,60 +29,61 @@ Vous allez avoir besoin de représenter les éléments suivants :
 
 Divers fichiers doivent être manipulés dans le cadre de ce TP. De manière générale, sauf indication contraire, les fichiers d'en-tête (`.hpp`) doivent contenir toutes les *déclarations*, tandis que les fichiers source (`.cpp`) doivent contenir toutes les *définitions*.
 
-Vous serez amenés à définir des fonctions-membres ou des attributs dits **statiques**:
+Vous serez amenés à définir des fonctions-membres ou des attributs dits **de classe** (ou `static`):
 
-1. un **attribut statique** est partagé par toutes les instances d'une classe, et possèdera donc la même valeur indépendamment de l'objet créé; toute modification de cet attribut se répercute donc sur les autres instances de la classe, puisqu'elles se partagent le même champ;
-1. une **fonction-membre statique** peut être utilisée sans instancier la classe; si `f` est une fonction-membre statique de la classe `C`, on pourra donc écrire directement `C::f(bla);` plutôt que `auto X = C(); X.f(bla);`
-    
+1. un **attribut de classe** est partagé par toutes les instances d'une classe, et possèdera donc la même valeur indépendamment de l'objet créé; toute modification de cet attribut se répercute donc sur les autres instances de la classe, puisqu'elles se partagent le même champ;
+2. une **fonction-membre de classe (ou `static`)** peut être utilisée sans instancier la classe; si `f` est une fonction-membre statique de la classe `C`, on pourra donc écrire directement `C::f(bla);` plutôt que `auto X = C(); X.f(bla);`
+
+**/!\ Dans ce TP nous allons utiliser CMake et Make pour compiler**
+
 ### La classe `Card` (50min)
 
-1. Créez trois fichiers `Card.cpp`, `Card.hpp` et `main.cpp`.
+1. Créez quatre fichiers: `Card.cpp`, `Card.hpp` et `main.cpp` (avec une fonction `main` vide) et `CMakeLists.txt` (en vous inspirant de [celui donné dans le cours](https://monge.univ-eiffel.fr/~marsault/cpp/cours/help/workflow/index.html)).
 2. Dans le fichier `Card.hpp`, déclarez une classe `Card` avec deux attributs privés `_value` et `_color`.  
-Sachant que `_value` ne peut pas être négatif, quel type pouvez-vous utiliser ?  
-Pour `_color`, vous pouvez utiliser `std::string`.
-3. Déclarez un constructeur à deux paramètres permettant d'initialiser les deux attributs de la classe.  
+Sachant que ces deux attributs ne peuvent prendre qu'un nombre fini de valeurs différentes, quel type doit on choisir pour eux?
+3. Créer les nouveaux `.hpp` et `.cpp` pour ces types (et n'oubliez pas de mettre à jour le `CMakeLists.txt`) que l'on appelera `Value` et `Color`.
+4. Déclarez un constructeur à deux paramètres permettant d'initialiser les deux attributs de la classe.  
 Vous placerez l'implémentation de cette fonction dans le fichier `Card.cpp`.
-4. Ajoutez une fonction-membre `print` qui affichera dans un premier temps : `"<value> de <color>"`. Par exemple, pour le roi de carreau, on pourra afficher `"13 de Carreau"` (sans saut de ligne final).
-5. Dans le fichier `main.cpp`, définissez une fonction `main` et ajoutez-y le code suivant pour vérifier que tout fonctionne :
+5. Ajoutez une fonction-membre `print` qui affichera dans un premier temps : `"<value> de <color>"`. Par exemple, pour le roi de carreau, on pourra afficher `"13 de Carreau"` (sans saut de ligne final).  Il sera sans doute utile de rajouter une fonction-libre `print` pour afficher des `Value` et `Color`.
+6. Dans le fichier `main.cpp`, définissez une fonction `main` et ajoutez-y le code suivant pour vérifier que tout fonctionne :
 
     ```cpp
-    Card c1 { 8, "Pique" };
+    Card c1 { Value::Huit, Color::Pique };
     c1.print();
     ```
 
-6. Indiquez maintenant que `c1` est `const` et vérifiez que le code compile toujours. Ajoutez ce qu'il faut sur la définition de `print` si ce n'est pas le cas.
+7. Indiquez maintenant que `c1` est `const` et vérifiez que le code compile toujours. Ajoutez ce qu'il faut sur la définition de `print` si ce n'est pas le cas.
 
     ```cpp
-    const Card c1 { 8, "Pique" };
+    const Card c1 { Value::Huit, Color::Pique };
     c1.print();
     ```
 
-7. Vous allez maintenant définir un opérateur d'égalité pour la classe `Card` en tant que **fonction-membre**. Celui-ci aura pour objectif de vérifier si deux cartes ont la même valeur (on ne considère pas la couleur).  
+8. Vous allez maintenant définir un opérateur d'égalité pour la classe `Card` en tant que **fonction-membre**. Celui-ci aura pour objectif de vérifier si deux cartes ont la même valeur (on ne considère pas la couleur).  
 Ajoutez les instructions suivantes dans le `main` pour vérifier que votre code est juste :
 
     ```cpp
-    Card c2 { 8, "Pique" };
+    Card c2 { Value::Huit, Color::Coeur };
     std::cout << (c2 == c1) << std::endl; // -> 1
-    Card c3 { 10, "Carreau" };
+    Card c3 { Value::As, Color::Carreau };
     std::cout << (c2 == c3) << std::endl; // -> 0 
     ```
 
-8. Ajoutez `const` devant `c2` et `c3`.  
+9. Ajoutez `const` devant `c2` et `c3`.  
 Vérifiez que le code compile toujours et modifiez ce qu'il faut si ce n'est plus le cas.
-9. Définissez maintenant l'opérateur d'infériorité stricte, sur le même principe que l'opérateur d'égalité, afin de faire fonctionner le code suivant :
+10. Définissez maintenant l'opérateur d'infériorité stricte, sur le même principe que l'opérateur d'égalité, afin de faire fonctionner le code suivant :
 
     ```cpp
     std::cout << (c1 < c2) << std::endl; // -> 0
     std::cout << (c1 < c3) << std::endl; // -> 1
     std::cout << (c3 < c1) << std::endl; // -> 0
     ```
+    Pour vous simplififier la vie, faites en sorte que `Value::As` soit la plus grande valeur de l'enum.
 
-10. **(Bonus)** Modifiez l'implémentation de `print` pour qu'elle affiche `"As"`, `"Roi"`, `"Dame"` et `"Valet"` plutôt que les valeurs associées.
+11. **(Bonus)** Modifiez l'implémentation de `print` pour qu'elle affiche `"As"`, `"Roi"`, `"Dame"` et `"Valet"` plutôt que les valeurs associées.
 Essayez de ne pas utiliser de `if` !
-11. **(Bonus)** Remplacez la fonction `print` par un opérateur de flux. 
+12. **(Bonus)** Remplacez la fonction `print` par un opérateur de flux. 
 Que devez-vous faire pour que cette fonction puisse accéder aux attributs de `Card`, sans changer leur visibilité ?
-12. **(Bonus)** Définissez deux `enum-class` (vous pouvez rechercher de quoi il s'agit sur Internet) `CardValue` et `CardColor`.
-Remplacez les types de `_value` et `_color` et adaptez le code pour que le programme compile, tout en conservant le même comportement.
 
 ### La classe `Player` (40min)
 
@@ -92,9 +93,11 @@ Remplacez les types de `_value` et `_color` et adaptez le code pour que le progr
 Si vous ne précisez rien pour `_cards`, comment sera initialisé l'attribut ?  
 Même question pour `_score`.  
 Ajoutez un class-initializer pour assigner à `_score` la valeur 0.
-4. Vous allez maintenant définir une **fonction-membre statique** permettant de distribuer les cartes entre les joueurs. Voici le prototype attendu : `void Player::deal_all_cards(Player& p1, Player& p2);`. 
+4. Vous allez maintenant définir une **fonction-membre de classe** permettant de distribuer les cartes entre les joueurs. Voici le prototype attendu : `void Player::deal_all_cards(Player& p1, Player& p2);`. 
 En ce qui concerne l'implémentation :
-    - Commencez par déclarer une variable locale `std::vector<Card> all_cards`, dans laquelle vous ajoutez toutes les cartes possibles (vous pouvez utiliser deux boucles `for` imbriquées).
+    - Commencez par déclarer une variable locale `std::vector<Card> all_cards`, dans laquelle vous ajoutez toutes les cartes possibles. Il est conseillé de:
+        - rajouter deux variables globales `all_values` et `all_color` qui contiennent toutes les valeurs possibles de `Value` et `Color`; il faut les déclarer avec `extern` dans le `.hpp`
+        - utiliser deux boucles `for` imbriquées
     - Copiez-collez les instructions ci-dessous (vous aurez besoin d'include `<algorithm>` et `<random>`). Elles permettent de mélanger le tableau de façon aléatoire.
 
         ```cpp
@@ -129,12 +132,15 @@ Dedans, vous afficherez les deux cartes jouées au tour courant.
 Vous incrémenterez le score du joueur qui remporte le pli (en cas d'égalité, pas de changement), puis vous augmenterez le nombre de tours.  
 La fonction renverra sous forme de booléen si la partie est terminée ou pas.
 Attention, cette fonction **ne modifie pas** le contenu de `Player::_cards`, n'essayez pas de supprimer des éléments du `std::vector`.
-4. Enfin, définissez un **getter** dans `Player` permettant de récupérer le score de chaque joueur.  
+3. Enfin, définissez un **getter** dans `Player` permettant de récupérer le score de chaque joueur.  
 Assurez-vous qu'il puisse être utilisé sur des variables `const`. 
-5. Modifiez la fonction `main` pour simuler une partie de bataille entre `Julien` et `Gerald`.
-6. **(Bonus)** A quoi sert la fonction `std::this_thread::sleep_for` ?
+4. Modifiez la fonction `main` pour simuler une partie de bataille entre `Julien` et `Gerald`.   
+    - On ne fera qu'un tour de paquet; il est donc inutile de remettre la carte du perdant à la fin du paquet du gagnant.
+    - On comptera le nombre de pli gagné par chacun des joueurs pour déterminer le gagnant.
+    - En cas d'égalité, personne ne gagne de point.
+5. **(Bonus)** A quoi sert la fonction `std::this_thread::sleep_for` ?
 Utilisez-la dans votre code pour qu'une seconde s'écoule entre chaque pli.
-7. **(Bonus)** Modifiez votre code de manière à gérer l'égalité comme dans les règles officielles : on pose une carte face cachée, puis une carte face visible, et le gagnant remporte alors 3 points au lieu de 1.
+6. **(Bonus)** Modifiez votre code de manière à gérer l'égalité comme dans les règles officielles : on prend la carte suivante et le gagnant remporte autant de point que le nombre de cartes révélées.
 
     1. dans un premier temps, attribuez 0 points aux joueurs si les nouvelles cartes visibles sont égales en valeur, ou si les joueurs terminent leurs paquets avant de pouvoir placer cette nouvelle carte;
-    1. ensuite, gérez les nouvelles égalités qui peuvent survenir un nombre arbitraire de fois; les points remportés seront soit la moitié des cartes déposées pour cette bataille s'il y a un vainqueur, soit 0 points si l'on vide les paquets avant de pouvoir conclure.
+    2. ensuite, gérez les nouvelles égalités qui peuvent survenir un nombre arbitraire de fois; les points remportés seront soit la moitié des cartes déposées pour cette bataille s'il y a un vainqueur, soit 0 points si l'on vide les paquets avant de pouvoir conclure.
