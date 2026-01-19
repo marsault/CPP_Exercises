@@ -3,6 +3,7 @@
 #include <random>       // default_random_engine, random_device
 #include <algorithm>    // shuffle
 #include <iostream>     // cout, endl
+#include <thread> // this_thread
 
 Player::Player(const std::string& nom) : _score(0)
 {
@@ -17,19 +18,19 @@ Player::~Player()
 void Player::deal_all_cards(Player& premier, Player& second) {
     // initialiser toutes les cartes
     std::vector<Card> all_cards;
-    for(int valeur=1; valeur<=13; ++valeur)
-        for(const auto& couleur: {"Coeur", "Pique", "Trèfle", "Carreau"})
-            all_cards.emplace_back(valeur, couleur);
+    for(Value v: all_values)
+        for(Color c: all_colors)
+            all_cards.emplace_back(v, c);
 
     // mélanger le paquet
     std::random_device rd;
-    std::shuffle(all_cards.begin(), all_cards.end(), std::default_random_engine(rd()));
+     std::shuffle(all_cards.begin(), all_cards.end(), std::default_random_engine(rd()));
 
     // ajouter la première moitié de all_cards à la main du premier joueur et la seconde moitié
     // à la main du second joueur
     for(int i=0, s=all_cards.size() / 2; i<s; ++i) {
-        premier._cards.push_back(all_cards[i]);
-        second._cards.push_back(all_cards[i+s]);
+        premier._cards.push_back(all_cards[2*i]);
+        second._cards.push_back(all_cards[2*i+1]);
     }
 }
 
@@ -38,55 +39,61 @@ Card Player::operator[] (const unsigned& i) {
 }
 
 bool Player::play(Player& premier, Player& second) {
-    premier._cards.pop_back();
-    second._cards.pop_back();
+
+    Card card1 = premier[Player::turn_number+Player::card_offset];
+    Card card2 = second[Player::turn_number+Player::card_offset];
 
     // afficher les deux cartes jouées au tour courant
-    std::cout << "Joueur 1 (" << premier._name << "): " << premier._cards.back() << std::endl;
-    std::cout << "Joueur 2 (" << second._name << "): " << second._cards.back() << std::endl;
+    std::cout << "Joueur 1 (" << premier._name << "): " << card1 << std::endl;
+    std::cout << "Joueur 2 (" << second._name << "): " << card2 << std::endl;
 
     // mettre à jour les scores
-    if(premier._cards.back() < second._cards.back()) {
+    if(card1 < card2) {
         std::cout << "Joueur 2 remporte le pli" << std::endl;
         ++second._score;
     }
-    else if (second._cards.back() < premier._cards.back()) {
+    else if (card2 < card1) {
         std::cout << "Joueur 1 remporte le pli" << std::endl;
         ++premier._score;
     }
     else {
-        // égalité (bonus 6.1): une seule bataille
-        // vérifions d'abord s'il reste des cartes, sinon le comportement de pop_back() est indéfini
-        if(premier._cards.empty() and second._cards.empty())
-            return true; 
+        // Gestion des égalité (question bonus 6)
 
-        premier._cards.pop_back();
-        second._cards.pop_back();
+        unsigned new_offset=1;
+        while (premier._cards.size() > (Player::turn_number+Player::card_offset+new_offset)) {
+            std::this_thread::sleep_for(std::chrono::seconds(1)); // bonus
+            Card card1 = premier[Player::turn_number+Player::card_offset+new_offset];
+            Card card2 = second[Player::turn_number+Player::card_offset+new_offset];
+            // afficher les deux cartes jouées au tour courant
 
-        if(premier._cards.empty() and second._cards.empty())
-            return true; 
+                std::cout << "  Egalité (n°" << new_offset << ")" << std::endl;
+                std::cout << "  Joueur 1 (" << premier._name << "): " << card1 << std::endl;
+                std::cout << "  Joueur 2 (" << second._name << "): " << card2 << std::endl;
 
-        // afficher les deux nouvelles cartes 
-        std::cout << "\tJoueur 1 (" << premier._name << "): " << premier._cards.back() << std::endl;
-        std::cout << "\tJoueur 2 (" << second._name << "): " << second._cards.back() << std::endl;
-
-        if(premier._cards.back() < second._cards.back()) {
-            std::cout << "\tJoueur 2 remporte la bataille" << std::endl;
-            second._score += 3;
+            // mettre à jour les scores
+                if(card1 < card2) {
+                    std::cout << "  Joueur 2 remporte l'égalité (" << new_offset+1 << " points)" <<std::endl;
+                    second._score+=new_offset+1;
+                    break;
+                }
+                else if (card2 < card1) {
+                    std::cout << "  Joueur 1 remporte l'égalité (" << new_offset+1 << " points)" <<std::endl;
+                    premier._score+=new_offset+1;
+                    break;
+                }
+                else {
+                    ++new_offset;
+                    if (premier._cards.size() <= (Player::turn_number+Player::card_offset+new_offset)) {
+                        std::cout << "  Plus assez de cartes pour départager l'égalité. Personne ne gagne de points" << std::endl;
+                        return false;
+                    }
+                }
         }
-        else if (second._cards.back() < premier._cards.back()) {
-            std::cout << "\tJoueur 2 remporte la bataille" << std::endl;
-            premier._score += 3;
-        }
-        else {
-            std::cout << "\tNouvelle égalité, pas de modification des points" << std::endl;
-        }
-        
+        Player::card_offset+=new_offset;
     }
-    ++turn_number;
+    ++Player::turn_number;
 
-    // la partie est finie quand il n'y a plus de cartes
-    return not(premier._cards.empty() and second._cards.empty());
+    return premier._cards.size() > Player::turn_number+Player::card_offset;
 }
 
 unsigned int Player::get_score() const {

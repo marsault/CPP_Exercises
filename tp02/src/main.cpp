@@ -5,17 +5,21 @@
 
 int main() {
     // test basique
-    const Card c1 { 8, "Pique" };
+    const Card c1 { Value::Huit, Color::Pique };
     c1.print();
 
+    std::cout << std::endl;
+
     // test de ==
-    const Card c2 { 8, "Pique" };
+    const Card c2 { Value::Huit, Color::Pique };
     std::cout << (c2 == c1) << std::endl; // -> 1
     c2.print();
-    const Card c3 { 10, "Carreau" };
+    std::cout << std::endl;
+    const Card c3 { Value::As, Color::Carreau };
     std::cout << (c2 == c3) << std::endl; // -> 0 
     c3.print();
 
+    std::cout << std::endl;
     // test de <
     std::cout << (c1 < c2) << std::endl; // -> 0
     std::cout << (c1 < c3) << std::endl; // -> 1
@@ -23,8 +27,8 @@ int main() {
 
     // test bonus print
     std::cout << "Test du bonus (print)" << std::endl;
-    for(unsigned i: {11, 12, 13, 14}) {
-        const Card c { i, "Carreau" };
+    for(unsigned i: {11, 12, 13}) {
+        const Card c { static_cast<Value>(i), Color::Coeur };
         c.print();
         std::cout << std::endl;
     }

@@ -9,6 +9,7 @@ class Player {
         std::vector<Card> _cards;
         unsigned _score;
         inline static unsigned turn_number = 0;
+        inline static unsigned card_offset = 0; //pour traiter les égalité, question bonus 6
 
     public:
         Player(const std::string&);
