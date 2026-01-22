@@ -15,66 +15,92 @@
 ```cpp
 #include <array>
 
-struct Driver
+class Driver
 {};
 
-struct Wheel
+class Wheel
 {};
 
-struct Car
+class Car
 {
+public:
     Car(Driver& d)
     : driver { d }
     {}
 
-    Driver&              driver;
-    std::array<Wheel, 4> wheels;
+    Driver&            driver;
+    std::vector<Wheel> wheels;
 };
 
 int main()
 {
     auto driver = Driver {};
-    auto car = Car { driver };
+    {
+        auto car = Car { driver };
+        for (auto i=0u; i<4u; ++i)
+            car.wheels.emplace_back(Wheel{});
 
-    auto& first_wheel = car.wheels.front();
-    auto  last_wheel = car.wheels.back();
-                                                // <-- on est ici
+
+        auto& first_wheel = car.wheels.front();
+        auto  last_wheel = car.wheels.back();
+        // <-- On se place ici pour la question 1.
+    }
+    // <- On se place ici pour la question 2.
     return 0;
 }
 ```
+1. Voici le graphe d'ownership au premier commentaire.
 
-![](images/ex1-a.svg)
+   ![](images/ex1-a.svg)
 
-1. Pourquoi n'y a-t-il pas de relation entre `last_wheel` et `wheels[3]` contrairement à `first_wheel` et `wheels[0]` ?
+   Pourquoi n'y a-t-il pas de relation entre `last_wheel` et `wheels[3]` contrairement à `first_wheel` et `wheels[0]` ?
+
+2. a. Quels sont les objets qui ont été détruits quand on arrive au deuxième commentaire ?
+
+    b. A-t-on des dangling références? Pourquoi ?
 
 ### Cas B - Pointeurs-observants
 
 ```cpp
-struct Worker;
-
-struct Worker
+class Worker
 {
+public:
     const Worker* manager = nullptr; 
 };
 
 int main()
 {
     Worker boss;
-    Worker cto;
-    Worker technician;
+    {
+        Worker cto;
+        Worker technician;
 
-    cto.manager = &boss;
-    technician.manager = &cto;
-                                    // <-- on est ici
+        cto.manager = &boss;
+        technician.manager = &cto;
+        // <-- se place ici pour la question 1.
+    }
+    // <-- se place ici pour la question 3.
     return 0;
 }
 ```
 
-![](images/ex1-b.svg)
 
-1. Dans le graphe d'ownership, comment distingue-t-on un pointeur d'une référence ?
-2. Comment est représenté un pointeur nul ?
-3. En termes de code, quelles sont les deux différences principales entre un pointeur-observant et une référence ?
+
+1. Voici le graphe d'ownership au premier commentaire
+   ![](images/ex1-b.svg)
+
+   a. Dans le graphe d'ownership, comment distingue-t-on un pointeur d'une référence ?
+
+   b. Comment est représenté un pointeur nul ?
+
+2. En termes de code, quelles sont les deux différences principales entre un pointeur-observant et une référence ?
+
+3. a. Quels sont les objets détruits quand on arrive au deuxième commentaire.
+
+   b. A-t-on des dangling pointeurs? lesquels et pourquoi?
+
+   c. Expliquer pourquoi le problème ne s'était pas posé avec des références dans la question 2b.
+
 
 ### Cas C - Insertions dans un `std::vector`
 
@@ -82,24 +108,29 @@ int main()
 #include <memory>
 #include <vector>
 
-struct Product
+class Product
 {};
 
-struct Client
+class Client
 {
+public:
     std::vector<Product> products;
 };
 
 int main()
 {
-    auto client = Client {};
+    {
+        auto client = Client {};
+        client.products.push_back(Product{});
+        client.products.push_back(Product{});
 
-    client.products.push_back(Product{});
-    client.products.push_back(Product{});
+        auto& first_product = client.products.front();
+        // <-- Le graphe d'ownership donné se situe ici
 
-    auto& first_product = client.products.front();
-                                                    // <-- on est ici
-    client.products.push_back(Product{});
+        client.products.push_back(Product{});
+        // <-- A la question 1, on dessine le graphe ici
+    }
+    // <--  On se place ici pour la question 6
     return 0;
 }
 ```
@@ -109,11 +140,14 @@ int main()
 Lors d'une insertion, si le buffer mémoire réservé par `std::vector` n'a pas la place de contenir le nouvel élément, alors le contenu du tableau est réalloué dans un tout nouveau buffer de taille suffisante.
 Chaque élément est déplacé de son ancienne adresse mémoire vers la nouvelle.
 
-1. Essayez de représenter les transitions dans le graphe d'ownership après le dernier `push_back` si celui-ci déclenchait une réallocation mémoire.
+1. Recopier ce graphe et représenter avec une couleur différente les transitions dans le graphe d'ownership après le dernier `push_back` si celui-ci déclenchait une réallocation mémoire.
 2. Quel problème relève-t-on dans le graphe ?
-3. Modifiez le code ci-dessus afin que `products` contienne des pointeurs ownants. Pensez à ajouter un destructeur à `Client` pour libérer la mémoire allouée dynamiquement.
-4. Redessinez le graphe d'ownership de la question 1, mais en prenant en compte vos changements dans le code.
+3. Modifiez le code ci-dessus afin que `Client::products` contienne des pointeurs.
+4. Redessinez le graphe d'ownership de la question 1 avec la transition, mais en prennant en compte vos changements dans le code.  
 5. Avez-vous toujours le problème relevé à la question 2 ?
+6. Suivant votre réponse à la question 3, ceci a potentiellement créé un autre problème qui se révèle quand on arrive au troisième commentaire.
+7. Si besoin, modifier le code dans `Client` pour le résoudre.
+
 
 ## Exercice 2 - La meilleure signature (15min)
 
@@ -142,16 +176,16 @@ int main()
 }
 ```
 
-2. Modifiez si besoin les types des paramètres dans les fonctions ci-dessous pour que le passage soit le plus efficace et le plus sécurisé possible.  
+2. Modifiez si besoin les types dans les prototypes des fonctions ci-dessous pour que le passage soit le plus efficace et le plus sécurisé possible.  
 Vous pouvez vous aider des commentaires pour comprendre comment les fonctions utilisent leurs paramètres.
 ```cpp
 // Return the number of occurrences of 'a' found in string 's'.
-int count_a_occurrences(std::string s);
+int count_occurrences(char a, std::string s);
 
 // Update function of a rendering program.
 // - dt (delta time) is read by the function to know the time elapsed since the last frame.
-// - errors is a string filled by the function to indicate what errors have occured.
-void update_loop(const float& dt, std::string& errors_out);
+// - stores in *b whether anything actually changed.
+void update_loop(const float& dt, bool* b);
 
 // Return whether all numbers in 'values' are positive.
 // If there are negative values in it, fill the array 'negative_indices_out' with the indices
@@ -213,26 +247,6 @@ On vous propose trois architectures différentes pour le programme :
 
 Pour chacune d'entre elles, vous indiquerez les opérations que le programme devrait effectuer pour satisfaire chacun des besoins cités plus haut, sans jamais introduire de dangling-reference.
 
-### 2. Compilation via CMake (10min)
-
-Le projet est déjà partiellement implémenté selon l'**architecture B**.  
-Il contient un `CMakeLists.txt` permettant de compiler le programme.
-
-1. Ouvrez le fichier [3-hrsoft/CMakeLists.txt](3-hrsoft/CMakeLists.txt) et regardez son contenu.  
-Quels sont les exécutables présents dans ce projet ?
-
-Vous allez maintenant compiler le programme à l'aide de CMake depuis VSCode.
-
-2. Ouvrez l'onglet CMake et assurez-vous que le compilateur sélectionné correspond au compilateur que vous utilisez d'habitude.  
-Lancez ensuite la configuration du projet.
-![](images/ex3-cmake1.png)
-
-3. Une fois la configuration terminée, vous devriez pouvoir sélectionner la cible `hr-soft-tests` dans la liste `Debug`.
-Appuyez ensuite sur le bouton pour lancer la compilation et l'exécution du programme.
-![](images/ex3-cmake2.png)
-
-4. La compilation et l'exécution peuvent aussi être faites via `Ctrl+Shift+P > CMake: Debug`. Ajoutez un raccourci clavier sur cette commande si vous n'en avez pas déjà un.
-![](images/ex3-cmake3.png)
 
 ### 3. Implémentation du système (30min)
 

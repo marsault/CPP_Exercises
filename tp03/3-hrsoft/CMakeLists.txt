@@ -8,8 +8,6 @@ add_executable(hrsoft-tests
     HRSoft/Employee.hpp
 )
 
-target_compile_features(hrsoft-tests PRIVATE cxx_std_17)
-
 add_executable(hrsoft
     HRSoftMain.cpp
     HRSoft/HRSoftSystem.hpp
@@ -17,4 +15,9 @@ add_executable(hrsoft
     HRSoft/Employee.hpp
 )
 
-target_compile_features(hrsoft PRIVATE cxx_std_17)
+target_compile_options(my_executable PRIVATE  # <- Ajoute des flags à la compilation
+    -Wall  # Ajoute des warnings
+    -Wextra  # Ajoute plus de warnings
+    -Werror  # Transforme les warnings en erreurs
+)
+
