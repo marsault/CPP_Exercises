@@ -16,19 +16,19 @@ int main() {
   system.print_all_departments();
   system.print_all_employees();
 
-  // Q3.
-  // Affiche tous les employés managés par Charline.
+  // // Q3.
+  // // Affiche tous les employés managés par Charline.
   charline.print_subordinates();
 
-  // Q4.
-  // Jacques est licencié...
+  // // Q4.
+  // // Jacques est licencié...
   system.remove_employee(jacques);
   rd_dpt.print_employees();
   charline.print_subordinates();
 
   // Un employée inexistant du système ne devrait pas le faire planter.
-  // Employee athanase("Athanase", 0);
-  // system.remove_employee(jacques);
+  Employee athanase("Athanase", 0);
+  system.remove_employee(jacques);
 
   return 0;
 }
