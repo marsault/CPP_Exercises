@@ -1,15 +1,14 @@
 #include "HRSoft/HRSoftSystem.hpp"
 
-int main()
-{
+int main() {
   auto system = HRSoftSystem{};
 
-  auto& rd_dpt = system.add_department("R&D");
-  auto& market_dpt = system.add_department("Marketing");
+  auto &rd_dpt = system.add_department("R&D");
+  auto &market_dpt = system.add_department("Marketing");
 
-  auto& charline = rd_dpt.add_employee("Charline", 6000, nullptr);
-  auto& jacques = rd_dpt.add_employee("Jacques", 2500, &charline);
-  auto& paul = market_dpt.add_employee("Paul", 2500, &charline);
+  auto &charline = rd_dpt.add_employee("Charline", 6000, nullptr);
+  auto &jacques = rd_dpt.add_employee("Jacques", 2500, &charline);
+  auto &paul = market_dpt.add_employee("Paul", 2500, &charline);
 
   // Q2.
   // Affiche différentes informations du système.
@@ -26,6 +25,10 @@ int main()
   system.remove_employee(jacques);
   rd_dpt.print_employees();
   charline.print_subordinates();
+
+  // Un employée inexistant du système ne devrait pas le faire planter.
+  // Employee athanase("Athanase", 0);
+  // system.remove_employee(jacques);
 
   return 0;
 }
