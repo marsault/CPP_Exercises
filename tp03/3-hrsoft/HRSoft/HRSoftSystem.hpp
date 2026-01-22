@@ -1,17 +1,17 @@
 #pragma once
 
-#include "Department.hpp"
-
 #include <list>
 #include <string>
+
+#include "Department.hpp"
 
 class HRSoftSystem
 {
 public:
-    Department& add_department(const std::string& name)
-    {
-        return _departments.emplace_back(name);
-    }
+  Department& add_department(const std::string& name)
+  {
+    return _departments.emplace_back(name);
+  }
 
     // Exercice 3.2
     void print_all_departments() const 
@@ -126,5 +126,5 @@ public:
     }
 
 private:
-    std::list<Department> _departments;
+  std::list<Department> _departments;
 };

@@ -1,4 +1,4 @@
-# TP6 - unique_ptr
+# TP6 - bibliothèque standard
 
 ## Objectifs
 
@@ -31,67 +31,86 @@ cmake --build <chemin_vers_le_dossier_build> --target ex1
 <chemin_vers_le_dossier_build>/ex1
 ```
 
-2. Ouvrez le fichier [`ProgramData.hpp`](./1-recipes/ProgramData.hpp) : il contient la classe `ProgramData`, dont chacune des fonctions est appelée par l'une des commandes utilisateur.
-Ouvrez maintenant le fichier [`ProgramData.cpp`](./1-recipes/ProgramData.cpp).
-Pourquoi le programme ne fait rien ?
+2.  Voici les fichiers que vous aurez à modifier (et d'autres fichiers seront éventuellement à ajouter.)
+    a. Ouvrez le fichier [`ProgramData.hpp`](./1-recipes/ProgramData.hpp) : il contient la classe `ProgramData`, dont chacune des fonctions est appelée par l'une des commandes utilisateur.
 
-### B. Matériaux
+    b. Ouvrez maintenant le fichier [`ProgramData.cpp`](./1-recipes/ProgramData.cpp).
+    Pourquoi le programme ne fait rien ?
 
-Pour le restant de l'exercice, n'hésitez pas à ajouter les fonctions qui vous sembleraient pertinentes, même si on ne vous les demande pas explicitement.
+    c. Le fichier [`aliases.hpp`](./1-recipes/aliases.hpp) contient des définitions de types qui servent d'interface entre le frontend (qui vous est donné) et le backend (que vous devez écrire.)  Vous aurez sans doute à les modifier.
 
-1. Commencez par définir une classe `Material` qui contiendra un attribut `_name` de type `std::string`.
+    d. Les fichiers [`Material.hpp`](./1-recipes/Material.hpp) et [`Recipe.hpp`](./1-recipes/Recipe.hpp) contiennent des coquilles vident de classes que vous aurez à remplir.
+
+
+3. Finalement, le programme contient aussi des fichiers que vous n'aurez pas à modifier.\
+    a. le fichier [`main.cpp`](./1-recipes/main.cpp) contient la boucle principale du programme.
+    
+    b. Le fichier [`lib/Actions.hpp`](./1-recipes/lib/Actions.hpp) contient le code des fonctions qui sont appelés par les différentes actions.
+
+    c. Le fichier [`lib/ActionManager.hpp`](./1-recipes/lib/ActionManager.hpp) contient la structure de données permettant de gérer les actions.  **Vous n'avez a priori pas besoin de comprendre comment il fonctionne.**
+
+### B. Matériau
+
+Pour le restant de l'exercice, n'hésitez pas à ajouter les fonctions-membres qui vous vous sembleraient pertinentes, même si on ne vous les demande pas explicitement.
+
+1. Ajouter dans `Material` un attribut `_name` de type `std::string`, qui sera initialisé par un constructeur.
 2. Modifiez le contenu de l'`operator<<` acceptant un `Material` afin d'afficher son nom.
 3. Faites en sorte qu'à la construction d'un `Material`, on affiche : `"<name> was created"` et qu'à sa destruction, on affiche `"<name> was destroyed"`.
-4. Implémentez le contenu de la fonction `ProgramData::add_material`.
-Vous ajouterez un nouvel attribut à la classe `ProgramData` pour y stocker les matériaux.
-Individuellent, chacun d'entre eux sera alloué via `std::make_unique<Material>` et sera conservé sous forme de `std::unique_ptr<Material>`.
-5. Testez la commande `"m <name>"` plusieurs fois d'affilée, puis quitter le programme avec `"q"`, afin de vous assurez-vous via les logs du programme que chaque `Material` créé est détruit une seule et unique fois.
-6. Implémentez ensuite la fonction `ProgramData::get_materials`, qui remplit le tableau en paramètre avec la liste des matériaux présents dans l'inventaire.
+4. Implémentez le contenu de la fonction `ProgramData::register_material` qui permet de déclarer un nouveau matériau. Vous ajouterez un nouvel attribut attribut `ProgramData::_registered_materials` à la classe qui sera un tableau dynamique.\
+Relisez le fichier `ProgramData.hpp`. On remarque que l'interface utilise des `const * Material` comme identifiant des matériaux.  A l'intérieur de `_registered_materials`, on stockera donc chaque materiau dans un`std::unique_ptr<Material>` pour garder chaque `Material` à un emplacement fixe en mémoire.\
+Pour résumer, `_registered_materials` sera de type `std::vector<std::unique_ptr<Material>>`.
+5. Lancez le programme et testez l'action `new mat <name>` plusieurs fois d'affilée, puis quitter le programme avec `quit`.
+Assurez-vous via les logs du programme que chaque `Material` créé est détruit une seule et unique fois.
+6. Implémentez ensuite la fonction `ProgramData::get_registered_materials`, qui remplit le tableau en paramètre avec les matériaux enregistrés.
 Vous pouvez utiliser la fonction-membre `get` de `unique_ptr` pour récupérer un pointeur-observant sur son contenu.
-7. (Bonus) Limitez les copies au maximum en **déplaçant** les objets que vous aurez besoin de stocker.
+7. Vous pouvez utiliser l'action `load` pour lancer des scripts d'actions stockés dans des fichiers.  Par exemple, testez l'action `load mat`.
+Nous fournissons quatre scripts (`mat`, `inv`, `rec` et `prod`) correspondant aux quatre parties de cet exercice.
+Pour créer vos propres scripts, utilisez un fichier  `<name>.txt` qui se trouve dans `build`, puis lancez le avec l'action `load`.
 
-### C. Recettes
 
-1. Ajoutez une classe `Recipe`, qui contiendra deux attributs `_materials` et `_products` de type `std::vector<std::string>`, et un attribut `_id` de type `size_t`.
-Cet identifiant correspondra au numéro de la recette (la première recette ayant pour identifiant `1` et non `0`).
+### C. Inventaire
+
+1. Implémentez les fonctions `ProgramData::get_material_by_name` et `ProgramData::add_material_to_inventory` qui sont utilisés.\
+Pour stocker l'inventaire  on utilisera un attribut `ProgramData::_inventory` de type `MaterialBag` (Rappel: ce type est défini dans `aliases.hpp`).
+2. Pour que `ProgramData::get_material_by_name` soit plus efficace, ajouter un attribut `ProgramData::_material_from_name` qui permet d'indexer.
+Quel type de la STL doit-on choisir?
+3. Implémentez la fonction `ProgramData::get_inventory` qui collecte tous les matériaux dans l'inventaire dans le `MaterialBag` donné en argument.
+4. Testez votre code avec l'action `load inv`, éventuellement avec `valgrind` s'il est installé sur votre machine.
+
+### D. Recette
+
+1. Dans la classe `Recipe` trois attributs:
+   - `_requirements` de type `MaterialBag`
+   -  `_product` de type `const Material&`, et
+   - `_id` de type `size_t`.\
+     Ce dernier sera un identifiant unique qui correspondra au numéro de la recette (la première recette ayant pour identifiant `1` et non `0`).
 2. Implémentez le contenu de l'`operator<<` pour `Recipe`. Celui-ci affichera l'idenfiant de la recette ainsi que sa formule.
 Par exemple : `"(1) Eau Sirop => Grenadine"`
-3. Modifiez le contenu de `register_recipe` de manière à stocker les recettes enregistrées dans `ProgramData`.
-A la fin de l'ajout, affichez dans la console `"Recipe <...> has been registered"`.
-4. Testez que la commande `"r"` fonctionnent comme elles le devraient.
-5. Implémentez maintenant `collect_doable_recipes`, qui remplit le tableau passé en paramètre avec des pointeurs-observants sur les recettes dont les matériaux requis sont disponibles dans l'inventaire.
-6. Testez que les commandes `"m"`, `"r"` et `"t"` fonctionnent correctement.
-7. (Bonus) Adaptez votre code afin de gérer les recettes qui nécessite plusieurs `Material` avec le même nom.
-8. (Bonus) Limitez les copies au maximum en déplaçant les paramètres que vous aurez besoin de stocker.
+3. Implémentez `ProgramData::register_recipe`. 
+   On utilisera pour cela un nouvel attribut `ProgramData::_registered_recipes` de type `std::set<Recipe>`.
+   A la fin de l'ajout, affichez dans la console `"Recipe <...> has been registered"`
+4. Testez que la commande `add rec` fonctionne.
+5. Implémentez la fonction `ProgramData::get_all_recipes` et testez que la commande `list rec` fonctionne correctment.
+6. Ajoutez plusieurs recettes et listez les.  Que remarque-t-on sur l'ordre d'affichage?  Est-ce que ça aurait été pareil avec un `std::unordered_set<Recipe>` ? avec `std::vector<Recipe>`?
+7. Implémentez la fonction `ProgramData::get_recipe_by_id`.  Pour ce faire, regarder les versions (3,4) de [std::set::find](https://en.cppreference.com/w/cpp/container/set/find).
+8. Implémentez `ProgramData::unregister_recipe` et testez que cela fonctionne avec l'action `del rec`.
+Affichez dans la console `"Recipe <...> is not longer registered"`.
+9. Testez votre code avec l'action `load scriptD`, éventuellement avec `valgrind` s'il est installé sur votre machine.
 
-### D. Production
 
-1. Implémentez maintenant le contenu de la fonction `produce`.
-Pour simuler la consommation d'un matériau, vous pourrez vous contenter d'assigner `nullptr` au `unique_ptr` le contenant.
-```mermaid
-graph
-exist([La recette existe ?])
-no_recipe[result.recipe = nullptr]
-recipe_ok[result.recipe = recette]
-materials([Les matériaux sont présents ?])
-miss["result.missing_materials = [...]"]
-materials_ok[result.missing_materials = vide]
-consume[On consomme les matériaux requis]
-produce[On ajoute les matériaux produits]
+### E. Production
 
-exist-->|non|no_recipe
-exist-->|oui|recipe_ok-->materials
-materials-->|non|miss
-materials-->|oui|materials_ok
-materials_ok-->consume-->produce
-```
-
-2. Vérifiez que la commande `p` fonctionne.
-Si vous avez des **segfaults**, c'est probablement parce que vous n'avez pas adapté le code existant au fait que les pointeurs de votre conteneur peuvent maintenant être nuls.
-3. (Bonus) Passer les `unique_ptr` à `nullptr` permet de désinstancier le `Material` contenu dedans.
-Cependant, vous avez tout de même une fuite de mémoire, puisque le `unique_ptr` vide occupe toujours de l'espace dans le conteneur des matériaux.
-Consultez la documentation du conteneur que vous avez choisi d'utiliser, et faites en sorte de supprimer le pointeur du conteneur plutôt que de le passer à `nullptr`.
-
+1. Implémentez maintenant `ProgramData::collect_doable_recipes`, qui remplit le tableau passé en paramètre avec des pointeurs-observants sur les recettes dont les matériaux requis sont disponibles dans l'inventaire.
+Il est recommandé 
+    - de modifier le type `MaterialBag` pour qu'écrire `collect_doable_recipes` ne soit pas horrible
+    - de vérifier avec votre chargé de TP que le type que vous avez choisi est le bon
+    - de faire des fonctions auxilliaires bien pensées.
+2. Testez que la commande `list doable` fonctionne correctement, notamment avec des recettes qui nécessitent plusieurs fois le même matériau (on pourra repartir du script `rec`).
+3. Implémentez maintenant le contenu de la fonction `ProgramData::produce`, qui tente de réaliser la recette donnée en argument.
+    - S'il n'y a pas assez de matériau: l'inventaire n'est pas modifié.
+    - S'il y a assez de matériaux dans l'inventaire: ceux nécessaires sont retirés de l'inventaire et le nouveau matériau créé est ajouté à l'inventaire.
+4. Vérifiez que la commande `prod` fonctionne correctement.
+5. Testez votre code avec l'action `load scriptE`, éventuellement avec `valgrind` s'il est installé sur votre machine.
 
 ## Exercice 2 - CopyablePtr (90 min, bonus) 
 

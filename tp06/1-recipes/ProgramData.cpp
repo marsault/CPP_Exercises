@@ -1,131 +1,75 @@
 #include "ProgramData.hpp"
+#include <iostream>
 
 #include <iostream>
 #include <map>
 
-void ProgramData::add_material(std::string name)
+void ProgramData::register_material(std::string name)
 {
-    _materials.push_back(std::make_unique<Material>(std::move(name)));
+  std::cout << "Feature is not yet implemented (register_material)" << std::endl;
 }
 
-void ProgramData::get_materials(std::vector<const Material*>& materials) const
+void ProgramData::get_registered_materials(std::vector<const Material*>& materials) const
 {
-    for (const auto& m : _materials)
-    {
-        if (m != nullptr)
-        {
-            materials.push_back(m.get());
-        }
-    }
+  std::cout << "Feature is not yet implemented (get_registered_materials)" << std::endl;
 }
 
-void ProgramData::register_recipe(std::vector<std::string> materials, std::vector<std::string> products)
+void ProgramData::add_material_to_inventory(const Material* mat, int quantity)
 {
-    const auto& recipe =
-        _recipes.emplace_back(_recipes.size() + 1, std::move(materials), std::move(products));
-
-    std::cout << "Recipe '" << recipe << "' has been registered." << std::endl;
+  std::cout << "Feature is not yet implemented (add_material_to_inventory)" << std::endl;
 }
 
-void ProgramData::collect_doable_recipes(std::vector<const Recipe*>& recipes) const
+void ProgramData::get_inventory(MaterialBag& materials) const
 {
-    for (const auto& r : _recipes)
-    {
-        if (can_produce(r, nullptr))
-        {
-            recipes.push_back(&r);
-        }
-    }
+  std::cout << "Feature is not yet implemented (get_inventory)" << std::endl;
 }
 
-ProductionResult ProgramData::produce(size_t recipe_id)
+const Material* ProgramData::get_material_by_name(const std::string& name) const
 {
-    ProductionResult result;
-
-    if (recipe_id > _recipes.size())
-    {
-        return result;
-    }
-
-    result.recipe = &_recipes[recipe_id - 1];
-
-    if (!can_produce(*result.recipe, &result.missing_materials))
-    {
-        return result;
-    }
-
-    for (const auto& m : result.recipe->get_materials())
-    {
-        // _materials[find_material(m)] = nullptr;
-
-        // Bonus D3
-        size_t count = 1;
-        auto   idx   = find_material(m, count);
-        std::swap(_materials[idx], _materials.back());
-        _materials.pop_back();
-    }
-
-    for (const auto& p : result.recipe->get_products())
-    {
-        add_material(p);
-    }
-
-    return result;
+  std::cout << "Feature is not yet implemented (get_material_by_name)" << std::endl;
+  return nullptr;
 }
 
-size_t ProgramData::find_material(const std::string& name, size_t& nb_required) const
+
+// ============================================================================
+// = Partie Recette ===========================================================
+// ============================================================================
+
+void ProgramData::register_recipe(std::vector<const Material*> materials,
+                                  const Material* product)
 {
-    for (size_t idx = 0; idx < _materials.size(); ++idx)
-    {
-        const auto& material = _materials[idx];
-
-        if (material != nullptr && name == _materials[idx]->get_name() && --nb_required == 0)
-        {
-            return idx;
-        }
-    }
-
-    return SIZE_MAX;
+  std::cout << "Feature is not yet implemented (register_recipe)" << std::endl;
 }
 
-bool ProgramData::can_produce(const Recipe& recipe, std::vector<std::string>* missing_materials) const
+void ProgramData::get_all_recipes(std::vector<const Recipe*>& recipes) const
 {
-    // const auto& required = recipe.get_materials();
-    // for (const auto& r : required)
-    // {
-    //     if (find_material(r) == SIZE_MAX)
-    //     {
-    //         if (missing_materials == nullptr)
-    //         {
-    //             return false;
-    //         }
+  std::cout << "Feature is not yet implemented (get_all_recipes)" << std::endl;
+}
 
-    //         missing_materials->push_back(r);
-    //     }
-    // }
+const Recipe* ProgramData::get_recipe_by_id(size_t id) const
+{
+  std::cout << "Feature is not yet implemented (get_recipe_by_id)" << std::endl;
+  return nullptr;
+}
 
-    // Bonus C3
-    auto required = std::map<std::string, size_t> {};
-    for (const auto& r : recipe.get_materials())
-    {
-        ++required[r.c_str()];
-    }
+void ProgramData::unregister_recipe(const Recipe&)
+{
+  std::cout << "Feature is not yet implemented (unregister_recipe)" << std::endl;
+}
 
-    for (auto& r : required)
-    {
-        if (find_material(r.first, r.second) == SIZE_MAX)
-        {
-            if (missing_materials == nullptr)
-            {
-                return false;
-            }
 
-            while (r.second-- != 0)
-            {
-                missing_materials->push_back(r.first);
-            }
-        }
-    }
+// ============================================================================
+// = Partie Production ========================================================
+// ============================================================================
 
-    return missing_materials != nullptr ? missing_materials->empty() : true;
+
+void ProgramData::get_doable_recipes(std::vector<const Recipe*>& recipes) const
+{
+  std::cout << "Feature is not yet implemented (get_doable_recipes)" << std::endl;
+}
+
+Outcome ProgramData::produce(const Recipe& recipe, MaterialBag& materials)
+{
+  std::cout << "Feature is not yet implemented (produce)" << std::endl;
+  return Outcome::FAILURE;
 }

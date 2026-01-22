@@ -13,12 +13,10 @@
     | Conteneur     | Insertion (en tête / en fin) | Suppression (en tête / en fin) | Accès  |
     |---------------|------------------------------|--------------------------------|--------|
     | array         | N/A                          | N/A                            | $O(1)$ |
-    | vector        | $O(n)$ / $O(1)$ amorti       | $O(n)$ /  $O(1)$ amorti        | $O(1)$ |
     | deque         | $O(1)$ / $O(1)$              | $O(1)$ / $O(1)$                | $O(1)$ |
     | forward_list  | $O(1)$ / N/A                 | $O(1)$ / N/A                   | N/A    |
-    | list          | $O(1)$ / $O(1)$              | $O(1)$ / $O(1)$                | N/A    |
-    | set           | N/A                          | N/A                            | N/A    |
-    | unordered_set | N/A                          | N/A                            | N/A    |
+    | set           | O(log(n))                         | O(log(n))                            | O(log(n))   |
+    | unordered_set |O(1) amorti    | O(1) amorti                           | O(1) amorti    |
 
 2. Supposons que vous ayez récupéré un itérateur sur un élément d'un conteneur avec : `auto it = std::find(ctn.begin(), ctn.end(), element_to_find)`. 
     En fonction du type de conteneur, quelles sont les opérations susceptibles d'invalider cet itérateur ? Essayez d'être précis dans vos réponses. 
@@ -27,10 +25,6 @@
     
     Solution: voir les sections "Iterator invalidation" des pages correspondantes de la documentation.
     
-3. Quelle est la différence entre les fonctions `push_back` et `emplace_back` de la classe-template `std::vector` ?
-
-    Solution: supposons que les objets du vecteur soient de type `T`. `push_back` rajoute un objet de type `T` déjà créé au vecteur, tandis que `emplace_back` utilisera les paramètres qui lui sont communiqués pour construire un nouvel objet de type `T` via le constructeur associé, puis ensuite l'ajouter au vecteur.
-
 ## Exercice 2 - Lambdas et algorithmes (40 min)
 
 Ouvrez chacun des liens ci-dessous et complétez le code afin que les fonctions produisent les résultats attendus.  
@@ -68,8 +62,13 @@ Une seule contrainte, on vous imposera un algorithme de la librairie standard à
    ```
    
    
+3. Algorithme: std::for_each
+   Code: https://godbolt.org/z/nrGaa8aEa
 
-3. Algorithme: std::transform + std::back_inserter 
+   todo
+
+
+4. Algorithme: std::transform + std::back_inserter 
 
    Code: https://godbolt.org/z/PrPoEYK5d 
    
@@ -84,20 +83,8 @@ Une seule contrainte, on vous imposera un algorithme de la librairie standard à
     }
    ```
 
-4. Algorithme: std::accumulate
-
-   Code: https://godbolt.org/z/61P6K414P  
-   
-   Solution: rajouter `#include <numeric>`, car c'est là qu'est définie `accumulate`. On va réaliser la concaténation des chaînes en majuscules, il nous faut donc un moyen de convertir une chaîne en majuscules. Comme `std::toupper` ne fonctionne que sur les caractères, on définit d'abord une fonction qui va traiter les chaînes:
-   
-   ```cpp
-   std::string capstring(const std::string& s)
-   {
-       std::string result;
-       std::transform(s.begin(), s.end(), std::back_inserter(result), [](const char& c) {return std::toupper(c); });
-       return result;
-   }
-   ```
+5. Algorithme: std::transform + std::accumulate  
+   Code: https://godbolt.org/z/fdeExxzWE 
 
    Une fois que c'est fait, `accumulate` permet de réaliser la concaténation en "accumulant" le résultat des transformations dans une chaîne initialement vide.  L'opérateur prendra deux chaînes en paramètres: celle déjà "accumulée", et la seconde à rajouter. On obtient alors ceci:
    
@@ -230,6 +217,7 @@ struct hash<type_pour_lequel_on_specialise>
 ```
 
 2. Définissez la spécialisation de `std::hash` pour le type `Point2d` et vérifiez que `grid` peut maintenant être définie avec le type `std::unordered_map<Point2d, Content>`.
+
 
 ## Exercice 4 - set (30 min)
 

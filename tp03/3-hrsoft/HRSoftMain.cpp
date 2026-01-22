@@ -1,44 +1,39 @@
-#include "HRSoft/HRSoftSystem.hpp"
-
 #include <iostream>
-#include <string>
 #include <sstream>
-#include <vector>
+#include <string>
+
+#include "HRSoft/HRSoftSystem.hpp"
 
 std::stringstream get_next_line()
 {
-    auto line = std::string {};
-    std::getline(std::cin, line);
-    return std::stringstream { line };
+  auto line = std::string{};
+  std::getline(std::cin, line);
+  return std::stringstream{line};
 }
 
 std::string parse_string(std::istream& stream)
 {
-    auto name = std::string {};
-    stream >> name;
-    return name;
+  auto name = std::string{};
+  stream >> name;
+  return name;
 }
 
 unsigned int parse_value(std::istream& stream)
 {
-    auto salary = 0u;
-    stream >> salary;
-    return salary;
+  auto salary = 0u;
+  stream >> salary;
+  return salary;
 }
 
 int main()
 {
-    std::cout << "Welcome in HRSoft!" << std::endl;
+  std::cout << "Welcome in HRSoft!" << std::endl;
 
-    auto system = HRSoftSystem {};
-    auto command = ' ';
-    
-    while (command != 'q')
-    {
-        std::cout << "What do you want to do? (tap 'h' for help)" << std::endl;
+  auto system = HRSoftSystem{};
+  auto command = ' ';
 
-        auto next_line = get_next_line();
-        next_line >> command;
+  while (command != 'q') {
+    std::cout << "What do you want to do? (tap 'h' for help)" << std::endl;
 
         switch (command)
         {
@@ -75,16 +70,6 @@ int main()
                 }
                 break;
 
-            case 'n':
-                std::cout << "Not implemented yet" << std::endl;
-                // ...
-                break;
-
-            case 'm':
-                std::cout << "Not implemented yet" << std::endl;
-                // ...
-                break;
-
             case 't':
                 if (auto* employee = system.find_employee(parse_string(next_line)))
                 {
@@ -92,10 +77,10 @@ int main()
                 }
                 break;
 
-            case 's':
-                std::cout << "Not implemented yet" << std::endl;
-                // ...
-                break;
+    case 'm':
+      std::cout << "Not implemented yet" << std::endl;
+      // ...
+      break;
 
             case 'h':
                 // commande d'aide
@@ -123,6 +108,7 @@ int main()
                 break;
         }
     }
+  }
 
-    return 0;
+  return 0;
 }

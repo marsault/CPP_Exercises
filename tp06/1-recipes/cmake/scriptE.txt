@@ -1,0 +1,30 @@
+new mat Paille
+new mat Terre
+new mat Bois
+new mat Pierre
+new mat Maison
+new rec Paille Paille Paille Paille => Maison
+new rec Terre => Maison
+new rec Bois Bois Bois => Maison
+del rec 2
+new rec Pierre Pierre => Maison
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Paille
+add mat Bois
+add mat Bois
+list doable
+list inv
+prod 1
+list inv
+prod 3
+list inv
+prod 4
+list inv
+prod 1

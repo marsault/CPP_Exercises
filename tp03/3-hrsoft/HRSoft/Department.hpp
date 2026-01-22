@@ -9,21 +9,18 @@
 class Department
 {
 public:
-    Department(const std::string& name)
-        : _name { name }
-    {}
+  Department(const std::string& name) : _name{name} {}
 
-    Employee& add_employee(const std::string& name, unsigned int salary, Employee* manager)
-    {
-        auto& employee = _employees.emplace_back(name, salary);
+  Employee& add_employee(const std::string& name, unsigned int salary,
+                         Employee* manager)
+  {
+    auto& employee = _employees.emplace_back(name, salary);
 
-        if (manager != nullptr)
-        {
-            manager->add_subordinate(employee);
-        }
+    if (manager != nullptr)
+      manager->add_subordinate(employee);
 
-        return employee;
-    }
+    return employee;
+  }
 
     // Exercice 3.2
     void print_employees() const 
@@ -74,8 +71,8 @@ public:
 
 
 private:
-    std::string _name;
-    std::list<Employee> _employees;
+  std::string _name;
+  std::list<Employee> _employees;
 };
 
 // Exercice 3.2: ajout d'un opérateur << sur le modèle de celui fourni pour Employee; 
