@@ -99,7 +99,7 @@ int main()
 
    b. A-t-on des dangling pointeurs? lesquels et pourquoi?
 
-   c. Expliquer pourquoi le problème ne s'était pas posé avec des références dans la question 2b.
+   c. Essayer de modifier le code précédent en remplacant les pointeurs par des références pour obtenir des dangling references.
 
 
 ### Cas C - Insertions dans un `std::vector`
