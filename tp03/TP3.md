@@ -76,10 +76,10 @@ public:
 
 int main()
 {
-    Worker boss;
-    Worker technician; 
-    {    
-        Worker cto;
+    Worker cto;
+    {
+        Worker boss;
+        Worker technician;
 
         cto.manager = &boss;
         technician.manager = &cto;
@@ -115,11 +115,35 @@ int main()
     
       > Oui, `technician.manager` est un dangling pointer.  On lui a affecté une cible dont la durée de vie est plus courte que lui.
 
-   c. Expliquer pourquoi ce problème n'aurait pas pu ce poser avec des références plutôt que des pointeurs.
+   c. Essayer de modifier le code précédent en remplacant les pointeurs par des références pour obtenir des dangling references.
       
-      > On ne peut écrire ce code que parce qu'on peut avoir des pointeurs nuls et les réaffecter plus tard.   
-      Ici, on s'est autorisé à avoir `tecnician.manager` nul jusqu'à la création de `cto` et son affectation via `technician.manager = &cto;`.
-      Si `tecnician.manager` était une référence, on **aurait du** l'initialiser quand `tecnician` est construit, donc il faut que `cto` existe **avant**. 
+      > Ce n'est pas possible sans modifier substanciellement le code car on se base sur le fait qu'on peut avoir des pointeurs nuls et les réaffecter plus tard.   
+      Ici, on s'est autorisé à avoir `cto.manager` nul jusqu'à la création de `boss` et son affectation via `cto.manager = &boss;`.
+      Si `Worker::manager` était une référence, on **aurait du** l'initialiser au moment où un `Worker` est construit donc `boss` doit être construit avant `cto`.
+      Si `boss` existe avant `cto`, et que les deux sont des variables locales,
+      la durée de vie de `boss` sera plus longue que celle de `cto`.
+      On est obligé d'utiliser le tas, comme dans le code ci-dessous. (On est aussi obligé d'utiliser une autre classe `Manager` pour pouvoir créer `boss` qui n'a pas de manager.)
+
+```cpp
+
+class Manager {};
+
+class Worker
+{
+public:
+    Worker{Manager m} : manager{m} {}
+private:
+    const Worker& manager; 
+};
+
+int main()
+{
+   Manager* boss = new Manager{};
+   Worker cto {*boss};
+   delete boss;
+}
+```
+
 
 ### Cas C - Insertions dans un `std::vector`
 
@@ -161,11 +185,15 @@ Chaque élément est déplacé de son ancienne adresse mémoire vers la nouvelle
 
 1. Recopier ce graphe et représenter avec une couleur différente les transitions dans le graphe d'ownership après le dernier `push_back` si celui-ci déclenchait une réallocation mémoire.
 
-    > todo
+
+![](images/ex1-c-depl.svg)
+
+
+
 
 2. Quel problème relève-t-on dans le graphe ?
 
-    > des dangling references.
+    > `first_product` est maintenant une dangling reference car `products[0]` a été déplacé.
 
 3. Modifiez le code ci-dessus afin que `Client::products` contienne des pointeurs.
 
@@ -189,8 +217,8 @@ Chaque élément est déplacé de son ancienne adresse mémoire vers la nouvelle
             client.products.push_back(new Product{});
             client.products.push_back(new Product{});
             //                        ^^^
-            //                    v
-            auto& first_product = *client.products.front();
+            //                    vv                       v
+            auto& first_product = *(client.products.front());
 
             client.products.push_back(new Product{});
             //                        ^^^
@@ -201,15 +229,15 @@ Chaque élément est déplacé de son ancienne adresse mémoire vers la nouvelle
 
 4. Redessinez le graphe d'ownership de la question 1 avec la transition, mais en prennant en compte vos changements dans le code.  
 
-    > todo 
+![](images/ex1-c-indir.svg)
 
 5. Avez-vous toujours le problème relevé à la question 2 ?
 
-    > Non car seul les pointeurs ont bougé avec la réallocation, pas les objets pointés.
+    > Non car seul les pointeurs ont bougé avec la réallocation, pas les objets pointés. En particulier, `first_product` est toujours une référence vers l'objet pointé par le premier élément de `client.products`.
 
 6. Suivant votre réponse à la question 3, ceci a potentiellement créé un autre problème qui se révèle quand on arrive au troisième commentaire.
 
-    > Les objets pointés par les éléments de `Client::products` ne sont jamais désinstanciés.
+    > Les objets pointés par les éléments de `Client::products` ne sont jamais désinstanciés.  On le voit sur le graphe car aucune flèche en trait plein  n'arrive vers eux.
 
 7. Si besoin, modifier le code dans `Client` pour le résoudre.
 
@@ -310,7 +338,7 @@ std::string concatenate(char* str1, char* str2);
 
 //Solution:
 // std::string concatenate(const std::string& str1, const std::string& str2);
-// Sans raison valable, on n'utilise pas les type C
+// Sans raison valable, on n'utilise pas les types C
 ```
 
 ## Exercice 3 - Gestion des resources (55min)
