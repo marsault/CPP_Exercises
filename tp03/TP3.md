@@ -70,9 +70,9 @@ public:
 
 int main()
 {
-    Worker boss;
+    Worker cto;
     {
-        Worker cto;
+        Worker boss;
         Worker technician;
 
         cto.manager = &boss;
