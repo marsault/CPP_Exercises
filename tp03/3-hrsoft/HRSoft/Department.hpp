@@ -24,10 +24,15 @@ public:
     if (header)
       std::cout << "List of employees in " << this->_name << std::endl;
     for (auto &employee : _employees)
-      std::cout << "\t-" << employee << std::endl;
+      std::cout << "\t- " << employee << std::endl;
   }
 
   inline const std::string &name() { return _name; }
+
+  inline void remove_subordinate(const Employee& employee) {
+    for (auto& m : _employees)
+      m.remove_subordinate(employee);
+  }
 
   inline bool remove_employee(Employee &employee) {
     for (auto it = _employees.begin(); it != _employees.end(); ++it)

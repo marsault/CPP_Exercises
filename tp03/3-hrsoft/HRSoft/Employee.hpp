@@ -20,7 +20,15 @@ public:
     if (header)
       std::cout << "List of " << _name << " subordinates" << std::endl;
     for (auto employee : _subordinates)
-      std::cout << "\t-" << *employee << std::endl;
+      std::cout << "\t- " << *employee << std::endl;
+  }
+  
+  inline void remove_subordinate(const Employee& employee) {
+    for (auto it = _subordinates.begin(); it != _subordinates.end(); ++it)
+      if (*it == &employee) {
+        _subordinates.erase(it);
+        break;
+      }
   }
 
 private:
