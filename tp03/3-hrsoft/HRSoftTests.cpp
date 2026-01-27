@@ -21,14 +21,21 @@ int main() {
   charline.print_subordinates();
 
   // // Q4.
-  // // Jacques est licencié...
+  std::cout << "Jacques est licencié..." << std::endl;
   system.remove_employee(jacques);
-  rd_dpt.print_employees();
-  charline.print_subordinates();
+  rd_dpt.print_employees(); // Jacques ne doit plus apparaître
+  charline.print_subordinates(); // Jacques ne doit plus apparaître
 
-  // Un employée inexistant du système ne devrait pas le faire planter.
+  // // Un employée inexistant du système ne devrait pas le faire planter.
   Employee athanase("Athanase", 0);
   system.remove_employee(jacques);
+  system.remove_employee(athanase);
+
+
+  std::cout << "Paul est licencié..." << std::endl;
+  // Charline n'a plus de subordonnées, elle ne devrait plus être manager!
+  system.remove_employee(paul);
+  std::cout << charline << std::endl;
 
   return 0;
 }
