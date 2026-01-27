@@ -125,15 +125,14 @@ int main()
       On est obligé d'utiliser le tas, comme dans le code ci-dessous. (On est aussi obligé d'utiliser une autre classe `Manager` pour pouvoir créer `boss` qui n'a pas de manager.)
 
 ```cpp
-
 class Manager {};
 
 class Worker
 {
 public:
-    Worker{Manager m} : manager{m} {}
+    Worker(const Manager& m) : manager{m} {}
 private:
-    const Worker& manager; 
+    const Manager& manager; 
 };
 
 int main()
