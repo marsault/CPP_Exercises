@@ -4,4 +4,4 @@ project(TP3 CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS On)
 set(CMAKE_CXX_STANDARD 17)
 
-add_subdirectory(3-hrsoft)
+add_subdirectory(3-hrsoft) # Cette ligne indique qu'il faut inclure 3-hrsoft/CMakeLists.txt

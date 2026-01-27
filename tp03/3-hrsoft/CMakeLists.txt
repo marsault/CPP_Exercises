@@ -15,9 +15,14 @@ add_executable(hrsoft
     HRSoft/Employee.hpp
 )
 
-target_compile_options(my_executable PRIVATE  # <- Ajoute des flags à la compilation
+target_compile_options(hrsoft-tests PRIVATE  # <- Ajoute des flags à la compilation
     -Wall  # Ajoute des warnings
     -Wextra  # Ajoute plus de warnings
-    -Werror  # Transforme les warnings en erreurs
 )
+
+target_compile_options(hrsoft PRIVATE  # <- Ajoute des flags à la compilation
+    -Wall  # Ajoute des warnings
+    -Wextra  # Ajoute plus de warnings
+)
+
 
