@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(TP4)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS "On")
+
 # Add targets for Catch2 dependency
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/Catch2-3.5.2)
 
@@ -17,11 +19,8 @@ foreach(exercice_folder ${exercice_folders})
     )
 
     set(sandbox_file "${exercice_folder}/src/sandbox.cpp")
-    MESSAGE("${sandbox_file}")
-    MESSAGE("${exercice_src}")
     list(FIND exercice_src "${sandbox_file}" _index)
     if (${_index} GREATER -1)
-        MESSAGE("HELLO")
         add_executable("${exercice_id}-sandbox"
             ${exercice_src}
         )

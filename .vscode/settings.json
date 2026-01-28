@@ -90,5 +90,9 @@
         "complex": "cpp",
         "codecvt": "cpp",
         "unordered_set": "cpp"
-    }
+    },
+    "terminal.integrated.cwd": "test",
+    "clangd.arguments": [
+        "--compile-commands-dir=test"
+    ]
 }
