@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(TP4)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS "On")
+SET(CMAKE_EXPORT_COMPILE_COMMANDS On)
 
 # Add targets for Catch2 dependency
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/Catch2-3.5.2)

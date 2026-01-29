@@ -11,7 +11,7 @@ Ce TP est une préparation au TP noté.  Il est donc configuré pour fonctionner
 - Revoir les différentes notions du cours
 
 
-Voir le fichier `TPNode.md` qui décrit le fonctionnement des TP notés. Il est conseillé de se mettre dans les bonnes conditions pour vous entraîner.
+Voir le fichier `TPNote.md` qui décrit le fonctionnement des TP notés. Il est conseillé de se mettre dans les bonnes conditions pour vous entraîner.
 
 ## Dans le TP04
 
