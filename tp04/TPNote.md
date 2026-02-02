@@ -66,7 +66,10 @@ Pour résumer:
 
 ### Lancer plusieurs tests avec `run_tests.sh`
 
-Enfin, vous pouvez compiler les tests et les exécuter à partir du script `run_tests.sh` généré dans votre dossier de `/tmp/CPP_EXAM/build`
+Enfin, vous pouvez compiler les tests et les exécuter à partir du script `run_tests.sh` généré dans votre dossier de `/tmp/CPP/build`
+
+**Attention** à bien vérifier que vous êtes dans ce répertoire.
+
 ```sh
 # Lance la compilation et l'exécution de tous les tests unitaires
 ./run_tests.sh
