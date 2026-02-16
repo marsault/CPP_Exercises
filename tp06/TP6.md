@@ -63,9 +63,9 @@ Pour résumer, `_registered_materials` sera de type `std::vector<std::unique_ptr
 Assurez-vous via les logs du programme que chaque `Material` créé est détruit une seule et unique fois.
 6. Implémentez ensuite la fonction `ProgramData::get_registered_materials`, qui remplit le tableau en paramètre avec les matériaux enregistrés.
 Vous pouvez utiliser la fonction-membre `get` de `unique_ptr` pour récupérer un pointeur-observant sur son contenu.
-7. Vous pouvez utiliser l'action `load` pour lancer des scripts d'actions stockés dans des fichiers.  Par exemple, testez l'action `load mat`.
-Nous fournissons quatre scripts (`mat`, `inv`, `rec` et `prod`) correspondant aux quatre parties de cet exercice.
-Pour créer vos propres scripts, utilisez un fichier  `<name>.txt` qui se trouve dans `build`, puis lancez le avec l'action `load`.
+7. Vous pouvez utiliser l'action `load` pour lancer des scripts d'actions stockés dans des fichiers.  Par exemple, testez l'action `load B`.
+Nous fournissons quatre scripts (`B`, `C`, `D` et `E`) correspondant aux parties de cet exercice.
+Pour créer vos propres scripts, utilisez un fichier  `<name>.txt` qui se trouve dans `build`, puis lancez le avec l'action `load <name>`.
 
 
 ### C. Inventaire
@@ -75,7 +75,7 @@ Pour stocker l'inventaire  on utilisera un attribut `ProgramData::_inventory` de
 2. Pour que `ProgramData::get_material_by_name` soit plus efficace, ajouter un attribut `ProgramData::_material_from_name` qui permet d'indexer.
 Quel type de la STL doit-on choisir?
 3. Implémentez la fonction `ProgramData::get_inventory` qui collecte tous les matériaux dans l'inventaire dans le `MaterialBag` donné en argument.
-4. Testez votre code avec l'action `load inv`, éventuellement avec `valgrind` s'il est installé sur votre machine.
+4. Testez votre code avec l'action `load C`, de préférence avec `valgrind` s'il est installé sur votre machine.
 
 ### D. Recette
 
@@ -86,16 +86,18 @@ Quel type de la STL doit-on choisir?
      Ce dernier sera un identifiant unique qui correspondra au numéro de la recette (la première recette ayant pour identifiant `1` et non `0`).
 2. Implémentez le contenu de l'`operator<<` pour `Recipe`. Celui-ci affichera l'idenfiant de la recette ainsi que sa formule.
 Par exemple : `"(1) Eau Sirop => Grenadine"`
-3. Implémentez `ProgramData::register_recipe`. 
-   On utilisera pour cela un nouvel attribut `ProgramData::_registered_recipes` de type `std::set<Recipe>`.
-   A la fin de l'ajout, affichez dans la console `"Recipe <...> has been registered"`
+3. Implémentez `ProgramData::register_recipe`. Pour cela: 
+    - Changer le type de `RecipeCollection` dans aliases.hpp à `std::set<Recipe>`
+    - Ajouter un nouvel attribut `ProgramData::_registered_recipes` de type `RecipeCollection`.
+    - Faîtes en sorte que tout cela compile.
+    - Ecrire la fonction `ProgramData::register_recipe`.  A la fin de l'enregistrement d'une recette, affichez dans la console `"Recipe <...> has been registered"`
 4. Testez que la commande `add rec` fonctionne.
 5. Implémentez la fonction `ProgramData::get_all_recipes` et testez que la commande `list rec` fonctionne correctment.
 6. Ajoutez plusieurs recettes et listez les.  Que remarque-t-on sur l'ordre d'affichage?  Est-ce que ça aurait été pareil avec un `std::unordered_set<Recipe>` ? avec `std::vector<Recipe>`?
 7. Implémentez la fonction `ProgramData::get_recipe_by_id`.  Pour ce faire, regarder les versions (3,4) de [std::set::find](https://en.cppreference.com/w/cpp/container/set/find).
 8. Implémentez `ProgramData::unregister_recipe` et testez que cela fonctionne avec l'action `del rec`.
 Affichez dans la console `"Recipe <...> is not longer registered"`.
-9. Testez votre code avec l'action `load scriptD`, éventuellement avec `valgrind` s'il est installé sur votre machine.
+9. Testez votre code avec l'action `load D`, éventuellement avec `valgrind` s'il est installé sur votre machine.
 
 
 ### E. Production
@@ -110,7 +112,7 @@ Il est recommandé
     - S'il n'y a pas assez de matériau: l'inventaire n'est pas modifié.
     - S'il y a assez de matériaux dans l'inventaire: ceux nécessaires sont retirés de l'inventaire et le nouveau matériau créé est ajouté à l'inventaire.
 4. Vérifiez que la commande `prod` fonctionne correctement.
-5. Testez votre code avec l'action `load scriptE`, éventuellement avec `valgrind` s'il est installé sur votre machine.
+5. Testez votre code avec l'action `load E`, éventuellement avec `valgrind` s'il est installé sur votre machine.
 
 ## Exercice 2 - CopyablePtr (90 min, bonus) 
 

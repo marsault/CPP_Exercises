@@ -38,7 +38,7 @@ public:
   //===== Partie Recette ======================================================
 
   // Enregistre un nouveau modèle de recette au répertoire
-  void register_recipe(std::vector<const Material*>, const Material*);
+  void register_recipe(std::vector<const Material*>, const Material&);
 
   // Collecte la liste de toutes les recettes
   void get_all_recipes(std::vector<const Recipe*>&) const;
