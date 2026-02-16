@@ -21,7 +21,7 @@ int main()
         // assert_mem_count("Link 2", 2);
 
         // const Link link2 { Person { "Céline", "Noël" } };
-        // std::cout << link2.value() << std::endl; // On peut appeler Link::value() sur un const Link
+        // std::cout << link2.value() << " | on attend: CN:0" << std::endl; // On peut appeler Link::value() sur un const Link
         // // Ces deux dernières instructions n'ont provoqué aucune copie
         // assert_no_copy_since_last_check("Link 3");
         // // et on a maintenant 3 personnes en mémoire
@@ -57,7 +57,7 @@ int main()
         // std::cout << list_ref.front() << " | on attend VM:0" << std::endl;
         // std::cout << list_ref.back() << " | on attend HD:0" << std::endl;
 
-        // std::cout << list_ref << " | on attend { CN:0, VM:0, HD:0 } " << std::endl;
+        // std::cout << list_ref << " | on attend { VM:0, CN:0, HD:0 } " << std::endl;
         // // Pas besoin de copie en plus.
         // assert_no_copy_since_last_check("Basic 2");
     }
@@ -69,14 +69,14 @@ int main()
     {
         // LinkedList list1;
         // list1.push_back(Person { "Victor", "Marsault" });
-        // list1.push_back(Person { "Henri", "Dericke" });
+        // list1.push_back(Person { "Henri", "Derycke" });
         // list1.push_back(Person { "Anthony", "Labarre" });
         // ++(list1.front());
 
         // LinkedList list2 { list1 }; // Copions list1
         // ++(list2.front());
         // std::cout << list2.size() << " | on attend:  3" << std::endl;
-        // std::cout << list2 << " | on attend { VM:2, HD:0, HD:0 } " << std::endl;
+        // std::cout << list2 << " | on attend { VM:2, HD:0, AL:0 } " << std::endl;
         // // On a besoin de trois copies (les trois Person dans list1)
         // assert_copy_count_since_last_check("Copy 1", 3);
         // //                 et on a 6 Person en mémoire
@@ -90,7 +90,7 @@ int main()
     {
         // LinkedList list1;
         // list1.push_back(Person { "Victor", "Marsault" });
-        // list1.push_back(Person { "Henri", "Dericke" });
+        // list1.push_back(Person { "Henri", "Derycke" });
         // list1.push_back(Person { "Anthony", "Labarre" });
         // ++(list1.front());
 
@@ -113,7 +113,7 @@ int main()
     {
         // LinkedList list1;
         // list1.push_back(Person { "Victor", "Marsault" });
-        // list1.push_back(Person { "Henri", "Dericke" });
+        // list1.push_back(Person { "Henri", "Derycke" });
         // LinkedList list2;
         // list2.push_back(Person { "Anthony", "Labarre" });
         // list2.push_back(Person { "Céline", "Noël" });
@@ -143,7 +143,7 @@ int main()
     {
         // LinkedList list1;
         // list1.push_back(Person { "Victor", "Marsault" });
-        // list1.push_back(Person { "Henri", "Dericke" });
+        // list1.push_back(Person { "Henri", "Derycke" });
 
         // LinkedList list2;
         // list2.push_back(Person { "Anthony", "Labarre" });
@@ -165,7 +165,7 @@ int main()
     {
         // LinkedList list;
         // list.push_back(Person { "Victor", "Marsault" });
-        // list.push_back(Person { "Henri", "Dericke" });
+        // list.push_back(Person { "Henri", "Derycke" });
         // list.push_back(Person { "Anthony", "Labarre" });
 
         // // Contains renvoie true si la Person recherchée est dans la liste
