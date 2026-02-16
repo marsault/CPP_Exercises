@@ -2,7 +2,7 @@
 
 ## Objectifs
 
-- Identifier les l-values et les r-values
+- Identifier les L-values et les R-values
 - Comprendre le mécanisme du déplacement
 - Définir un constructeur de copie
 - Définir un constructeur de déplacement
@@ -11,63 +11,69 @@
 
 ## Exercice 1 - L-value ou R-value ? (30 min)
 
-1. Identifiez si les expressions ci-dessous sont des l-values ou des r-values et justifiez.  
+1. Identifiez si les expressions ci-dessous sont des L-values ou des R-values et justifiez.  
 
 a. `i` est un `int`  
 ```cpp
-4          // => r-value
-4 + i      // => r-value
-i          // => l-value
-i = 4      // => l-value
-i == 4     // => r-value
+4          // => R-value
+4 + i      // => R-value
+i          // => L-value
+i = 4      // => L-value
+i == 4     // => R-value
 ```
 
 b. `vec` est un `std::vector<char>`
 ```cpp
 vec[5]                          
-// => l-value
+// => L-value
 
 vec                             
-// => l-value
+// => L-value
 
 vec.pop_back()                  
 // => rien ! (retourne void)
 
 std::vector { 'a', 'b', 'c' }   
-// => r-value
+// => R-value
 
 vec.emplace_back('d')              
-// => l-value
+// => L-value
 
 std::move(vec)                  
-// => r-value
+// => R-value
 ```
 
 c. `ptr` est un pointeur de `int`
 ```cpp
 ptr + 3     
-// => r-value
+// => R-value
 
 *(ptr + 3)  
-// => l-value
+// => L-value
 
 *ptr + 3    
-// => r-value
+// => R-value
+
+new int(*ptr)
+// => R-value
+
+*(new int(*ptr))
+// => L-value
 ```
 
 d. `str` est une `std::string`
 ```cpp
 std::string { "aaaa" }  
-// => r-value
+// => R-value
 
 str                     
-// => l-value
+// => L-value
 
 str + "aaaa"            
-// => r-value
+// => R-value
 
 str += "aaaa"           
-// => l-value
+// => L-value
 ```
 
 2. Supposons que vous ayiez l'instruction : `auto inst = Class { expr };`.  
@@ -80,36 +86,39 @@ Solution:
 
 ## Exercice 2 - Minimisons les copies du tp02 (45 min)
 
-Cet exercice est simple. Nous avons repris une solution du tp02 (un peu amélioré) dans lequel quasiment toutes les fonctions passent leurs argument par valeur. Il n'y a donc aucune fuite mémoire, mais le code fait des copies (notamment de `Card`) sans arrêt.\
-Votre mission est de faire en sorte qu'il continue de fonctionner pareil, mais sans jamais ne faire aucune copie de `Card` et sans créer de fuite mémoire.
+Cet exercice est simple. Nous avons repris une solution d'une ancienne version du tp02 dans lequel quasiment toutes les fonctions passent leurs argument par valeur. Il n'y a donc aucune fuite mémoire, mais le code fait des copies (notamment de `Card`) sans arrêt.\
+Votre mission est de faire en sorte qu'il continue de fonctionner pareil, mais
+- sans jamais ne faire aucune copie de `Card` et 
+- sans créer de fuite mémoire.
 
 On utilise la classe `Tracker` pour suivre les copies au fil du code.
 
 1. Ouvrez le fichier `Tracker.hpp` et lisez le.  
 
 2. Pour chacun des 6 premiers constructeurs/opérateurs/Destructeurs de `Tracker`, écrivez leur nom en commentaire au dessus.
+   - Si vous ne comprennez pas ce que font certaines choses (comme les mots-clefs `noexcept`, `default`, `static`, `inline`), demandez à votre chargé de TP.
 
 3. Quelle est la règle des `0/3/5` et est-ce que `Tracker` la suit?
 
-Pour traquer les instances de `Card`, on utilise le fait que `Card` possède un attribut de type `Tracker`, qui sera donc:
+Pour traquer les instances de `Card`, on utilise le fait que `Card` possède un attribut de type `Tracker`, qui sera donc automatiquement:
 - construit quand une `Card` est construite;
 - copié quand une `Card` est copiée;
 - déplacé quand une `Card` est déplacée.
 
-Pour ne pas casser notre exercice, faire en sorte que `Card` continue de suivre la règle des 0!
+Pour ne pas casser notre exercice, il faudra laisser `Card` suivre la règle des 0!
 
 Regarder maintenant le `main.cpp`.  Il y a des appels à `assert_no_copy` et `assert_mem_count` qui vérifient le nombre de copie et de `Card` en mémoire à la fin du code. Vous pouvez rajouter des `assert_no_copy` et des `assert_mem_count` pour vous aider à débugguer la mémoire. 
 Hormis cela, vous n'avez la plupart du temps qu'à modifier les prototypes des fonctions et comment elles sont appelées.
 
 4. A vos claviers: 
-   - `mkdir build && cd build && cmake ..` pour faire le Makefile
+   - `mkdir build && cd build && cmake ..` pour produire le Makefile
    - `make ex2 && ./ex2 10` pour compiler et lancer 10 tours de bataille.
 
 
 ## Exercice 3 - Implémentations de listes chaînées ( 45min )
 
 Dans l'exercice 2, on a montré comment un developpeur utilise les copie et déplacements le plus fréquemment, c'est-à-dire comme "client" des structures de données déjà codées.\
-Dans cet exercice, on va prendre le rôle inverse, celui du développeur d'une nouvelle structure de donnéé révolutionnaire: les liste doublement chainées.
+Dans cet exercice, on va prendre le rôle inverse, celui du développeur d'une nouvelle structure de donnéés ré-vo-lu-tion-naire: les liste doublement chainée.
 Le but est de ne pas faire de fuite mémoire et de faire le minimum de copies.
 
 Description du code fourni:
