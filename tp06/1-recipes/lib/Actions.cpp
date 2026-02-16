@@ -8,7 +8,6 @@
 #include <deque>
 #include <fstream>
 #include <iostream>
-#include <optional>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -23,26 +22,10 @@ bool is_valid_name(const std::string& name, bool display_error = true)
   return result;
 }
 
-std::optional<int> string_to_int(const std::string& name, bool display_error = true)
-{
-  std::stringstream ss(name);
-  int i;
-  ss >> i;
-  //                       ss is now empty
-  //                       vvvvvvvvvvvvvvvvvvvvvvvvvvvv
-  if (name.size() != 0 && (ss.rdbuf()->in_avail() == 0))
-    return i;
-  else {
-    std::cerr << "Expected an integer argument, got \"" << name << "\" " << std::endl;
-    return {};
-  }
-}
-
 // Action 'help'
 void help(const ActionManager& manager)
 {
-  std::cout << "Liste des commandes:" << std::endl;
-  std::cout << manager;
+  std::cout << "Liste des commandes:" << std::endl << manager;
 }
 
 // Action 'add mat'
@@ -84,44 +67,26 @@ void list_doable(ProgramData& data)
     std::cout << "  - " << (*r) << std::endl;
 }
 
-// Action 'del_rec'
-void del_rec(ProgramData& data, std::string arg)
-{
-  MaterialBag buffer;
-  std::optional<int> i = string_to_int(arg);
-  if (i) {
-    const Recipe* recipe = data.get_recipe_by_id(i.value());
-    if (recipe != nullptr)
-      data.unregister_recipe(*recipe);
-    else
-      std::cout << "No recipe has identifier " << i.value() << std::endl;
-  }
-}
-
 // Action 'produce'
 void produce(ProgramData& data, std::string arg)
 {
   MaterialBag buffer;
-  std::optional<int> i = string_to_int(arg);
-  if (i) {
-    const Recipe* recipe = data.get_recipe_by_id(i.value());
-    if (recipe != nullptr) {
-      switch (data.produce(*recipe, buffer)) {
-      case Outcome::SUCCESS:
-        break;
-      case Outcome::FAILURE:
-        std::cout << "Could not produce: " << *recipe << std::endl;
-        std::cout << "Missing materials:" << std::endl;
-        for (const std::pair<const Material*, size_t>& p : buffer) {
-          std::cout << "  - " << *(p.first);
-          if (p.second > 1)
-            std::cout << " x" << p.second;
-          std::cout << std::endl;
-        }
+  int i = std::stoi(arg);
+  const Recipe* recipe = data.get_recipe_by_id(i);
+  if (recipe != nullptr) {
+    switch (data.produce(*recipe, buffer)) {
+    case Outcome::SUCCESS:
+      break;
+    case Outcome::FAILURE:
+      std::cout << "Could not produce: " << *recipe << std::endl;
+      std::cout << "Missing materials:" << std::endl;
+      for (const MaterialAmount& p : buffer) {
+        std::cout << "  - " << *(p.first);
+        if (p.second > 1)
+          std::cout << " x" << p.second;
+        std::cout << std::endl;
       }
     }
-    else
-      std::cout << "No recipe has identifier " << i.value() << std::endl;
   }
 }
 
@@ -131,7 +96,7 @@ void list_inv(ProgramData& data)
   MaterialBag buffer;
   data.get_inventory(buffer);
   std::cout << "Inventory: " << (buffer.empty() ? "(empty)" : "") << std::endl;
-  for (const std::pair<const Material*, size_t>& p : buffer) {
+  for (const MaterialAmount& p : buffer) {
     std::cout << "  - " << *(p.first);
     if (p.second > 1)
       std::cout << " x" << p.second;

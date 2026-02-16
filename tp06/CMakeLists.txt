@@ -18,7 +18,7 @@ add_executable(ex2
 )
 
 file(GLOB SAVES
-  "${CMAKE_SOURCE_DIR}/1-recipes/cmake/*.txt"
+  "${CMAKE_SOURCE_DIR}/1-recipes/saves/*.txt"
 )
 file(COPY ${SAVES} DESTINATION "${CMAKE_BINARY_DIR}")
 

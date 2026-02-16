@@ -1,10 +1,14 @@
 #pragma once
 
-#include <utility> // pair
+#include <set>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 
 class Material;
 class Recipe;
+class MaterialHasher;
 
-using MaterialBag = std::vector<std::pair<const Material*, size_t>>;
-using RecipeCollection = std::vector<Recipe>;
+using MaterialAmount = std::pair<const Material*, size_t>;
+using MaterialBag = std::unordered_map<const Material*, size_t, MaterialHasher>;
+using RecipeCollection = std::set<Recipe, std::less<>>;

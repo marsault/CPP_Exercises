@@ -1,7 +1,6 @@
 #include <cassert>
 #include <deque>
 #include <functional>
-#include <iostream>
 #include <map>
 
 #include "../ProgramData.hpp"
@@ -61,7 +60,7 @@ public:
       if (path.empty())
         std::cerr << "There is no action '" << subaction << "'" << std::endl;
       else {
-        std::cerr << "There is no subaction '" << subaction << "' in action '";
+        std::cerr << "There is no subaction " << subaction << "in action '";
         bool first = true;
         for (auto& s : path) {
           if (first)
@@ -70,9 +69,9 @@ public:
             std::cerr << " ";
           std::cerr << s;
         }
-        std::cerr << "' ";
+        std::cerr << "'" << std::endl;
       }
-      std::cerr << "(Possibilities are:";
+      std::cerr << "(Possibility are:";
       for (auto& s : _children)
         std::cerr << " " << s.first;
       std::cerr << ")" << std::endl;
