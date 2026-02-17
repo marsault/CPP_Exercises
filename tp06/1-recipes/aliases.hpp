@@ -3,7 +3,6 @@
 #include <set>
 #include <unordered_map>
 #include <utility>
-#include <vector>
 
 class Material;
 class Recipe;

@@ -12,27 +12,27 @@ void ProgramData::get_registered_materials(
     materials.emplace_back(ptr.get());
 }
 
-void ProgramData::add_material_to_inventory(const Material *mat, int quantity) {
-  auto it = _inventory.find(mat);
+void ProgramData::add_material_to_inventory(const Material& mat, int quantity) {
+  auto it = _inventory.find(&mat);
   if (it == _inventory.end()) {
-    _inventory[mat] = quantity;
-    std::cout << "Added " << quantity << " " << *mat << " to inventory"
+    _inventory[&mat] = quantity;
+    std::cout << "Added " << quantity << " " << mat << " to inventory"
               << std::endl;
   } else {
     it->second += quantity;
-    std::cout << "Inventory now contains " << it->second << " " << *mat
+    std::cout << "Inventory now contains " << it->second << " " << mat
               << std::endl;
   }
 }
 
-void ProgramData::remove_material_from_inventory(const Material *mat,
+void ProgramData::remove_material_from_inventory(const Material&mat,
                                                  size_t quantity) {
-  auto it = _inventory.find(mat);
+  auto it = _inventory.find(&mat);
   if (it == _inventory.end() || it->second < quantity)
-    std::cout << "Could not remove " << quantity << " " << *mat
+    std::cout << "Could not remove " << quantity << " " << mat
               << " from inventory (not enough)." << std::endl;
   else
-    std::cout << "Removed " << quantity << " " << *mat << " from inventory"
+    std::cout << "Removed " << quantity << " " << mat << " from inventory"
               << std::endl;
 }
 
@@ -58,8 +58,14 @@ const Recipe *ProgramData::get_recipe_by_id(size_t id) const {
     return &(*it);
 }
 
+void ProgramData::unregister_recipe(const Recipe& recipe) {
+  std::cout << "Recipe <" << recipe << "> is no longer registered" << std::endl;
+  _registered_recipes.extract(recipe);
+}
+
+
 void ProgramData::register_recipe(std::vector<const Material *> materials,
-                                  const Material *product) {
+                                  const Material&product) {
   MaterialBag materials_as_bag;
   for (auto *m : materials) {
     auto it = materials_as_bag.find(m);
@@ -86,8 +92,8 @@ void ProgramData::get_doable_recipes(
 }
 
 size_t
-ProgramData::get_material_count_in_inventory(const Material *material) const {
-  auto it = _inventory.find(material);
+ProgramData::get_material_count_in_inventory(const Material& material) const {
+  auto it = _inventory.find(&material);
   if (it == _inventory.end())
     return 0u;
   else
@@ -97,9 +103,11 @@ ProgramData::get_material_count_in_inventory(const Material *material) const {
 MaterialBag ProgramData::missing_material(const MaterialBag &bag) const {
   MaterialBag result;
   for (const auto &p : bag) {
-    size_t count = get_material_count_in_inventory(p.first);
-    if (count < p.second)
-      result[p.first] = p.second - count;
+    if(p.first != nullptr) {
+      size_t count = get_material_count_in_inventory(*p.first);
+      if (count < p.second)
+        result[p.first] = p.second - count;
+    }
   }
   return result;
 }
@@ -111,7 +119,8 @@ Outcome ProgramData::produce(const Recipe &recipe, MaterialBag &materials) {
     return Outcome::FAILURE;
   }
   for (const auto &p : recipe.requirements())
-    remove_material_from_inventory(p.first, p.second);
+    if (p.first == nullptr)
+      remove_material_from_inventory(*p.first, p.second);
   add_material_to_inventory(recipe.product());
   return Outcome::SUCCESS;
 }

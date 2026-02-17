@@ -60,7 +60,7 @@ public:
       if (path.empty())
         std::cerr << "There is no action '" << subaction << "'" << std::endl;
       else {
-        std::cerr << "There is no subaction " << subaction << "in action '";
+        std::cerr << "There is no subaction '" << subaction << "' in action '";
         bool first = true;
         for (auto& s : path) {
           if (first)
@@ -69,9 +69,9 @@ public:
             std::cerr << " ";
           std::cerr << s;
         }
-        std::cerr << "'" << std::endl;
+        std::cerr << "' ";
       }
-      std::cerr << "(Possibility are:";
+      std::cerr << "(Possibilities are:";
       for (auto& s : _children)
         std::cerr << " " << s.first;
       std::cerr << ")" << std::endl;

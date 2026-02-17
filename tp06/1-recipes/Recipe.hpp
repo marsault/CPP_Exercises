@@ -1,9 +1,7 @@
 #pragma once
 
 #include <ostream>
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "Material.hpp"
 #include "MaterialHasher.hpp"
@@ -20,18 +18,18 @@ class Recipe
       if (p.second > 1)
         stream << "[x" << p.second << "]";
     }
-    return stream << " => " << *(recipe._product);
+    return stream << " => " << recipe._product;
   }
 
 public:
-  Recipe(MaterialBag requirements, const Material* product)
+  Recipe(MaterialBag requirements, const Material& product)
       : _requirements{std::move(requirements)}, _product{product}
   {}
 
   size_t id() const { return _id; }
 
   const MaterialBag& requirements() const { return _requirements; }
-  const Material* product() const { return _product; }
+  const Material& product() const { return _product; }
 
   bool operator<(const Recipe& other) const { return id() < other.id(); }
 
@@ -39,7 +37,7 @@ public:
 
 private:
   MaterialBag _requirements;
-  const Material* _product;
+  const Material& _product;
   size_t _id = ++_next_id;
   static inline size_t _next_id = 0;
 };

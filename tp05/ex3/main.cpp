@@ -20,12 +20,21 @@ int main()
         // Et on a que 2 Person en mémoire
         assert_mem_count("Link 2", 2);
 
+<<<<<<< HEAD
         const Link link2 { Person { "Céline", "Noël" } };
         std::cout << link2.value() << std::endl; // On peut appeler Link::value() sur un const Link
         // Ces deux dernières instructions n'ont provoqué aucune copie
         assert_no_copy_since_last_check("Link 3");
         // et on a maintenant 3 personnes en mémoire
         assert_mem_count("Link 4", 3);
+=======
+        // const Link link2 { Person { "Céline", "Noël" } };
+        // std::cout << link2.value() << " | on attend: CN:0" << std::endl; // On peut appeler Link::value() sur un const Link
+        // // Ces deux dernières instructions n'ont provoqué aucune copie
+        // assert_no_copy_since_last_check("Link 3");
+        // // et on a maintenant 3 personnes en mémoire
+        // assert_mem_count("Link 4", 3);
+>>>>>>> master
     }
     // On a plus aucune Person en mémoire
     assert_mem_count("Link fin", 0);
@@ -57,9 +66,15 @@ int main()
         std::cout << list_ref.front() << " | on attend VM:0" << std::endl;
         std::cout << list_ref.back() << " | on attend HD:0" << std::endl;
 
+<<<<<<< HEAD
         std::cout << list_ref << " | on attend { CN:0, VM:0, HD:0 } " << std::endl;
         // Pas besoin de copie en plus.
         assert_no_copy_since_last_check("Basic 2");
+=======
+        // std::cout << list_ref << " | on attend { VM:0, CN:0, HD:0 } " << std::endl;
+        // // Pas besoin de copie en plus.
+        // assert_no_copy_since_last_check("Basic 2");
+>>>>>>> master
     }
     // On a plus aucune Person en mémoire
     assert_mem_count("Basic fin", 0);
@@ -67,6 +82,7 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 3 ====================================" << std::endl;
     {
+<<<<<<< HEAD
         LinkedList list1;
         list1.push_back(Person { "Victor", "Marsault" });
         list1.push_back(Person { "Henri", "Dericke" });
@@ -81,6 +97,22 @@ int main()
         assert_copy_count_since_last_check("Copy 1", 3);
         //                 et on a 6 Person en mémoire
         assert_mem_count("Copy 2", 6);
+=======
+        // LinkedList list1;
+        // list1.push_back(Person { "Victor", "Marsault" });
+        // list1.push_back(Person { "Henri", "Derycke" });
+        // list1.push_back(Person { "Anthony", "Labarre" });
+        // ++(list1.front());
+
+        // LinkedList list2 { list1 }; // Copions list1
+        // ++(list2.front());
+        // std::cout << list2.size() << " | on attend:  3" << std::endl;
+        // std::cout << list2 << " | on attend { VM:2, HD:0, AL:0 } " << std::endl;
+        // // On a besoin de trois copies (les trois Person dans list1)
+        // assert_copy_count_since_last_check("Copy 1", 3);
+        // //                 et on a 6 Person en mémoire
+        // assert_mem_count("Copy 2", 6);
+>>>>>>> master
     }
     // On a plus aucune Person en mémoire
     assert_mem_count("copy fin", 0);
@@ -88,11 +120,19 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 4 ====================================" << std::endl;
     {
+<<<<<<< HEAD
         LinkedList list1;
         list1.push_back(Person { "Victor", "Marsault" });
         list1.push_back(Person { "Henri", "Dericke" });
         list1.push_back(Person { "Anthony", "Labarre" });
         ++(list1.front());
+=======
+        // LinkedList list1;
+        // list1.push_back(Person { "Victor", "Marsault" });
+        // list1.push_back(Person { "Henri", "Derycke" });
+        // list1.push_back(Person { "Anthony", "Labarre" });
+        // ++(list1.front());
+>>>>>>> master
 
         LinkedList list2 { std::move(list1) }; // Déplaçons list1 dans list2
         ++(list2.front());
@@ -111,12 +151,21 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 5 ====================================" << std::endl;
     {
+<<<<<<< HEAD
         LinkedList list1;
         list1.push_back(Person { "Victor", "Marsault" });
         list1.push_back(Person { "Henri", "Dericke" });
         LinkedList list2;
         list2.push_back(Person { "Anthony", "Labarre" });
         list2.push_back(Person { "Céline", "Noël" });
+=======
+        // LinkedList list1;
+        // list1.push_back(Person { "Victor", "Marsault" });
+        // list1.push_back(Person { "Henri", "Derycke" });
+        // LinkedList list2;
+        // list2.push_back(Person { "Anthony", "Labarre" });
+        // list2.push_back(Person { "Céline", "Noël" });
+>>>>>>> master
 
         list1.concatenate_back(list2);
         ++(list2.front());
@@ -141,9 +190,15 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 6 ====================================" << std::endl;
     {
+<<<<<<< HEAD
         LinkedList list1;
         list1.push_back(Person { "Victor", "Marsault" });
         list1.push_back(Person { "Henri", "Dericke" });
+=======
+        // LinkedList list1;
+        // list1.push_back(Person { "Victor", "Marsault" });
+        // list1.push_back(Person { "Henri", "Derycke" });
+>>>>>>> master
 
         LinkedList list2;
         list2.push_back(Person { "Anthony", "Labarre" });
@@ -163,10 +218,17 @@ int main()
     std::cout << std::endl;
     std::cout << "== Partie 7 ====================================" << std::endl;
     {
+<<<<<<< HEAD
         LinkedList list;
         list.push_back(Person { "Victor", "Marsault" });
         list.push_back(Person { "Henri", "Dericke" });
         list.push_back(Person { "Anthony", "Labarre" });
+=======
+        // LinkedList list;
+        // list.push_back(Person { "Victor", "Marsault" });
+        // list.push_back(Person { "Henri", "Derycke" });
+        // list.push_back(Person { "Anthony", "Labarre" });
+>>>>>>> master
 
         // Contains renvoie true si la Person recherchée est dans la liste
         std::cout << std::boolalpha << list.contains(Person { "Victor", "Marsault" }) << " | on attend: true"
