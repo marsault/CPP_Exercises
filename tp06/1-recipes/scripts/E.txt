@@ -3,10 +3,11 @@ new mat Terre
 new mat Bois
 new mat Pierre
 new mat Maison
+new rec Paille Bois Pierre => Maison
 new rec Paille Paille Paille Paille => Maison
 new rec Terre => Maison
 new rec Bois Bois Bois => Maison
-del rec 2
+del rec 3
 new rec Pierre Pierre => Maison
 add mat Paille
 add mat Paille
@@ -19,12 +20,15 @@ add mat Paille
 add mat Paille
 add mat Bois
 add mat Bois
+del rec 1
 list doable
 list inv
-prod 1
-list inv
-prod 3
+prod 2
 list inv
 prod 4
 list inv
-prod 1
+prod 5
+list inv
+prod 2
+list inv 
+list rec

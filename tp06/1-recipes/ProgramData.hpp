@@ -29,7 +29,7 @@ public:
   const Material* get_material_by_name(const std::string& name) const;
 
   // Ajoute un nouveau materiau à l'inventaire
-  void add_material_to_inventory(const Material*, int = 1);
+  void add_material_to_inventory(const Material&, int = 1);
 
   // Récupère la liste des matériaux présents dans l'inventaire avec la quantité
   // correspondante
@@ -62,7 +62,6 @@ public:
   // Sinon, renvoie FAILURE et indique les materiaux manquants dans le second argument
   Outcome produce(const Recipe& recipe, MaterialBag& materials);
 
-
   //
-  // Vous aurez besoin d'ajouter des champs et des fonctions auxiliaires !!
+  // Vous aurez besoin d'ajouter des champs et des fonctions auxiliaires ci-dessous !!
 };

@@ -4,7 +4,6 @@
 #include "../aliases.hpp"
 #include "ActionManager.hpp"
 
-#include <algorithm>
 #include <deque>
 #include <fstream>
 #include <iostream>
@@ -51,8 +50,13 @@ void add_mat(ProgramData& data, std::deque<std::string> args)
   if (!is_valid_name(args.front()))
     return;
   const Material* mat = data.get_material_by_name(args.front());
-  data.add_material_to_inventory(mat);
+  if (mat == nullptr) {
+    std::cerr << "There is no material named '" << args.front() << "'" << std::endl;
+    return;
+  }
+  data.add_material_to_inventory(*mat);
 }
+
 
 // Action 'list mat'
 void list_mat(ProgramData& data)
@@ -174,7 +178,7 @@ void new_rec(ProgramData& data, std::deque<std::string> args)
     }
   }
 
-  data.register_recipe(std::move(materials), product);
+  data.register_recipe(std::move(materials), *product);
 }
 
 std::deque<std::string> parse_words(const std::string& command)
