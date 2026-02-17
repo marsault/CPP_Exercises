@@ -4,6 +4,7 @@
 #include "Recipe.hpp"
 #include "aliases.hpp"
 #include <string>
+#include <vector>
 
 enum class Outcome
 {
@@ -61,7 +62,6 @@ public:
   // Si c'est possible, renvoie SUCCESS
   // Sinon, renvoie FAILURE et indique les materiaux manquants dans le second argument
   Outcome produce(const Recipe& recipe, MaterialBag& materials);
-
 
   //
   // Vous aurez besoin d'ajouter des champs et des fonctions auxiliaires !!

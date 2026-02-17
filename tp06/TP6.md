@@ -66,7 +66,7 @@ Vous pouvez utiliser la fonction-membre `get` de `unique_ptr` pour récupérer u
 7. Vous pouvez utiliser l'action `load` pour lancer des scripts d'actions stockés dans des fichiers.  Par exemple, testez l'action `load B`.
 Nous fournissons quatre scripts (`B`, `C`, `D` et `E`) correspondant aux parties de cet exercice.
 Pour créer vos propres scripts, utilisez un fichier  `<name>.txt` qui se trouve dans `build`, puis lancez le avec l'action `load <name>`.
-
+8. Faites des tests supplémentaires.
 
 ### C. Inventaire
 
@@ -76,6 +76,7 @@ Pour stocker l'inventaire  on utilisera un attribut `ProgramData::_inventory` de
 Quel type de la STL doit-on choisir?
 3. Implémentez la fonction `ProgramData::get_inventory` qui collecte tous les matériaux dans l'inventaire dans le `MaterialBag` donné en argument.
 4. Testez votre code avec l'action `load C`, de préférence avec `valgrind` s'il est installé sur votre machine.
+5. Faites des tests supplémentaires.
 
 ### D. Recette
 
@@ -98,6 +99,7 @@ Par exemple : `"(1) Eau Sirop => Grenadine"`
 8. Implémentez `ProgramData::unregister_recipe` et testez que cela fonctionne avec l'action `del rec`.
 Affichez dans la console `"Recipe <...> is not longer registered"`.
 9. Testez votre code avec l'action `load D`, éventuellement avec `valgrind` s'il est installé sur votre machine.
+10. Faites des tests supplémentaires.
 
 
 ### E. Production
@@ -113,6 +115,7 @@ Il est recommandé
     - S'il y a assez de matériaux dans l'inventaire: ceux nécessaires sont retirés de l'inventaire et le nouveau matériau créé est ajouté à l'inventaire.
 4. Vérifiez que la commande `prod` fonctionne correctement.
 5. Testez votre code avec l'action `load E`, éventuellement avec `valgrind` s'il est installé sur votre machine.
+6. Faites des tests supplémentaires.
 
 ## Exercice 2 - CopyablePtr (90 min, bonus) 
 
