@@ -35,7 +35,7 @@ void Card::print() const
 
 bool Card::operator==(Card other) const
 {
-    return _value == other._value and _color == other._color;
+    return _value == other._value && _color == other._color;
 }
 
 bool Card::operator<(Card other) const
