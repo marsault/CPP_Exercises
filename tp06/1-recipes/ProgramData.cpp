@@ -64,6 +64,10 @@ void ProgramData::unregister_recipe(const Recipe& recipe) {
 }
 
 
+// ============================================================================
+// = Partie Recette ===========================================================
+// ============================================================================
+
 void ProgramData::register_recipe(std::vector<const Material *> materials,
                                   const Material&product) {
   MaterialBag materials_as_bag;
