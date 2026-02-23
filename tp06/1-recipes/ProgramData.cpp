@@ -12,7 +12,7 @@ void ProgramData::get_registered_materials(std::vector<const Material*>& materia
   std::cout << "Feature is not yet implemented (get_registered_materials)" << std::endl;
 }
 
-void ProgramData::add_material_to_inventory(const Material* mat, int quantity)
+void ProgramData::add_material_to_inventory(const Material& mat, int quantity)
 {
   std::cout << "Feature is not yet implemented (add_material_to_inventory)" << std::endl;
 }
@@ -34,7 +34,7 @@ const Material* ProgramData::get_material_by_name(const std::string& name) const
 // ============================================================================
 
 void ProgramData::register_recipe(std::vector<const Material*> materials,
-                                  const Material* product)
+                                  const Material& product)
 {
   std::cout << "Feature is not yet implemented (register_recipe)" << std::endl;
 }
