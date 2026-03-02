@@ -56,30 +56,27 @@ private:
 int main()
 {
     Chicken chicken;
-
-    chicken.move();          // 1a
-    chicken.type();          // 1b
-    chicken.can_eat_plant(); // 1c
-    chicken.can_eat_meat();  // 1d
+    chicken.type();          // 1a
+    chicken.can_eat_plant(); // 1b
 
     Herbivore& chicken_as_herb = chicken;
     chicken_as_herb.type();          // 2a
-    chicken_as_herb.can_eat_plant(); // 2b
-    chicken_as_herb.can_eat_meat();  // 2c
+    chicken_as_herb.can_eat_meat();  // 2b
+    chicken_as_herb.can_eat_plant(); // 2c
 
     Animal& chicken_as_anim = chicken;
     chicken_as_anim.move(); // 3a
     chicken_as_anim.type(); // 3b
 
     Bird& chicken_as_bird = chicken;
-    chicken_as_bird.move();  // 4a
-    chicken_as_bird.can_eat_plant();  // 4b
-    chicken_as_bird.can_eat_meat();  // 4c
+    chicken_as_bird.move();          // 4a
+    chicken_as_bird.can_eat_meat();  // 4b
+    chicken_as_bird.can_eat_plant(); // 4c
 
 
-    Animal a = chicken;  // 5a Cette ligne ne va pas compiler, pourquoi?
-    Bird bird = chicken; // 5b Cette ligne est une mauvaise idée, pourquoi ?
-    bird.move(); //5c
+    Animal a = chicken;  // 5a Cette ligne ne va pas compiler, pourquoi? 
+    Bird bird = chicken; // 5b Cette ligne est une mauvaise idée, pourquoi?
+    bird.move();         // 5c 
 
     return 0;
 }
