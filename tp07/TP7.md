@@ -13,75 +13,73 @@ Déduisez-en la fonction qui sera appelée au moment de l'exécution du programm
 
 ```cpp
 #include <iostream>
+#include <string>
 
 class Animal
 {
 public:
-    virtual void move() { std::cout << "Moving!" << std::endl; }
+    virtual void move() = 0;
 
     void type() const { std::cout << "Animal" << std::endl; }
 };
 
-class Carnivore
-{
-public:
-    void can_eat_meat() const { std::cout << "Yum!" << std::endl; }
-    void can_eat_plant() const { std::cout << "Berk!" << std::endl; }
-};
 
 class Herbivore
 {
 public:
-    virtual void can_eat_meat() const { std::cout << "Berk!" << std::endl; }
-    virtual void can_eat_plant() const { std::cout << "Yum!" << std::endl; }
+    virtual void can_eat_meat() const { std::cout << "Ugh meat!" << std::endl; }
+    virtual void can_eat_plant() const { std::cout << "Yum plant!" << std::endl; }
 };
 
-class Bird: public Animal, public Carnivore, public Herbivore
+class Bird: public Animal, public Herbivore
 {
 public:
-    void move() const { std::cout << "Flying!" << std::endl; }
-    void type() { std::cout << "Bird" << std::endl; }
+    void move() { std::cout << "Je vole!" << std::endl; }
+    void type() { std::cout << "Oizo" << std::endl; }
 
-    void can_eat_plant() { std::cout << "Miam!" << std::endl; }
+    void can_eat_plant() { std::cout << "Miam des plantes!" << std::endl; }
 };
 
-class Tiger: public Animal, public Carnivore
+class Chicken: public Bird
 {
 public:
-    void move() override { std::cout << "Running!" << std::endl; }
-    void type() const { std::cout << "Tiger" << std::endl; }
-    
-    void can_eat_meat() const { std::cout << "Miam!" << std::endl; }
+    void move() { std::cout << "Not Flying :(" << std::endl; }
+    void type() { std::cout << "Chicken" << std::endl; }
+
+    void can_eat_meat() const { std::cout << "I'd rather eat grain'!" << std::endl; }
+private:
+    std::string name = "Ginger";
 };
+
+
 
 int main()
 {
-    Tiger tiger;
-    Animal& tiger_as_animal = tiger;
-    Carnivore& tiger_as_carn = tiger;
+    Chicken chicken;
 
-    Bird bird;
-    Animal& bird_as_animal = bird;
-    Herbivore& bird_as_herb = bird;
-    Carnivore& bird_as_carn = bird;
+    chicken.move();          // 1a
+    chicken.type();          // 1b
+    chicken.can_eat_plant(); // 1c
+    chicken.can_eat_meat();  // 1d
 
-    tiger.move();                  // I1
-    tiger_as_animal.move();        // I2
+    Herbivore& chicken_as_herb = chicken;
+    chicken_as_herb.type();          // 2a
+    chicken_as_herb.can_eat_plant(); // 2b
+    chicken_as_herb.can_eat_meat();  // 2c
 
-    bird.move();                   // I3
-    bird_as_animal.move();         // I4
+    Animal& chicken_as_anim = chicken;
+    chicken_as_anim.move(); // 3a
+    chicken_as_anim.type(); // 3b
 
-    bird.can_eat_plant();          // I5
-    bird_as_herb.can_eat_plant();  // I6
-    bird_as_carn.can_eat_plant();  // I7
+    Bird& chicken_as_bird = chicken;
+    chicken_as_bird.move();  // 4a
+    chicken_as_bird.can_eat_plant();  // 4b
+    chicken_as_bird.can_eat_meat();  // 4c
 
-    tiger.can_eat_plant();         // I8
-    tiger.can_eat_meat();          // I9
-    tiger_as_carn.can_eat_meat();  // I10
 
-    bird.type();                   // I11
-    bird_as_animal.type();         // I12
-    tiger_as_animal.type();        // I13
+    Animal a = chicken;  // 5a Cette ligne ne va pas compiler, pourquoi?
+    Bird bird = chicken; // 5b Cette ligne est une mauvaise idée, pourquoi ?
+    bird.move(); //5c
 
     return 0;
 }
