@@ -84,7 +84,7 @@ int main()
                          //   -> Animal est une classe abstraite et ne peut donc pas être instanciée
     Bird bird = chicken; // 5b Cette ligne est une mauvaise idée, pourquoi ?
                          //   -> La classe Chicken va être tronquée et la donnée ("Ginger") ne sera pas dans `bird`
-    bird.move();         //5c Bird::move() -> le type statique de `bird` est `Bird`
+    bird.move();         // 5c Bird::move() -> le type statique de `bird` est `Bird`
 
     return 0;
 }
