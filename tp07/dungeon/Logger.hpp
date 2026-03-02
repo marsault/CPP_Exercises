@@ -2,6 +2,6 @@
 
 #include <sstream>
 
-static inline std::stringstream logger;
+inline std::stringstream logger;
 
-static inline unsigned log_length = 4;
+inline unsigned log_length = 4;
