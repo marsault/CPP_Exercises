@@ -41,38 +41,35 @@ void display(const Grid& grid, const std::deque<std::string>& logs)
 {
     auto stream = std::stringstream {};
 
-    for (auto x = 0; x < grid.front().size() + 2; ++x)
+    stream << "┌";
+    for (auto x = 0; x < grid.front().size(); ++x)
     {
-        stream << "#";
+        stream << "─";
     }
-
-    stream << "\n";
+    stream << "┐\n";
 
     for (auto y = 0; y < grid.size(); ++y)
     {
-        stream << "|";
+        stream << "│";
 
         for (auto x = 0; x < grid[y].size(); ++x)
         {
             const auto& cell = grid[y][x];
             if (cell.empty())
-            {
                 stream << " ";
-            }
             else
-            {
                 stream << cell.front()->get_representation();
-            }
         }
 
-        stream << "|\n";
+        stream << "│\n";
     }
 
-    for (auto x = 0; x < grid.front().size() + 2; ++x)
+    stream << "└";
+    for (auto x = 0; x < grid.front().size(); ++x)
     {
-        stream << "#";
+        stream << "─";
     }
-
+    stream << "┘";
 #ifdef WINDOWS
     std::system("cls");
 #else
@@ -130,7 +127,7 @@ void collect_logs(std::deque<std::string>& logs)
 
     logger = {};
 
-    while (logs.size() > 2)
+    while (logs.size() > log_length)
     {
         logs.erase(logs.begin());
     }
@@ -170,6 +167,7 @@ int main()
     auto all_entities = std::vector<std::unique_ptr<Entity>> {};
     all_entities.push_back(std::make_unique<Entity>(3, 2));
     all_entities.push_back(std::make_unique<Entity>(7, 6));
+    all_entities.push_back(std::make_unique<Entity>(42, 6));
     // all_entities.push_back(std::make_unique<Character>());
     // all_entities.push_back(std::make_unique<Trap>(width, height));
     // all_entities.push_back(std::make_unique<Trap>(width, height));

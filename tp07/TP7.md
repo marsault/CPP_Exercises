@@ -98,21 +98,19 @@ Une fois de plus, nous vous avons préparé le squelette du programme.
 
 1. Commencez par compiler le programme et lancez-le. Vous devriez voir un rectangle contenant deux `?` qui se déplacent à l'intérieur. 
 
-```b
-# Configurer le projet dans un dossier de build
-cmake -B <chemin_vers_le_dossier_build> -S <chemin_vers_le_dossier_tp7>
-
-# Compiler le programme
-cmake --build <chemin_vers_le_dossier_build> --target tp7-ex2
-
-# Lancer le programme
-<chemin_vers_le_dossier_build>/tp7-ex2
-```
+    ```bash
+    mkdir build # Création du répertoire `build`
+    cd build # On se déplace dans le répertoire `build`
+    cmake ..  # Configuration du projet avec CMakeLists.txt
+    make  # Compilation
+    ./ex2 # On lance l'exo 2
+    ```
 
 2. Prenez connaissance du contenu des fichiers pré-existants et répondez aux questions suivantes :
 - Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `display` ?
 - Dans [Dungeon.cpp](dungeon/Dungeon.cpp), quel est le rôle de la fonction `update` ?
 - Quelle variable du `main` porte l'ownership des entités ?
+
 
 ### B. Personnage
 
@@ -131,29 +129,40 @@ Adaptez l'instruction du `main` de manière à ce que le personnage apparaisse e
 3. Modifiez la fonction `Entity::get_representation() const` afin que celle-ci puisse être redéfinie dans les classes-filles.
 Ajoutez ensuite la redéfinition de cette fonction dans `Character`, afin que les personnages soient représentés par des `O` plutôt que par des `?`. Pensez bien à y ajouter le mot-clef **`override`** pour vous assurer que votre redéfinition est valide.
 
+4. Rajouter un champs `_name` à chaque `Character` et faire en sorte que le premier `Character` instancé s'appelle (et s'affiche) `A`, le deuxième `Character` instancié s'appelle `B`, etc.
+Le 27ème s'appellera de nouveau `A`.
+
+5.  Modifier le constructeur de `Character` pour qu'il affiche dans le `Logger`:  
+    `Character A was created in (x,y)`
+    et mettre à jour les autres messages du logger pour ne pas afficher n'importe quoi.
+
+6. Faire en sorte que les `Character` ne puissent pas sortir du cadre.
+
 ### C. Pièges et potions
 
-1. Ajoutez la classe `Trap`, qui dérivera elle aussi de `Entity`.
-Son constructeur prendra en paramètre la taille de la grille (`width` et `height`) et placera l'entité à une position aléatoire dedans (vous pouvez utiliser la fonction `random_value` pour générer des valeurs).
-Arrangez-vous ensuite pour que les pièges soient représentés par des `X` sur la grille.
-Pour terminer, décommentez les instructions suivantes du `main` pour tester votre code :
-```cpp
-all_entities.push_back(std::make_unique<Trap>(width, height));
-all_entities.push_back(std::make_unique<Trap>(width, height));
-```
+1.  a. Ajoutez la classe `Trap`, qui dérivera elle aussi de `Entity`.
+    Son constructeur prendra en paramètre la taille de la grille (`width` et `height`) et placera l'entité à une position aléatoire dedans (vous pouvez utiliser la fonction `random_value` pour générer des valeurs).
+    Arrangez-vous ensuite pour que les pièges soient représentés par des `#` sur la grille.
+    Pour terminer, décommentez les instructions suivantes du `main` pour tester votre code :
+    ```cpp
+    all_entities.push_back(std::make_unique<Trap>(width, height));
+    all_entities.push_back(std::make_unique<Trap>(width, height));
+    ```
+    b. Mettre un message dans le logger.
 
 2. Les pièges sont des entités immobiles du dongeon.
 Modifiez le code des classes afin que `Character::update` continue de déplacer les personnages de façon aléatoire et que `Trap::update` ne produise aucun effet sur les pièges.
 
 3. Sur le même modèle que `Trap`, définissez une classe `Potion`.
 Comme les pièges, les potions sont des entités immobiles et posées initialement à des endroits aléatoires de la carte.
-Elles seront représentées par le symbole `$` sur la grille.
+Elles seront représentées par le symbole `+` sur la grille.
 
 4. Refactorisez votre code afin que `Potion` et `Trap` héritent toutes les deux d'une classe `Item`, elle-même héritant de `Entity`, et placez le code en commun dans `Item`.
 
 5. Maintenant que toutes les classes possibles d'entités ont été implémentées, nous souhaitons empêcher l'instanciation directe du type `Entity`.
 Pour cela, vous allez retirer l'implémentation de `Entity::get_representation` et rendre cette fonction virtuelle pure.
 Une fois vos changements faits, le compilateur devrait vous empêcher de compiler votre programme à cause des `std::make_unique<Entity>(...)` dans le `main`. Remplacez ces appels afin de créer des `Character` à la place.
+
 
 ### D. Intéractions
 
@@ -162,7 +171,7 @@ Ce comportement est géré par la fonction `trigger_interactions` de [Dungeons.c
 
 1. Implémentez le minimum de code permettant de décommenter les deux lignes commentées dans la fonction `trigger_interactions`.
 
-2. Lorsqu'un personnage rencontre un piège, il "perd une vie". Sa représentation passe alors de `O` à `o`.
+2. Lorsqu'un personnage rencontre un piège, il "perd une vie". Sa représentation passe alors en minuscule (par exemple `A` quand il a 2pv, `a` quand il en a 1).
 S'il rencontre un deuxième piège, il "meurt" et sa représentation devient alors ` `.
 Pour mettre en place ce comportement, vous redéfinirez la fonction `interact_with` dans `Character`. Afin de savoir si l'entité avec laquelle vous intéragissez est un `Trap`, vous devrez utiliser un [dynamic_cast](https://en.cppreference.com/w/cpp/language/dynamic_cast) :
 ```cpp
@@ -173,10 +182,12 @@ if (trap != nullptr)
 }
 ```
 
-3. Testez votre programme.
+3. Mettre des messages appropriés dans le logger.  Eventuellement, enlever des messages qui ne sont plus pertinents.
+
+4. Testez votre programme.
 Pour augmentez la probabilité d'interactions, n'hésitez pas à réduire la taille de la grille ou à ajouter des éléments en plus à l'aide d'une boucle.
 
-4. Faites maintenant le nécessaire pour que les potions "restaurent la vie" des personnages : la représentation d'un personnage passera alors de `o` à `O`.
+5. Faites maintenant le nécessaire pour que les potions "restaurent la vie" des personnages : la représentation d'un personnage repassera alors en majuscule (`a` à `A`) s'il a perdu une vie.
 
 ### E. Destructions
 
@@ -194,8 +205,5 @@ Modifiez ensuite la condition dans la fonction `remove_dead_entities` de [Dungeo
 3. Pour faire disparaître les `Item` de la grille, ajoutez-leur un attribut `is_consumed` de type booléen ainsi qu'une fonction publique `consume` qui passe cet attribut à `true`.
 Appelez cette fonction à l'endroit approprié, et utilisez la valeur de `is_consumed` pour définir l'implémentation de `should_destroy` dans les instances d'`Item`.
 
-4. Ajoutez un destructeur spécifique à la classe `Character` afin de logger dans la console qu'un personnage est mort. Vous écrirez dans la variable globale `logger` (voir [Logger.hpp](dungeon/Logger.hpp)) plutôt que dans `std::cout`. Cela permettra d'afficher les logs en dessous de la grille.
-On attendra quelque chose comme : `"A character died at position (5, 7)"`.
-Si votre destructeur n'est pas appelé, demandez-vous quel est le type statique de l'objet détruit et ce qu'il se passe au cours de la résolution de l'appel.
+4. Ajoutez un destructeur spécifique à la classe `Character` afin de logger dans la console qu'un personnage est désinstancié. Si votre destructeur n'est pas appelé, demandez-vous quel est le type statique de l'objet détruit et ce qu'il se passe au cours de la résolution de l'appel.
 
-5. **(Bonus)** Faites en sorte que les entités qui sortent de la grille soient aussi supprimées.
