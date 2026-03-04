@@ -5,9 +5,11 @@
 
 class Potion : public Entity {
     public:
-        Potion(int width, int height) : Entity(random_value(1, width-1), random_value(1, height-1)) {}
-        
-        char get_representation() const override { return '$'; }  
+        Potion(int width, int height) : Entity(random_value(1, width-1), random_value(1, height-1)) {
+            logger << "new Potion at (" << get_x() << ',' << get_y() << ")" << std::endl;
+        }
+
+        char get_representation() const override { return '+'; }
         void update()                   override { }
 
 };
@@ -17,9 +19,11 @@ class Potion : public Entity {
 #include "Item.hpp"
 
 class Potion : public Item {
-    public:        
-        Potion(int width, int height) : Item(width, height) {}
-        char get_representation() const override { return '$'; }  
+    public:
+        Potion(int width, int height) : Item(width, height) {
+            logger << "new Potion at (" << get_x() << ',' << get_y() << ")" << std::endl;
+        }
+        char get_representation() const override { return '+'; }
         // question E.4
         ~Potion() override {}
 

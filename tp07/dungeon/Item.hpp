@@ -11,7 +11,7 @@ class Item : public Entity {
         {
             is_consumed = false; // question E.3
         }
-        void update()                   override { }
+        void update(int, int) override { }
         void consume() { is_consumed = true; } // question E.3
         bool should_destroy() const override { return is_consumed; }  // question E.3
 

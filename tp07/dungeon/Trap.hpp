@@ -2,12 +2,15 @@
 // question C.1 (version pré-refactorisation)
 /*
 #include "Entity.hpp" // Entity
+#include "Logger.hpp"
 
 class Trap : public Entity {
     public:
-        Trap(int width, int height) : Entity(random_value(1, width-1), random_value(1, height-1)) {}
-        
-        char get_representation() const override { return 'X'; }  
+        Trap(int width, int height) : Entity(random_value(1, width-1), random_value(1, height-1)) {
+            logger << "new Trap at (" << get_x() << ',' << get_y() << ")" << std::endl;
+        }
+
+        char get_representation() const override { return '#'; }
         void update()                   override { } // question C.2
 
 };
@@ -16,11 +19,14 @@ class Trap : public Entity {
 // question C.4 (version post-refactorisation)
 #include "Item.hpp"
 #include "Character.hpp"
+#include "Logger.hpp"
 
 class Trap : public Item {
-    public:  
-        Trap(int width, int height) : Item(width, height) { }
-        char get_representation() const override { return 'X'; }  
+    public:
+        Trap(int width, int height) : Item(width, height) {
+            logger << "new Trap at (" << get_x() << ',' << get_y() << ")" << std::endl;
+        }
+        char get_representation() const override { return '#'; }
 
 
         // question E.1

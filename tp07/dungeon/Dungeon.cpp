@@ -1,10 +1,10 @@
-#include "Entity.hpp"
 #include "Character.hpp" // Character
-#include "Trap.hpp" // Trap
+#include "Entity.hpp"
 #include "Logger.hpp"
+#include "Random.hpp"
+#include "Trap.hpp" // Trap
 
 #include <array>
-#include <chrono>
 #include <cstdlib>
 #include <deque>
 #include <iostream>
@@ -15,8 +15,8 @@
 #include <vector>
 
 using Cell = std::vector<Entity*>;
-//using Grid = std::array<std::array<Cell, 50>, 10>;
-using Grid = std::array<std::array<Cell, 5>, 5>;
+using Grid = std::array<std::array<Cell, 50>, 10>;
+// using Grid = std::array<std::array<Cell, 5>, 5>;
 
 void fill_grid(Grid& grid, const std::vector<std::unique_ptr<Entity>>& entities)
 {
@@ -139,9 +139,11 @@ void collect_logs(std::deque<std::string>& logs)
 
 void update(Grid& grid, std::vector<std::unique_ptr<Entity>>& entities)
 {
+    const auto width  = grid.front().size();
+    const auto height = grid.size();
     for (auto& entity : entities)
     {
-        entity->update();
+        entity->update(width, height);
     }
 
     fill_grid(grid, entities);
@@ -175,10 +177,19 @@ int main()
     all_entities.push_back(std::make_unique<Character>(3, 2));
     all_entities.push_back(std::make_unique<Character>(7, 6));
     // all_entities.push_back(std::make_unique<Character>()); // question B.1
-    all_entities.push_back(std::make_unique<Character>(40, 5));  // question B.2
-    for(int i=0; i<10; ++i)
-        all_entities.push_back(std::make_unique<Trap>(width, height)); // question C.3
-    all_entities.push_back(std::make_unique<Trap>(width, height)); // question C.3
+    all_entities.push_back(std::make_unique<Character>(40, 5));      // question B.2
+    all_entities.push_back(std::make_unique<Trap>(width, height));   // question C.1
+    all_entities.push_back(std::make_unique<Trap>(width, height));   // question C.1
+    all_entities.push_back(std::make_unique<Potion>(width, height)); // question C.3
+    // question D.4
+    for (int i = 0; i < 10; i++)
+        all_entities.push_back(
+            std::make_unique<Character>(random_value(1, width - 1), random_value(1, height - 1)));
+    all_entities.push_back(std::make_unique<Character>(3, 2));
+    for (int i = 0; i < 40; ++i)
+        all_entities.push_back(std::make_unique<Trap>(width, height));
+    for (int i = 0; i < 20; ++i)
+        all_entities.push_back(std::make_unique<Potion>(width, height));
 
     fill_grid(grid, all_entities);
 
