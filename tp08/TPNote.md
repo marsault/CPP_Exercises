@@ -18,7 +18,7 @@ Vous trouverez dans `${HOME}/SUJET` deux fichiers:
 - un script `prepare_station.py`
 
 **Pour vous mettre en condition de TP noté**, créer un répertoire `SUJET` dans votre HOME et placez-y 
-- le fichier [`tp04.zip` ](https://github.com/marsault/CPP_Exercises/raw/refs/heads/master/large-files/tp04.zip?download=)
+- le fichier [`tp08.zip` ](https://github.com/marsault/CPP_Exercises/raw/refs/heads/master/large-files/tp08.zip?download=)
 - le fichier [`prepare_station.py`](https://github.com/marsault/CPP_Exercises/raw/refs/heads/master/large-files/prepare_station.py?download=)
 Ils se trouvent dans `large-files` sur le dépôt git.
 
