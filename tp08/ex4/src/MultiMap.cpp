@@ -4,7 +4,7 @@
 Tracker* MultiMap::add(std::string str, int i)
 {
   Tracker* ic = new Tracker();
-  _map1.emplace(str, ic);
+  _map1.emplace(std::move(str), ic);
   _map2.emplace(i, ic);
   return ic;
 }

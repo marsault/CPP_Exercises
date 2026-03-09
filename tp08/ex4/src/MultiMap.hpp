@@ -4,6 +4,7 @@
 #include "../lib/Tracker.hpp"
 
 #include <map>
+#include <memory>
 #include <string>
 
 class MultiMap
@@ -15,5 +16,5 @@ public:
   // Normalement ces données devraient être private mais poru simplifier les tests, on les laisse
   // public.
   std::map<std::string, Tracker*> _map1;
-  std::map<int, Tracker*> _map2;
+  std::map<int, std::unique_ptr<Tracker>> _map2;
 };
