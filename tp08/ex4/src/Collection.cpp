@@ -3,6 +3,6 @@
 
 Tracker& Collection::add_instance()
 {
-  _instances.push_back(new Tracker());
+  _instances.push_back(std::make_unique<Tracker>());
   return *(_instances.back());
 }
