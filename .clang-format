@@ -1,0 +1,64 @@
+BasedOnStyle: LLVM
+Language: Cpp
+IndentWidth: 2
+ColumnLimit: 100
+
+DerivePointerAlignment: false
+PointerAlignment: Left
+#SpaceAroundPointerQualifiers: Before #clang 12
+
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignEscapedNewlines: Left
+
+BreakConstructorInitializers: BeforeComma
+AllowAllConstructorInitializersOnNextLine: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+
+AccessModifierOffset: -2
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+SpaceAfterCStyleCast: true
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+AlwaysBreakTemplateDeclarations: Yes
+AlwaysBreakAfterReturnType: None # TopLevelDefinitions
+
+BreakBeforeTernaryOperators: true
+BreakBeforeBinaryOperators: All
+BreakBeforeBraces: Custom
+BraceWrapping:
+  IndentBraces: false
+  AfterClass: true
+  AfterEnum: true
+  AfterFunction: true
+  AfterStruct: true
+  AfterControlStatement: Never
+  BeforeCatch: false            #if true, makes empty catch's fail
+  BeforeElse: true
+  BeforeWhile: false
+  BeforeLambdaBody: true
+  SplitEmptyFunction: false 
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: false
+
+IncludeBlocks: Preserve
+IndentPPDirectives: None
+#SeparateDefinitionStyle: Always # clang14
+
+
+MaxEmptyLinesToKeep: 2
+
+FixNamespaceComments: true
+CompactNamespaces: true
+NamespaceIndentation: Inner
+
+IndentWrappedFunctionNames: false
+
+AlwaysBreakBeforeMultilineStrings: true
