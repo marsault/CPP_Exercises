@@ -2,7 +2,12 @@
 #include <iostream>
 
 
-void ProgramData::register_material(std::string name)
+// ============================================================================
+// = Partie Matériau ==========================================================
+// ============================================================================
+
+
+void ProgramData::register_material(std::string&& name)
 {
   std::cout << "Feature is not yet implemented (register_material)" << std::endl;
 }
@@ -33,7 +38,8 @@ const Material* ProgramData::get_material_by_name(const std::string& name) const
 // = Partie Recette ===========================================================
 // ============================================================================
 
-void ProgramData::register_recipe(std::vector<const Material*> materials,
+
+void ProgramData::register_recipe(const std::vector<const Material*>& materials,
                                   const Material& product)
 {
   std::cout << "Feature is not yet implemented (register_recipe)" << std::endl;
@@ -44,13 +50,13 @@ void ProgramData::get_all_recipes(std::vector<const Recipe*>& recipes) const
   std::cout << "Feature is not yet implemented (get_all_recipes)" << std::endl;
 }
 
-const Recipe* ProgramData::get_recipe_by_id(size_t id) const
+const Recipe* ProgramData::get_recipe_by_id(const size_t &id) const
 {
   std::cout << "Feature is not yet implemented (get_recipe_by_id)" << std::endl;
   return nullptr;
 }
 
-void ProgramData::unregister_recipe(const Recipe&)
+void ProgramData::unregister_recipe(const Recipe& recipe)
 {
   std::cout << "Feature is not yet implemented (unregister_recipe)" << std::endl;
 }
