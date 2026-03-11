@@ -213,7 +213,7 @@ int main()
 #define ANSWER_21 false
 // 22. Si je veux redéfinir fct() dans Fille, je dois utiliser le mot-clef "override" dans la
 // définition de Fille::fct(), sans quoi Fille::fct() ne sera pas appelée ligne 2 ci-dessus.
-#define ANSWER_22 true
+#define ANSWER_22 false
 // 23. Si Mere::fct() est virtuelle pure, il est impossible d'instancier la classe Mere.
 #define ANSWER_23 true
 // 24. On utilise le mot-clef "pure virtual" pour indiquer qu'une fonction-membre est virtuelle
