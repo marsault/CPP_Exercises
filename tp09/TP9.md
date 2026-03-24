@@ -31,11 +31,11 @@ Ouvrez chacun des liens ci-dessous et complétez le code afin que les fonctions 
 Une seule contrainte, on vous imposera un algorithme de la librairie standard à utiliser.
 
 
-1. Algorithme: std::remove_if 
+1. Algorithme: `std::remove_if` 
 
    Code: https://godbolt.org/z/KaTnr8Pr4  
    
-   Solution: rajouter `#include <algorithm>`, car c'est là qu'est définie `std::remove_if`, qui permet de retirer du vecteur tous les éléments vérifiant un prédicat. Nous allons retirer tous les animaux dont le champs `species` vaut `"cat"`, il nous faut donc définir le prédicat correspondant à l'aide, par exemple, d'une fonction `lambda`: `[](const Animal& bestiole) { return bestiole.species == "cat"; }`. Enfin, il ne faut pas oublier d'appler `std::erase` sur le résultat, pour réellement procéder à la suppression des éléments. Ceci donne:
+   Solution: rajouter `#include <algorithm>`, car c'est là qu'est définie `std::remove_if`, qui permet de retirer du vecteur tous les éléments vérifiant un prédicat. Nous allons retirer tous les animaux dont le champ `species` vaut `"cat"`, il nous faut donc définir le prédicat correspondant à l'aide, par exemple, d'une fonction `lambda`: `[](const Animal& bestiole) { return bestiole.species == "cat"; }`. Enfin, il ne faut pas oublier d'appeler `std::erase` sur le résultat, pour réellement procéder à la suppression des éléments. Ceci donne:
    
    ```cpp
    void remove_cats(std::vector<Animal>& animals)
@@ -45,11 +45,11 @@ Une seule contrainte, on vous imposera un algorithme de la librairie standard à
    }
    ```
 
-2. Algorithme: std::find_if 
+2. Algorithme: `std::find_if`
 
    Code: https://godbolt.org/z/55x9Efrza  
    
-   Solution: même structure que la question précédente, si ce n'est qu'il faut maintenant rajouter entre les crochets de la fonction lambda le paramètre `species` dont elle aura besoin (sinon il lui est invisible). `std::find_if` nous renvoyant un itérateur, pour obtenir la position de l'élément trouver, il faut calculer sa différence avec `animals.begin()`. On continuera à renvoyer `-1` si l'élément n'a pas été trouvé, auquel cas l'itérateur vaudra `animals.end()`. On obtient ceci:
+   Solution: même structure que la question précédente, si ce n'est qu'il faut maintenant rajouter entre les crochets de la fonction lambda le paramètre `species` dont elle aura besoin (sinon il lui est invisible). `std::find_if` nous renvoyant un itérateur, pour obtenir la position de l'élément trouvé, il faut calculer sa différence avec `animals.begin()`. On continuera à renvoyer `-1` si l'élément n'a pas été trouvé, auquel cas l'itérateur vaudra `animals.end()`. On obtient ceci:
    
    ```cpp
    std::ptrdiff_t get_position_of_first_with_species(const std::deque<Animal>& animals, const std::string& species)
@@ -62,13 +62,25 @@ Une seule contrainte, on vous imposera un algorithme de la librairie standard à
    ```
    
    
-3. Algorithme: std::for_each
+3. Algorithme: `std::for_each`
+   
    Code: https://godbolt.org/z/nrGaa8aEa
 
-   todo
+   Solution: le but est d'utiliser `std::for_each` pour lui demander d'appliquer une transformation à chaque élément de la `std::list` passée en paramètre. Ici, on désire retirer deux points de vie à chacune des entités de cette liste. On peut donc définir une lambda qui va appliquer la transformation "réduire `hp` de `hp_to_remove` unités" à chacune des entités, comme suit:
+   
+   `[hp_to_remove](Character& perso) { perso.hp -= hp_to_remove; }`
+   
+   Ensuite, il suffit de passer cette lambda en paramètre à `std::for_each`. La fonction à écrire devient alors:
+   
+   ```cpp
+   void remove_hp_to_everyone(std::list<Character>& characters, int hp_to_remove)
+   {
+       std::for_each(characters.begin(), characters.end(), [hp_to_remove](Character& perso) { perso.hp -= hp_to_remove; });
+   }
+   ```
 
 
-4. Algorithme: std::transform + std::back_inserter 
+4. Algorithme: `std::transform + std::back_inserter`
 
    Code: https://godbolt.org/z/PrPoEYK5d 
    
@@ -83,7 +95,7 @@ Une seule contrainte, on vous imposera un algorithme de la librairie standard à
     }
    ```
 
-5. Algorithme: std::transform + std::accumulate  
+5. Algorithme: `std::transform + std::accumulate`  
    Code: https://godbolt.org/z/fdeExxzWE 
 
    Une fois que c'est fait, `accumulate` permet de réaliser la concaténation en "accumulant" le résultat des transformations dans une chaîne initialement vide.  L'opérateur prendra deux chaînes en paramètres: celle déjà "accumulée", et la seconde à rajouter. On obtient alors ceci:
@@ -97,7 +109,7 @@ Une seule contrainte, on vous imposera un algorithme de la librairie standard à
     ```
 
 
-6. Algorithme: peu importe, du moment que vous implémentez le contenu de apply_on_entities_with_type et que vous l'utilisez ensuite.
+6. Algorithme: peu importe, du moment que vous implémentez le contenu de `apply_on_entities_with_type` et que vous l'utilisez ensuite.
 
    Code: https://godbolt.org/z/v5rn1aqGe 
    
@@ -165,7 +177,7 @@ Une seule contrainte, on vous imposera un algorithme de la librairie standard à
    
 ## Exercice 3 - unordered_map (30 min)
 
-L'objectif de cet exercice est de vous faire implémenter un type que vous pourrez utiliser en temps que clé de hashage d'une `unordered_map`.
+L'objectif de cet exercice est de vous faire implémenter un type que vous pourrez utiliser en tant que clé de hashage d'une `unordered_map`.
 
 ### A. Point2d
 
@@ -199,7 +211,7 @@ Il n'est pas forcément très pratique de devoir spécifier les foncteurs à uti
 Par défaut, ce sont les classes `std::hash<Point2d>` et `std::equal_to<Point2d>` qui sont utilisées pour instancier les foncteurs de hashage et d'égalité.
 
 1. Par défaut, la classe-template `std::equal_to` tente d'appeler l'`operator==` du type concerné.  
-Implémentez du coup cet opérateur pour la classe `Point2d`.  
+Implémentez cet opérateur pour la classe `Point2d`.  
 Vous devriez maintenant pouvoir retirer l'argument `Point2dEqual` du type de `grid`.
 
 Par défaut, la classe-template `std::hash` ne produit aucun `operator()` valide. Il est donc nécessaire de définir une spécialisation pour le type concerné si on souhaite pouvoir retirer l'argument `Point2dHash` du type de `grid`.  
