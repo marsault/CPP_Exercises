@@ -96,15 +96,26 @@ Une seule contrainte, on vous imposera un algorithme de la librairie standard à
    ```
 
 5. Algorithme: `std::transform + std::accumulate`  
+   
    Code: https://godbolt.org/z/fdeExxzWE 
 
-   Une fois que c'est fait, `accumulate` permet de réaliser la concaténation en "accumulant" le résultat des transformations dans une chaîne initialement vide.  L'opérateur prendra deux chaînes en paramètres: celle déjà "accumulée", et la seconde à rajouter. On obtient alors ceci:
+   Solution: rappelons que  `accumulate` nécessite `#include <numeric>`. On commence par écrire la fonction qui transforme chaque chaîne en sa version en majuscules. La signature de cette fonction nous oblige à modifier la chaîne en place:
+
+   ```cpp
+
+   void to_upper(std::string& str) 
+   {
+        std::transform(str.begin(), str.end(), str.begin(), [](const auto& c) { return std::toupper(c);});
+   }
+   ```
+
+   Une fois que c'est fait, `accumulate` permet de réaliser la concaténation en "accumulant" le résultat des transformations dans une chaîne initialement vide.  L'opérateur prendra deux chaînes en paramètres: l'accumulateur, et la seconde à rajouter. Comme `to_upper` ne renvoie rien, on l'appelle sur la seconde chaîne avant de rajouter le résultat à la première. On obtient alors ceci:
    
     ```cpp
     std::string concat_in_caps(const std::vector<std::string>& words)
     {
         std::string result;
-        return std::accumulate(words.begin(), words.end(), result, [](const std::string& a, const std::string& b) { return a + capstring(b);});
+        return std::accumulate(words.begin(), words.end(), result, [](std::string& a, std::string b) {to_upper(b); a += " " + b; return a;} );
     }
     ```
 
