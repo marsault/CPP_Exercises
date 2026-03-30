@@ -8,7 +8,7 @@
 void usage()
 {
     std::cout << "Usage:\n"
-              << "./gray path/to/images/folder" << std::endl;
+              << "./grayscale path/to/images/folder" << std::endl;
 }
 
 // On définit une nouvelle classe GrayScale qui boxe un uint8_t...
