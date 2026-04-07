@@ -2,6 +2,9 @@ set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1)
 include(CTest)
 
 get_property(all_targets DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY BUILDSYSTEM_TARGETS)
+
+list(FILTER all_targets EXCLUDE REGEX sandbox)
+
 foreach(target ${all_targets})
 
     get_target_property(target_type ${target} TYPE)

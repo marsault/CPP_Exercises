@@ -9,7 +9,7 @@
 void usage()
 {
     std::cout << "Usage:\n"
-              << "./gray path/to/images/folder" << std::endl;
+              << "./grayscale path/to/images/folder" << std::endl;
 }
 
 int main(int argc, char** argv)
