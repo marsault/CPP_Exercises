@@ -18,6 +18,7 @@ class Entity
 {
 public:
   virtual void print() const = 0;
+  virtual ~Entity() = default;
 };
 
 class Factory
@@ -86,6 +87,19 @@ public:
 private:
   std::string _species;
   std::string _name;
+};
+
+class House : public Object
+{
+public:
+  explicit House(Person& owner)
+      : _owner{owner}
+  {}
+
+  void print() const override { std::cout << "House owned by " << _owner.get_name() << std::endl; }
+
+private:
+  Person& _owner;
 };
 
 int main()
