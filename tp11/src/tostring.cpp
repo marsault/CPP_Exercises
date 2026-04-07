@@ -22,7 +22,7 @@ template <typename T>
 std::string to_string(T&& data, priority_tag<0>)
 {
   std::stringstream ss;
-  ss << "<" << typeid(data).name() << ": " << &data << ">";
+  ss << "<" << typeid(data).name() << " @" << &data << ">  :(";
   return ss.str();
 }
 
@@ -143,7 +143,7 @@ class Streamable
 public:
   friend std::ostream& operator<<(std::ostream& out, const Streamable& s)
   {
-    return out << "Streamable @" << &s;
+    return out << "Fonction operator<<(..) appelée :)";
   }
 };
 
@@ -153,7 +153,7 @@ public:
   std::string to_string() const
   {
     std::stringstream ss;
-    ss << "Convertible @" << this;
+    ss << "Fonction-membre Convertible::to_string() appelée :)";
     return ss.str();
   }
 };
