@@ -10,7 +10,8 @@ Person
 Dog
 Cat
 Tree
-House)";
+House
+Athanase)";
 
 class Entity
 {
