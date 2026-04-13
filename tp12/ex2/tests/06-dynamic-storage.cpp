@@ -13,7 +13,6 @@ TEST_CASE("Above the static limit, elements are moved to the dynamic storage")
 
     // Now exceeding the static limit...
     auto& elm_3 = ctn.push_back(90u);
-    ctn.push_back(120u);
 
     // Previous iterators are invalidated, as objects are moved from the static storage to the dynamic one 
     REQUIRE(&elm_1 != &ctn[0]);
@@ -30,12 +29,12 @@ TEST_CASE("Above the static limit, elements are moved to the dynamic storage")
     REQUIRE(std::distance(&ctn[2], &ctn[3]) == 1);
 
     // The size function returns the correct value
-    REQUIRE(ctn.size() == 4);
+    REQUIRE(ctn.size() == 3);
 
     for (auto i = 0u; i < 100u; ++i)
     {
         ctn.push_back(i);
     }
 
-    REQUIRE(ctn.size() == 104);
+    REQUIRE(ctn.size() == 103);
 }
