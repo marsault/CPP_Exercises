@@ -13,7 +13,6 @@ TEST_CASE("Above the static limit, elements are moved to the dynamic storage")
 
     // Now exceeding the static limit...
     auto& elm_3 = ctn.push_back(90u);
-    ctn.push_back(120u);
 
     // Previous iterators are invalidated, as objects are moved from the static storage to the dynamic one 
     REQUIRE(&elm_1 != &ctn[0]);
